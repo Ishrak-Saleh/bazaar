@@ -1,402 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard — Bazaar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations Center - Bazaar</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Sora:wght=600;700;800&display=swap" rel="stylesheet">
 
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght=400;600;700;800&display=swap');
-
     :root {
-      --clr-canvas: #FFFCF2;
-      --clr-surface: #FFFFFF;
-      --clr-border: #CCC5B9;
-      --clr-ink-muted: #403D39;
-      --clr-ink-main: #252422;
-      --clr-brand: #EB5E28;
+      /* Integrated "Rustic Charm" Color Palette Matrix from index.html */
+      --clr-canvas: #FFFCF2;       /* Warm Cream Workspace Background */
+      --clr-surface: #FFFFFF;      /* Clean White Card Sheets */
+      --clr-border: #CCC5B9;       /* Stone Grey Border Lines */
+      --clr-ink-muted: #403D39;    /* Dark Charcoal Secondary Typography */
+      --clr-ink-main: #252422;     /* Near Black Primary Typography */
+      --clr-brand: #EB5E28;        /* Vibrant Rust Signature Brand Accent */
       --clr-brand-hover: #D44D1B;
+      
+      --clr-success: #10B981;
+      --clr-success-bg: #E6F4EA;
+      --clr-pending: #F59E0B;
+      --clr-pending-bg: #FEF3C7;
+
       --font-display: 'Sora', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
+      
       --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Reset & Base System */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background-color: var(--clr-canvas);
       color: var(--clr-ink-main);
       font-family: var(--font-body);
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
     }
 
-    .global-center-wrapper {
-      max-width: 1280px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      width: 100% !important;
+    h1, h2, h3, h4, .admin-logo {
+      font-family: var(--font-display);
+      color: var(--clr-ink-main);
     }
 
-    .nav-corporate {
-      background-color: rgba(255, 252, 242, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--clr-border);
+    /* Core Application Wrapper Grid */
+    .admin-app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
     }
-    .nav-link {
+
+    /* Left Control Navigation Sidebar */
+    .admin-sidebar {
+      background-color: var(--clr-ink-main);
+      color: #F4F2EE;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      border-right: 4px solid var(--clr-brand);
+    }
+
+    .admin-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--clr-surface);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      margin-bottom: 3rem;
+      padding-left: 0.5rem;
+    }
+
+    .admin-logo span {
+      color: var(--clr-brand);
+    }
+
+    .sidebar-menu-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .menu-node-link {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      color: #CCC5B9;
+      text-decoration: none;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background-color 0.2s var(--ease-smooth), color 0.2s;
+    }
+
+    .menu-node-link:hover, 
+    .menu-node-link.active-route {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: var(--clr-surface);
+    }
+
+    .menu-node-link.active-route {
+      border-left: 3px solid var(--clr-brand);
+      border-radius: 0 8px 8px 0;
+      padding-left: 13px;
+    }
+
+    .sidebar-footer-note {
+      margin-top: auto;
+      font-size: 0.75rem;
+      color: #CCC5B9;
+      padding-left: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1.5rem;
+    }
+
+    /* Right Main Operational Screen Workspace */
+    .admin-workspace {
+      padding: 2.5rem 3.5rem;
+      overflow-y: auto;
+    }
+
+    .workspace-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .workspace-headline h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .workspace-headline p {
+      font-size: 0.9rem;
       color: var(--clr-ink-muted);
-      font-size: 0.875rem;
-      font-weight: 600;
-      transition: color 0.2s var(--ease-smooth);
     }
-    .nav-link:hover { color: var(--clr-brand); }
 
-    .stat-card {
+    .live-status-pill {
+      background-color: var(--clr-success-bg);
+      color: var(--clr-success);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--clr-success);
+      border-radius: 50%;
+      animation: statusPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Macro Performance Metrics Matrix Grid */
+    .metrics-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .metric-data-card {
+      background-color: var(--clr-surface);
+      border: 1px solid rgba(204, 197, 185, 0.5);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .metric-meta-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--clr-ink-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-numeric-value {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Operational Grid: Split Controls & Tables */
+    .operational-split-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .panel-header-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.25px;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Data Information Fulfillment Sheet Table */
+    .table-card-sheet {
       background-color: var(--clr-surface);
       border: 1px solid var(--clr-border);
       border-radius: 12px;
-      padding: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
-    .admin-select {
-      background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 6px;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.825rem;
-      color: var(--clr-ink-main);
-      outline: none;
-      font-family: var(--font-body);
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .admin-select:focus { border-color: var(--clr-brand); }
-
-    .form-input {
-      background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 6px;
-      padding: 0.35rem 0.5rem;
-      font-size: 0.825rem;
-      color: var(--clr-ink-main);
-      width: 80px;
-      text-align: center;
+    .data-matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
     }
 
-    .tab-btn {
+    /* Styled header matching image_34d282.png design rules */
+    .data-matrix-table th {
+      background-color: var(--clr-brand); 
+      color: var(--clr-surface);          
+      font-weight: 700;
+      padding: 1.1rem 1.25rem;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      border-bottom: none;
+    }
+
+    .data-matrix-table td {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
+      vertical-align: middle;
+    }
+
+    .data-matrix-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .order-id-node {
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 0.95rem;
-      padding-bottom: 0.5rem;
-      color: var(--clr-ink-muted);
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s var(--ease-smooth);
-    }
-    .tab-btn.active {
       color: var(--clr-brand);
-      border-bottom-color: var(--clr-brand);
     }
 
-    /* ── FIX 5: Inline toast component replacing all alert() calls ── */
-    #admin-toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 9999;
+    .badge-status-capsule {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .badge-status-capsule.success {
+      background-color: var(--clr-success-bg);
+      color: var(--clr-success);
+    }
+
+    .badge-status-capsule.pending {
+      background-color: var(--clr-pending-bg);
+      color: var(--clr-pending);
+    }
+
+    .inline-action-btn {
+      background: none;
+      border: 1px solid var(--clr-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .inline-action-btn:hover {
+      background-color: var(--clr-canvas);
+      border-color: var(--clr-ink-main);
+    }
+
+    /* Right Section: Quick Inventory Stock Adjustment Panel */
+    .quick-control-sheet {
+      background-color: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .form-control-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .input-node-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .input-node-wrapper label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--clr-ink-muted);
+    }
+
+    .input-node-wrapper input,
+    .input-node-wrapper select {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid var(--clr-border);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      background-color: var(--clr-canvas);
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .input-node-wrapper input:focus,
+    .input-node-wrapper select:focus {
+      border-color: var(--clr-brand);
+      background-color: var(--clr-surface);
+    }
+
+    .admin-primary-cta {
+      width: 100%;
+      background-color: var(--clr-brand);
+      color: var(--clr-surface);
+      border: none;
+      padding: 0.8rem 1.25rem;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      background-color: var(--clr-ink-main);
-      color: #FFFCF2;
-      font-family: var(--font-body);
-      font-size: 0.825rem;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s var(--ease-smooth);
+    }
+
+    .admin-primary-cta:hover {
+      background-color: var(--clr-brand-hover);
+    }
+
+    /* Toast Notification System (Exact Sync with index.html) */
+    .toast-notification {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      background-color: var(--clr-surface);
+      color: var(--clr-ink-main);
+      padding: 0.65rem 1.5rem 0.65rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
       font-weight: 600;
-      padding: 0.75rem 1.25rem;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(37, 36, 34, 0.18);
+      letter-spacing: -0.1px;
+      box-shadow: 0 20px 40px -10px rgba(37, 36, 34, 0.12),
+                  0 10px 20px -5px rgba(37, 36, 34, 0.08);
+      border: 2px solid var(--clr-brand);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
       pointer-events: none;
       opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.22s var(--ease-smooth), transform 0.22s var(--ease-smooth);
+      transform: translateY(1.5rem) scale(0.95);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  opacity 0.4s var(--ease-smooth);
     }
-    #admin-toast.visible {
+
+    .toast-notification.active {
       opacity: 1;
       transform: translateY(0);
     }
-    #admin-toast .toast-dot {
-      width: 0.45rem;
-      height: 0.45rem;
-      border-radius: 50%;
-      background-color: #4ADE80;
-      flex-shrink: 0;
+
+    /* Responsiveness Framework Breakpoints */
+    @media (max-width: 1200px) {
+      .metrics-matrix-grid { grid-template-columns: repeat(2, 1fr); }
+      .operational-split-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 992px) {
+      .admin-app-container { grid-template-columns: 1fr; }
+      .admin-sidebar { display: none; } 
+      .admin-workspace { padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 576px) {
+      .metrics-matrix-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- FIX 5: Inline toast (replaces every alert() in this file) -->
-<div id="admin-toast">
-  <span class="toast-dot"></span>
-  <span id="admin-toast-msg">Done.</span>
-</div>
+  <div class="admin-app-container">
+    
+    <!-- Left Navigation Control Column Panel -->
+    <aside class="admin-sidebar">
+      <a href="index.html" class="admin-logo">Bazaar<span>.</span>Admin</a>
+      
+      <ul class="sidebar-menu-stack">
+        <li>
+          <a href="#" class="menu-node-link active-route">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+            Operations Hub
+          </a>
+        </li>
+        <li>
+          <a href="index.html" class="menu-node-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            Public Catalog View
+          </a>
+        </li>
+        <li>
+          <a href="#" class="menu-node-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            System Infrastructure
+          </a>
+        </li>
+      </ul>
 
-<nav class="nav-corporate sticky top-0 z-50">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
-        Bazaar<span style="color: var(--clr-brand);">.</span>
-      </span>
-    </a>
-
-    <div class="flex items-center gap-6">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="orders.html" class="nav-link">My Orders</a>
-      <a href="profile.html" class="nav-link">Profile</a>
-    </div>
-
-    <div class="flex items-center gap-4">
-      <a href="cart.html" class="relative inline-flex p-2 bg-[#CCC5B9]/20 rounded-lg transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:1.25rem; height:1.25rem; color: var(--clr-brand);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-        <span id="nav-cart-count"
-              style="background-color: var(--clr-brand); color:#fff; font-size:0.65rem; font-weight:700; width:1.1rem; height:1.1rem; border-radius:50%; display:none; position:absolute; top:0px; right:0px; align-items:center; justify-content:center;">
-          0
-        </span>
-      </a>
-      <span class="text-xs font-bold text-white bg-[#EB5E28] px-3 py-1.5 rounded-lg">
-        Store Admin Mode
-      </span>
-    </div>
-  </div>
-</nav>
-
-<div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 3.5rem; padding-bottom: 2rem;">
-  <span class="inline-flex items-center gap-1 text-xs font-bold text-[#EB5E28] bg-[#EB5E28]/10 px-2.5 py-1 rounded mb-3 tracking-wide uppercase">
-    Management Panel
-  </span>
-  <h1 style="font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; color: var(--clr-ink-main); letter-spacing: -0.02em;">
-    Store Dashboard
-  </h1>
-  <p style="color: var(--clr-ink-muted); font-size: 0.875rem; margin-top: 0.35rem;">
-    Review sales summary, oversee customer orders, and update inventory stock.
-  </p>
-</div>
-
-<section class="global-center-wrapper px-4 sm:px-6 lg:px-8 mb-10">
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-    <div class="stat-card">
-      <p class="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Total Revenue</p>
-      <p id="stats-revenue" style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800;" class="text-[#252422]">৳0</p>
-    </div>
-    <div class="stat-card">
-      <p class="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Orders Processed</p>
-      <p id="stats-count" style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800;" class="text-[#252422]">0</p>
-    </div>
-    <div class="stat-card">
-      <p class="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Active Products</p>
-      <p style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800;" class="text-[#166534]">8 Items</p>
-    </div>
-  </div>
-</section>
-
-<main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-bottom: 6rem;">
-  <div class="bg-white border border-[#CCC5B9] rounded-xl p-6">
-
-    <div class="flex items-center gap-6 border-b border-stone-100 mb-6">
-      <button id="btn-tab-orders" class="tab-btn active" onclick="switchTab('orders')">Customer Orders</button>
-      <button id="btn-tab-stock"  class="tab-btn"        onclick="switchTab('stock')">Inventory Stock</button>
-    </div>
-
-    <!-- ORDERS TAB -->
-    <div id="tab-orders-content" class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="text-xs font-bold text-stone-400 uppercase tracking-wider border-b border-stone-100 bg-stone-50/50">
-            <th class="p-4">Order ID</th>
-            <th class="p-4">Date</th>
-            <th class="p-4">Items</th>
-            <th class="p-4">Total</th>
-            <th class="p-4 text-right">Status</th>
-          </tr>
-        </thead>
-        <tbody id="admin-orders-rows" class="divide-y divide-stone-100 text-sm"></tbody>
-      </table>
-      <div id="no-orders-msg" class="hidden text-center py-12 text-stone-400 text-xs">
-        No orders placed yet.
+      <div class="sidebar-footer-note">
+        <p>Bazaar Architecture v2.4</p>
+        <p style="color: #8C8A85; margin-top: 0.2rem;">Internal Ops Only</p>
       </div>
-    </div>
+    </aside>
 
-    <!-- STOCK TAB -->
-    <div id="tab-stock-content" class="hidden overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="text-xs font-bold text-stone-400 uppercase tracking-wider border-b border-stone-100 bg-stone-50/50">
-            <th class="p-4">Product</th>
-            <th class="p-4">Category</th>
-            <th class="p-4">Price (৳)</th>
-            <th class="p-4 text-center">Stock</th>
-            <th class="p-4 text-right">Action</th>
-          </tr>
-        </thead>
-        <tbody id="admin-stock-rows" class="divide-y divide-stone-100 text-sm"></tbody>
-      </table>
-    </div>
+    <!-- Right Workspace Screen Area -->
+    <main class="admin-workspace">
+      
+      <header class="workspace-header-row">
+        <div class="workspace-headline">
+          <h1>Operations Dashboard</h1>
+          <p>Real-time farm-to-table logistics fulfillment panel.</p>
+        </div>
+        <div class="live-status-pill">
+          <div class="pulse-dot"></div> Systems Online
+        </div>
+      </header>
 
-  </div>
-</main>
+      <!-- Macro Performance Statistics Row -->
+      <section class="metrics-matrix-grid">
+        <div class="metric-data-card">
+          <div class="metric-meta-label">Gross Revenue Today</div>
+          <div class="metric-numeric-value">৳42,850</div>
+        </div>
+        <div class="metric-data-card">
+          <div class="metric-meta-label">Fulfillment Queue</div>
+          <div class="metric-numeric-value" id="pendingCounter">14</div>
+        </div>
+        <div class="metric-data-card">
+          <div class="metric-meta-label">Active Dispatches</div>
+          <div class="metric-numeric-value">8</div>
+        </div>
+        <div class="metric-data-card">
+          <div class="metric-meta-label">Orchard Partners</div>
+          <div class="metric-numeric-value">26</div>
+        </div>
+      </section>
 
-<!-- FIX 3: Quick Links column added to admin footer -->
-<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
-    <div class="md:col-span-5 space-y-3">
-      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
-      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
-        Fresh organic fruits and vegetables sourced directly from local gardens to your dining table.
-      </p>
-    </div>
-    <div class="md:col-span-3 col-start-7 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Quick Links</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="index.html"   class="hover:text-[#EB5E28] transition-colors">Shop Directory</a>
-        <a href="cart.html"    class="hover:text-[#EB5E28] transition-colors">My Basket</a>
-        <a href="orders.html"  class="hover:text-[#EB5E28] transition-colors">Order Tracking</a>
-        <a href="profile.html" class="hover:text-[#EB5E28] transition-colors">My Profile</a>
+      <!-- Bottom Split Panel Grid -->
+      <div class="operational-split-grid">
+        
+        <!-- Left: Fulfillment Data Table Sheet -->
+        <section>
+          <h2 class="panel-header-title">Live Fulfillment Queue</h2>
+          <div class="table-card-sheet">
+            <table class="data-matrix-table">
+              <thead>
+                <tr>
+                  <th>Order Node</th>
+                  <th>Customer Profile</th>
+                  <th>Consignment Particulars</th>
+                  <th>State</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="fulfillmentTableBody">
+                <tr>
+                  <td class="order-id-node">#BZ-1094</td>
+                  <td><strong>Ahsan Habib</strong><br><span style="font-size:0.75rem; color:var(--clr-ink-muted);">Sylhet Division</span></td>
+                  <td>Rajshahi Fazli Mangoes (2kg), Palong Shak</td>
+                  <td><span class="badge-status-capsule pending">Pending</span></td>
+                  <td><button class="inline-action-btn" onclick="dispatchConsignment(this, 'BZ-1094')">Dispatch</button></td>
+                </tr>
+                <tr>
+                  <td class="order-id-node">#BZ-1093</td>
+                  <td><strong>Tasnim Rahman</strong><br><span style="font-size:0.75rem; color:var(--clr-ink-muted);">Dhaka Central</span></td>
+                  <td>Munshiganj Tomatoes (3kg)</td>
+                  <td><span class="badge-status-capsule pending">Pending</span></td>
+                  <td><button class="inline-action-btn" onclick="dispatchConsignment(this, 'BZ-1093')">Dispatch</button></td>
+                </tr>
+                <tr>
+                  <td class="order-id-node">#BZ-1092</td>
+                  <td><strong>M. Al-Masoom</strong><br><span style="font-size:0.75rem; color:var(--clr-ink-muted);">Rajshahi Zone</span></td>
+                  <td>Premium Srimangal Tea Crates</td>
+                  <td><span class="badge-status-capsule success">Dispatched</span></td>
+                  <td><button class="inline-action-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Archive</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Right: Quick Inventory Price Sync Modifier -->
+        <section>
+          <h2 class="panel-header-title">Quick Metric Adjustment</h2>
+          <div class="quick-control-sheet">
+            <form class="form-control-stack" onsubmit="executeInventorySync(event)">
+              
+              <div class="input-node-wrapper">
+                <label for="targetProduct">Select Catalog Item</label>
+                <select id="targetProduct" required>
+                  <option value="Rajshahi Fazli Mangoes">Rajshahi Fazli Mangoes</option>
+                  <option value="Srimangal Fresh Palong Shak">Srimangal Fresh Palong Shak</option>
+                  <option value="Munshiganj Native Vine Tomatoes">Munshiganj Native Vine Tomatoes</option>
+                </select>
+              </div>
+
+              <div class="input-node-wrapper">
+                <label for="updatedPrice">New Price Metric (৳ / kg)</label>
+                <input type="number" id="updatedPrice" required placeholder="e.g., 175">
+              </div>
+
+              <div class="input-node-wrapper">
+                <label for="addedStock">Stock Allocation Vector (+ items)</label>
+                <input type="number" id="addedStock" required placeholder="e.g., 100">
+              </div>
+
+              <button type="submit" class="admin-primary-cta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Sync Stock & Price Matrices
+              </button>
+
+            </form>
+          </div>
+        </section>
+
       </div>
-    </div>
+
+    </main>
   </div>
-  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
-    &copy; 2026 BAZAAR ARCHITECTURE &mdash; METROPOLITAN UNIVERSITY, SYLHET
+
+  <div class="toast-notification" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMessage">Operations manifest systematically updated!</span>
   </div>
-</footer>
 
-<script>
-  let MOCK_PRODUCTS = [
-    { id: 1, name: 'Fresh Organic Tomatoes',   category: 'Vegetables', price: 120, stock: 15 },
-    { id: 2, name: 'Crisp Green Lettuce',       category: 'Vegetables', price: 85,  stock: 4  },
-    { id: 3, name: 'Sweet Cavendish Bananas',   category: 'Fruits',     price: 90,  stock: 25 },
-    { id: 4, name: 'Red Fuji Apples',           category: 'Fruits',     price: 240, stock: 18 },
-    { id: 5, name: 'Organic Carrots Bunch',     category: 'Vegetables', price: 70,  stock: 0  },
-    { id: 6, name: 'Fresh Strawberries Box',    category: 'Fruits',     price: 450, stock: 8  }
-  ];
+  <script>
+    const toast = document.getElementById('toast');
+    let dynamicPendingFulfillmentCounter = 14;
 
-  function getCart()   { return JSON.parse(localStorage.getItem('bazaarCart')   || '[]'); }
-  function getOrders() { return JSON.parse(localStorage.getItem('bazaarOrders') || '[]'); }
+    function dispatchConsignment(buttonSelectorRef, orderCodeToken) {
+      const parentTableRowNode = buttonSelectorRef.closest('tr');
+      const statusCapsuleContainer = parentTableRowNode.querySelector('.badge-status-capsule');
+      
+      statusCapsuleContainer.className = "badge-status-capsule success";
+      statusCapsuleContainer.innerText = "Dispatched";
+      
+      buttonSelectorRef.disabled = true;
+      buttonSelectorRef.style.opacity = "0.5";
+      buttonSelectorRef.style.cursor = "not-allowed";
+      buttonSelectorRef.innerText = "Archive";
 
-  function updateNavBadge() {
-    const total = getCart().reduce((s, i) => s + i.qty, 0);
-    const badge = document.getElementById('nav-cart-count');
-    if (!badge) return;
-    badge.textContent = total;
-    badge.style.display = total > 0 ? 'flex' : 'none';
-  }
+      if (dynamicPendingFulfillmentCounter > 0) {
+        dynamicPendingFulfillmentCounter--;
+        document.getElementById('pendingCounter').innerText = dynamicPendingFulfillmentCounter;
+      }
 
-  /* ── FIX 5: Inline toast replaces every alert() ── */
-  let _toastTimer = null;
-  function showToast(msg) {
-    const el  = document.getElementById('admin-toast');
-    const txt = document.getElementById('admin-toast-msg');
-    txt.textContent = msg;
-    el.classList.add('visible');
-    clearTimeout(_toastTimer);
-    _toastTimer = setTimeout(() => el.classList.remove('visible'), 3000);
-  }
-
-  function switchTab(tabName) {
-    const isOrders = tabName === 'orders';
-    document.getElementById('btn-tab-orders').classList.toggle('active', isOrders);
-    document.getElementById('btn-tab-stock').classList.toggle('active', !isOrders);
-    document.getElementById('tab-orders-content').classList.toggle('hidden', !isOrders);
-    document.getElementById('tab-stock-content').classList.toggle('hidden', isOrders);
-  }
-
-  function calculateDashboardStats() {
-    const orders  = getOrders();
-    const revenue = orders.reduce((sum, o) => sum + o.aggregateValue, 0);
-    document.getElementById('stats-revenue').textContent = `৳${revenue.toLocaleString()}`;
-    document.getElementById('stats-count').textContent   = orders.length;
-  }
-
-  function renderAdminOrders() {
-    const orders = getOrders();
-    const tbody  = document.getElementById('admin-orders-rows');
-    const msg    = document.getElementById('no-orders-msg');
-
-    if (orders.length === 0) {
-      tbody.innerHTML = '';
-      msg.classList.remove('hidden');
-      return;
+      triggerToastAlert(`Consignment manifest #${orderCodeToken} transferred to active courier lines.`);
     }
-    msg.classList.add('hidden');
 
-    tbody.innerHTML = orders.map(order => {
-      const itemsList = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
-      return `
-        <tr class="hover:bg-stone-50/50">
-          <td class="p-4 font-mono font-bold text-xs text-[#252422]">${order.id}</td>
-          <td class="p-4 text-stone-500 text-xs">${order.timestamp}</td>
-          <td class="p-4 max-w-xs truncate text-stone-600 font-medium" title="${itemsList}">${itemsList}</td>
-          <td class="p-4 font-bold text-[#EB5E28]">৳${order.aggregateValue.toLocaleString()}</td>
-          <td class="p-4 text-right">
-            <select class="admin-select" onchange="updateOrderStatus('${order.id}', this.value)">
-              <option value="Packing Fresh Items"  ${['Awaiting Dispatch Approval','Packing Fresh Items'].includes(order.status) ? 'selected' : ''}>Packing Items</option>
-              <option value="Out for Delivery"     ${order.status === 'Out for Delivery'  ? 'selected' : ''}>Out for Delivery</option>
-              <option value="Delivered Safely"     ${order.status === 'Delivered Safely'  ? 'selected' : ''}>Delivered</option>
-            </select>
-          </td>
-        </tr>
-      `;
-    }).join('');
-  }
+    function executeInventorySync(event) {
+      event.preventDefault();
+      const productElementSelection = document.getElementById('targetProduct').value;
+      const parsedPriceMetric = document.getElementById('updatedPrice').value;
 
-  function updateOrderStatus(orderId, newStatus) {
-    let orders = getOrders().map(o => {
-      if (o.id === orderId) o.status = newStatus;
-      return o;
-    });
-    localStorage.setItem('bazaarOrders', JSON.stringify(orders));
-    showToast(`Status updated — ${newStatus}`);
-  }
+      triggerToastAlert(`System Core Matrix Updated: ${productElementSelection} set to ৳${parsedPriceMetric}/kg.`);
+      event.target.reset();
+    }
 
-  function renderAdminStock() {
-    document.getElementById('admin-stock-rows').innerHTML = MOCK_PRODUCTS.map(p => `
-      <tr class="hover:bg-stone-50/50">
-        <td class="p-4 font-bold text-[#252422]">${p.name}</td>
-        <td class="p-4 text-xs font-semibold text-stone-400 uppercase tracking-wide">${p.category}</td>
-        <td class="p-4">
-          <input type="number" class="form-input" id="price-${p.id}" value="${p.price}" />
-        </td>
-        <td class="p-4 text-center">
-          <input type="number" class="form-input" id="stock-${p.id}" value="${p.stock}" />
-        </td>
-        <td class="p-4 text-right">
-          <button class="text-xs font-bold text-white bg-[#252422] hover:bg-[#403D39] px-3 py-1.5 rounded transition-colors"
-                  onclick="saveProductEdits(${p.id})">
-            Update
-          </button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  function saveProductEdits(productId) {
-    const newPrice = parseInt(document.getElementById(`price-${productId}`).value);
-    const newStock = parseInt(document.getElementById(`stock-${productId}`).value);
-
-    MOCK_PRODUCTS = MOCK_PRODUCTS.map(p => {
-      if (p.id === productId) { p.price = newPrice; p.stock = newStock; }
-      return p;
-    });
-
-    showToast('Product updated');
-    renderAdminStock();
-  }
-
-  updateNavBadge();
-  calculateDashboardStats();
-  renderAdminOrders();
-  renderAdminStock();
-</script>
+    function triggerToastAlert(msg) {
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
+  </script>
 </body>
 </html>

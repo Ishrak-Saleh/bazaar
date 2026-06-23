@@ -1,371 +1,731 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout — Bazaar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Checkout - Bazaar</title>
   
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght=400;600;700;800&display=swap');
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Sora:wght=600;700;800&display=swap" rel="stylesheet">
 
+  <style>
     :root {
-      --clr-canvas: #FFFCF2;
-      --clr-surface: #FFFFFF;
-      --clr-border: #CCC5B9;
-      --clr-ink-muted: #403D39;
-      --clr-ink-main: #252422;
-      --clr-brand: #EB5E28;
+      /* Integrated "Rustic Charm" Color Palette Matrix from index.html */
+      --clr-canvas: #FFFCF2;       /* Warm Cream Workspace Background */
+      --clr-surface: #FFFFFF;      /* Clean White Card Sheets */
+      --clr-border: #CCC5B9;       /* Stone Grey Border Lines */
+      --clr-ink-muted: #403D39;    /* Dark Charcoal Secondary Typography */
+      --clr-ink-main: #252422;     /* Near Black Primary Typography */
+      --clr-brand: #EB5E28;        /* Vibrant Rust Signature Brand Accent */
       --clr-brand-hover: #D44D1B;
+      
+      --clr-success: #10B981;
+      --clr-success-bg: #E6F4EA;
+
       --font-display: 'Sora', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
+      
       --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Reset & Base System */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background-color: var(--clr-canvas);
       color: var(--clr-ink-main);
       font-family: var(--font-body);
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
     }
 
-    .global-center-wrapper {
-      max-width: 1280px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      width: 100% !important;
+    h1, h2, h3, h4, .logo {
+      font-family: var(--font-display);
+      color: var(--clr-ink-main);
     }
 
-    .nav-corporate {
-      background-color: rgba(255, 252, 242, 0.95);
-      backdrop-filter: blur(12px);
+    /* Top Utility Header (Exact Sync with index.html) */
+    .site-header {
+      background-color: var(--clr-surface);
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--clr-brand);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--clr-ink-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: background-color 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth);
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      background-color: rgba(235, 94, 40, 0.08);
+      color: var(--clr-brand);
+    }
+
+    .cart-badge-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background-color: var(--clr-brand);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Core Split Screen Checkout Architecture Layout */
+    .checkout-layout-grid {
+      max-width: 1400px;
+      margin: 3.5rem auto 6rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    .checkout-section-headline {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 1.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(204, 197, 185, 0.3);
+    }
+
+    /* Left Side Form Sheet System */
+    .checkout-form-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .form-card-sheet {
+      background-color: var(--clr-surface);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(204, 197, 185, 0.4);
+    }
+
+    .form-inputs-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-inputs-row.full-width {
+      grid-template-columns: 1fr;
+    }
+
+    .input-field-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .input-field-wrapper label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--clr-ink-muted);
+    }
+
+    .input-field-wrapper input,
+    .input-field-wrapper select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--clr-border);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      background-color: var(--clr-canvas);
+      transition: border-color 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth), background-color 0.2s;
+    }
+
+    .input-field-wrapper input:focus,
+    .input-field-wrapper select:focus {
+      border-color: var(--clr-brand);
+      box-shadow: 0 0 0 3px rgba(235, 94, 40, 0.12);
+      background-color: var(--clr-surface);
+    }
+
+    /* Custom Radio Matrix Options for Payments */
+    .payment-method-matrix {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .payment-option-node {
+      border: 1px solid var(--clr-border);
+      background-color: var(--clr-canvas);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+    }
+
+    .payment-option-node:hover {
+      border-color: var(--clr-brand);
+      background-color: var(--clr-surface);
+    }
+
+    .payment-option-node input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--clr-border);
+      border-radius: 50%;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .payment-option-node input[type="radio"]:checked {
+      border-color: var(--clr-brand);
+    }
+
+    .payment-option-node input[type="radio"]::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background-color: var(--clr-brand);
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    .payment-option-node input[type="radio"]:checked::before {
+      transform: scale(1);
+    }
+
+    .payment-option-node.active-selection {
+      border-color: var(--clr-brand);
+      box-shadow: 0 0 0 1px var(--clr-brand);
+      background-color: var(--clr-surface);
+    }
+
+    .payment-meta-text h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+    }
+
+    .payment-meta-text p {
+      font-size: 0.8rem;
+      color: var(--clr-ink-muted);
+    }
+
+    /* Right Side Order Summary Review Column Panel */
+    .order-summary-panel {
+      position: sticky;
+      top: 6.5rem;
+    }
+
+    .summary-card-sheet {
+      background-color: var(--clr-surface);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .summary-card-sheet:hover {
+      border-color: #ff7a00;
+      box-shadow: 0 8px 20px rgba(255, 122, 0, 0.1);
+    }
+
+    .summary-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px dashed rgba(204, 197, 185, 0.5);
+    }
+
+    .summary-item-details h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .summary-item-details p {
+      font-size: 0.8rem;
+      color: var(--clr-ink-muted);
+    }
+
+    .summary-item-price {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    /* Detailed Breakdown Costs Blocks */
+    .cost-calculation-stack {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--clr-border);
     }
-    .nav-link {
-      color: var(--clr-ink-muted);
-      font-size: 0.875rem;
-      font-weight: 600;
-      transition: color 0.2s var(--ease-smooth);
-    }
-    .nav-link:hover { color: var(--clr-brand); }
 
-    /* FORM INPUT NODES */
-    .form-input {
-      background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 999px;
-      padding: 0.75rem 1.5rem;
-      font-size: 0.875rem;
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--clr-ink-muted);
+    }
+
+    .calc-row.grand-total-row {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
       color: var(--clr-ink-main);
-      outline: none;
-      transition: all 0.2s var(--ease-smooth);
-      width: 100%;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    }
-    .form-input:focus {
-      border-color: var(--clr-brand);
-      box-shadow: 0 0 0 3px rgba(235, 94, 40, 0.11);
-    }
-    .form-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--clr-ink-muted);
-      margin-bottom: 0.5rem;
+      margin-top: 0.5rem;
     }
 
-    /* PAYMENT METHOD CARD RADIO SELECTORS */
-    .payment-option {
-      border: 1px solid var(--clr-border);
-      border-radius: 16px;
-      padding: 1.25rem;
-      background-color: var(--clr-surface);
+    .checkout-submit-cta {
+      width: 100%;
+      background-color: var(--clr-brand);
+      color: var(--clr-surface);
+      border: none;
+      padding: 0.95rem 1.5rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 30px;
       cursor: pointer;
       display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      transition: all 0.2s var(--ease-smooth);
-    }
-    .payment-option:hover {
-      border-color: var(--clr-brand);
-      box-shadow: 0 4px 12px rgba(37,36,34,0.04);
-    }
-
-    .btn-primary {
-      background-color: var(--clr-brand);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 999px;
-      padding: 0.85rem 1.5rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.2s var(--ease-smooth);
-      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      margin-top: 2rem;
+      transition: background-color 0.2s var(--ease-smooth);
     }
-    .btn-primary:hover { background-color: var(--clr-brand-hover); }
+
+    .checkout-submit-cta:hover {
+      background-color: var(--clr-brand-hover);
+    }
+
+    /* Footer Design (Exact Sync with index.html) */
+    .site-footer {
+      background-color: var(--clr-ink-main);
+      color: #F4F2EE;
+      padding: 5rem 2rem 2rem;
+      margin-top: 6rem;
+      border-top: 4px solid var(--clr-brand);
+    }
+
+    .footer-grid-wrapper {
+      max-width: 1680px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 4rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-brand-column p {
+      color: #CCC5B9;
+      margin-top: 1rem;
+      max-width: 320px;
+      font-size: 0.9rem;
+    }
+
+    .footer-column-headline {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--clr-surface);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+    }
+
+    .footer-links-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links-list a {
+      color: #CCC5B9;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--clr-brand);
+    }
+
+    .footer-bottom-bar {
+      max-width: 1680px;
+      margin: 2rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom-bar p {
+      color: #CCC5B9;
+    }
+
+    /* Toast Notification System (Exact Sync with index.html) */
+    .toast-notification {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      background-color: var(--clr-surface);
+      color: var(--clr-ink-main);
+      padding: 0.65rem 1.5rem 0.65rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.1px;
+      box-shadow: 0 20px 40px -10px rgba(37, 36, 34, 0.12),
+                  0 10px 20px -5px rgba(37, 36, 34, 0.08);
+      border: 2px solid var(--clr-brand);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(1.5rem) scale(0.95);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  opacity 0.4s var(--ease-smooth);
+    }
+
+    .toast-notification.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsiveness Breakpoints */
+    @media (max-width: 992px) {
+      .checkout-layout-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .order-summary-panel { position: relative; top: 0; }
+      .footer-grid-wrapper { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .footer-grid-wrapper { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .form-inputs-row { grid-template-columns: 1fr; }
+      .checkout-layout-grid { padding: 0 1rem; margin-top: 2rem; }
+    }
   </style>
 </head>
 <body>
 
-<!-- FIX 2: Cart icon with nav-cart-count badge — was missing from this page -->
-<nav class="nav-corporate sticky top-0 z-50">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
-        Bazaar<span style="color: var(--clr-brand);">.</span>
-      </span>
-    </a>
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="logo">Bazaar<span>.</span></a>
+      <div class="nav-actions">
+        <a href="orders.html" class="nav-icon-btn" title="Order History" aria-label="Order History" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </a>
+        
+        <a href="cart.html" class="nav-icon-btn" title="Shopping Cart" aria-label="Shopping Cart" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <span class="cart-badge-count" id="cartCounter">3</span>
+        </a>
+        
+        <a href="profile.html" class="nav-icon-btn" title="User Profile" aria-label="User Profile" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </a>
+      </div>
+    </nav>
+  </header>
 
-    <div class="flex items-center gap-6">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="orders.html" class="nav-link">My Orders</a>
-      <a href="profile.html" class="nav-link">Profile</a>
-    </div>
+  <main class="checkout-layout-grid">
+    
+    <section class="checkout-form-panel">
+      
+      <form id="checkoutForm" onsubmit="executeCheckoutOrder(event)">
+        
+        <div class="form-card-sheet" style="margin-bottom: 2rem;">
+          <h2 class="checkout-section-headline">1. Delivery Logistics</h2>
+          
+          <div class="form-inputs-row">
+            <div class="input-field-wrapper">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" required placeholder="e.g., Ahsan">
+            </div>
+            <div class="input-field-wrapper">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" required placeholder="e.g., Habib">
+            </div>
+          </div>
 
-    <div class="flex items-center gap-4">
-      <!-- Cart icon with badge — now present on checkout page -->
-      <a href="cart.html" class="relative inline-flex p-2 bg-[#CCC5B9]/20 rounded-lg transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:1.25rem; height:1.25rem; color: var(--clr-brand);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-        <span id="nav-cart-count"
-              style="background-color: var(--clr-brand); color:#fff; font-size:0.65rem; font-weight:700; width:1.1rem; height:1.1rem; border-radius:50%; display:none; position:absolute; top:0px; right:0px; align-items:center; justify-content:center;">
-          0
-        </span>
-      </a>
-      <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
-        Admin Console
-      </a>
+          <div class="form-inputs-row">
+            <div class="input-field-wrapper">
+              <label for="custEmail">Email Address</label>
+              <input type="email" id="custEmail" required placeholder="name@domain.com">
+            </div>
+            <div class="input-field-wrapper">
+              <label for="custPhone">Phone Number</label>
+              <input type="tel" id="custPhone" required placeholder="+880 17XX-XXXXXX">
+            </div>
+          </div>
+
+          <div class="form-inputs-row full-width">
+            <div class="input-field-wrapper">
+              <label for="shippingStreet">Street Address</label>
+              <input type="text" id="shippingStreet" required placeholder="House number, road alignment, apartment node...">
+            </div>
+          </div>
+
+          <div class="form-inputs-row">
+            <div class="input-field-wrapper">
+              <label for="shippingCity">City / Division</label>
+              <select id="shippingCity" required>
+                <option value="Sylhet">Sylhet</option>
+                <option value="Dhaka">Dhaka</option>
+                <option value="Rajshahi">Rajshahi</option>
+                <option value="Chittagong">Chittagong</option>
+              </select>
+            </div>
+            <div class="input-field-wrapper">
+              <label for="postalCode">Postal Code</label>
+              <input type="text" id="postalCode" required placeholder="3100">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card-sheet">
+          <h2 class="checkout-section-headline">2. Settlement Channel</h2>
+          <div class="payment-method-matrix">
+            
+            <label class="payment-option-node active-selection" onclick="togglePaymentRadioStyle(this)">
+              <input type="radio" name="paymentOption" value="cod" checked>
+              <div class="payment-meta-text">
+                <h4>Cash On Delivery (COD)</h4>
+                <p>Settle payment using physical currency straight upon delivery confirmation.</p>
+              </div>
+            </label>
+
+            <label class="payment-option-node" onclick="togglePaymentRadioStyle(this)">
+              <input type="radio" name="paymentOption" value="bkash">
+              <div class="payment-meta-text">
+                <h4>bKash / Mobile Wallet Gateway</h4>
+                <p>Instant redirection to secure authentication systems for mobile wallets.</p>
+              </div>
+            </label>
+
+          </div>
+        </div>
+        
+      </form>
+    </section>
+
+    <section class="order-summary-panel">
+      <div class="summary-card-sheet">
+        <h2 class="checkout-section-headline" style="border-bottom: 1px solid var(--clr-border);">Order Summary</h2>
+        
+        <div class="summary-items-wrapper">
+          
+          <div class="summary-item-row">
+            <div class="summary-item-details">
+              <h4>Rajshahi Fazli Mangoes</h4>
+              <p>Quantity: 2 kg</p>
+            </div>
+            <div class="summary-item-price">৳360</div>
+          </div>
+
+          <div class="summary-item-row">
+            <div class="summary-item-details">
+              <h4>Srimangal Fresh Palong Shak</h4>
+              <p>Quantity: 1 kg</p>
+            </div>
+            <div class="summary-item-price">৳45</div>
+          </div>
+
+          <div class="summary-item-row">
+            <div class="summary-item-details">
+              <h4>Munshiganj Native Vine Tomatoes</h4>
+              <p>Quantity: 1 kg</p>
+            </div>
+            <div class="summary-item-price">৳110</div>
+          </div>
+
+        </div>
+
+        <div class="cost-calculation-stack">
+          <div class="calc-row">
+            <span>Subtotal Items</span>
+            <span>৳515</span>
+          </div>
+          <div class="calc-row">
+            <span>Standard Logistics Route</span>
+            <span>৳60</span>
+          </div>
+          <div class="calc-row grand-total-row">
+            <span>Total Payable</span>
+            <span>৳575</span>
+          </div>
+        </div>
+
+        <button type="submit" form="checkoutForm" class="checkout-submit-cta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Confirm and Authorize Order
+        </button>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid-wrapper">
+      <div class="footer-brand-column">
+        <a href="index.html" class="logo" style="color: #FFFFFF;">Bazaar<span style="color: var(--clr-brand);">.</span></a>
+        <p>Premium university engineering initiative developing highly structural e-commerce solutions natively from the ground up.</p>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Product Catalog</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="orders.html">Track Orders</a></li>
+          <li><a href="#">Privacy Framework</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Categories</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Seasonal Fruits</a></li>
+          <li><a href="#">Native Vegetables</a></li>
+          <li><a href="#">Fresh Field Greens</a></li>
+          <li><a href="#">Organic Specialties</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Contact Hub</h4>
+        <ul class="footer-links-list">
+          <li><a href="#" style="pointer-events: none;">Sylhet, Bangladesh</a></li>
+          <li><a href="mailto:support@bazaar.com">support@bazaar.com</a></li>
+          <li><a href="tel:+8801700000000">+880 1700-000000</a></li>
+        </ul>
+      </div>
     </div>
+    <div class="footer-bottom-bar">
+      <p>&copy; 2026 Bazaar Project. Built with clean software standards. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast-notification" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMessage">Order processed successfully!</span>
   </div>
-</nav>
 
-<div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 3.5rem; padding-bottom: 2rem;">
-  <span class="inline-flex items-center gap-1 text-xs font-bold text-[#EB5E28] bg-[#EB5E28]/10 px-2.5 py-1 rounded mb-3 tracking-wide uppercase">
-    Secure Checkout
-  </span>
-  <h1 style="font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; color: var(--clr-ink-main); letter-spacing: -0.02em;">
-    Checkout
-  </h1>
-</div>
+  <script>
+    const toast = document.getElementById('toast');
 
-<main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-bottom: 6rem;">
-  <form id="checkout-form" onsubmit="executeOrder(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-
-    <div class="lg:col-span-7 space-y-8">
-
-      <!-- FIX 4: Section headers are plain labels — numbered markers removed -->
-      <div class="p-6 bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] space-y-4">
-        <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);" class="border-b border-stone-100 pb-3">
-          Contact Information
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="form-label">Full Name</label>
-            <input type="text" required class="form-input" placeholder="e.g. Tanvir Ahmed" />
-          </div>
-          <div>
-            <label class="form-label">Email Address</label>
-            <input type="email" required class="form-input" placeholder="name@domain.com" />
-          </div>
-        </div>
-      </div>
-
-      <div class="p-6 bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] space-y-4">
-        <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);" class="border-b border-stone-100 pb-3">
-          Delivery Address
-        </h2>
-        <div class="space-y-4">
-          <div>
-            <label class="form-label">Street Address</label>
-            <input type="text" required class="form-input" placeholder="House, Road, Block / Sector" />
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="sm:col-span-2">
-              <label class="form-label">City</label>
-              <input type="text" required class="form-input" placeholder="Sylhet" />
-            </div>
-            <div>
-              <label class="form-label">Postal Code</label>
-              <input type="text" required class="form-input" placeholder="3100" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="p-6 bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] space-y-4">
-        <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);" class="border-b border-stone-100 pb-3">
-          Payment Method
-        </h2>
-        <div class="grid grid-cols-1 gap-3">
-          <label class="payment-option">
-            <input type="radio" name="payment-method" checked class="mt-1 accent-[#EB5E28]" />
-            <div class="text-sm">
-              <p class="font-bold text-[#252422]">Cash on Delivery</p>
-              <p class="text-xs text-stone-500 mt-0.5">Pay with cash when your order arrives.</p>
-            </div>
-          </label>
-          <label class="payment-option opacity-60 pointer-events-none">
-            <input type="radio" name="payment-method" disabled class="mt-1" />
-            <div class="text-sm">
-              <p class="font-bold text-stone-400">Card Payment — temporarily unavailable</p>
-              <p class="text-xs text-stone-400 mt-0.5">Online card payments will be back soon.</p>
-            </div>
-          </label>
-        </div>
-      </div>
-
-    </div>
-
-    <aside class="lg:col-span-5">
-      <div class="bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] p-6 sticky top-[100px]">
-        <h2 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--clr-ink-main); display: flex; align-items: center; gap: 0.5rem;">
-          <span class="w-2 h-2 rounded-full bg-[#EB5E28]"></span> Order Summary
-        </h2>
-
-        <div id="checkout-items-preview" class="divide-y divide-stone-100 max-h-[220px] overflow-y-auto mb-5 pr-2 space-y-3"></div>
-
-        <div class="space-y-3 border-t border-[#CCC5B9] pt-4 text-sm font-medium">
-          <div class="flex justify-between text-stone-600">
-            <span>Subtotal</span>
-            <span id="summary-subtotal" class="text-[#252422] font-semibold">৳0</span>
-          </div>
-          <div class="flex justify-between text-stone-600">
-            <span>Tax (5%)</span>
-            <span id="summary-tax" class="text-[#252422] font-semibold">৳0</span>
-          </div>
-          <div class="flex justify-between items-center text-stone-600">
-            <span>Shipping</span>
-            <span class="text-[#166534] font-bold text-xs bg-[#F0FDF4] px-2 py-0.5 rounded border border-[#DCFCE7]">FREE</span>
-          </div>
-          <div class="flex justify-between items-center pt-3 border-t border-[#CCC5B9] text-base font-bold" style="font-family: var(--font-display);">
-            <span class="text-[#252422]">Total</span>
-            <span id="summary-total" class="text-[#EB5E28]">৳0</span>
-          </div>
-        </div>
-
-        <div class="mt-6">
-          <button type="submit" class="btn-primary">
-            Place Order &rarr;
-          </button>
-        </div>
-      </div>
-    </aside>
-
-  </form>
-</main>
-
-<!-- FIX 6: Footer dead links (admin-products.html, admin-orders.html) → admin-dashboard.html -->
-<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
-    <div class="md:col-span-5 space-y-3">
-      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
-      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
-        Fresh organic fruits and vegetables sourced directly from local gardens to your dining table.
-      </p>
-    </div>
-    <div class="md:col-span-3 col-start-7 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Shop</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Home</a>
-        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">Cart</a>
-        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">My Orders</a>
-      </div>
-    </div>
-    <div class="md:col-span-3 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Admin</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="admin-dashboard.html" class="hover:text-[#EB5E28] transition-colors">Dashboard</a>
-      </div>
-    </div>
-  </div>
-  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
-    &copy; 2026 BAZAAR ARCHITECTURE &mdash; METROPOLITAN UNIVERSITY, SYLHET
-  </div>
-</footer>
-
-<script>
-  function getCart()   { return JSON.parse(localStorage.getItem('bazaarCart')   || '[]'); }
-  function getOrders() { return JSON.parse(localStorage.getItem('bazaarOrders') || '[]'); }
-
-  function updateNavBadge(cart) {
-    const total = cart.reduce((s, i) => s + i.qty, 0);
-    const badge = document.getElementById('nav-cart-count');
-    if (!badge) return;
-    badge.textContent = total;
-    badge.style.display = total > 0 ? 'flex' : 'none';
-  }
-
-  function renderCheckoutSummary() {
-    const cart = getCart();
-    updateNavBadge(cart);
-
-    if (cart.length === 0) {
-      alert('Your cart is empty. Returning to the shop.');
-      window.location.href = 'index.html';
-      return;
+    function togglePaymentRadioStyle(targetLabelNode) {
+      // Remove selection classes from all siblings
+      document.querySelectorAll('.payment-option-node').forEach(node => {
+        node.classList.remove('active-selection');
+      });
+      // Set highlight class on current target click node
+      targetLabelNode.classList.add('active-selection');
+      
+      const internalRadioInput = targetLabelNode.querySelector('input[type="radio"]');
+      if (internalRadioInput) {
+        internalRadioInput.checked = true;
+      }
     }
 
-    const container = document.getElementById('checkout-items-preview');
-    container.innerHTML = cart.map(item => `
-      <div class="flex items-center justify-between gap-4 py-2 text-xs">
-        <div class="flex items-center gap-3">
-          <img src="${item.image}" alt="" class="w-10 h-10 object-cover rounded border border-stone-200 bg-stone-50"
-               onerror="this.src='https://images.unsplash.com/photo-1610348725531-843dff14a9da?w=600&auto=format&fit=crop&q=80';" />
-          <div>
-            <p class="font-bold text-[#252422] max-w-[180px] truncate">${item.name}</p>
-            <p class="text-stone-400">Qty: ${item.qty}</p>
-          </div>
-        </div>
-        <span class="font-bold text-[#252422]">৳${(item.price * item.qty).toLocaleString()}</span>
-      </div>
-    `).join('');
+    function executeCheckoutOrder(event) {
+      event.preventDefault();
+      
+      // Select selected radio element route metric
+      const activeOption = document.querySelector('input[name="paymentOption"]:checked').value;
+      let runtimeMessageText = "Order created successfully! Settle on delivery.";
+      
+      if (activeOption === 'bkash') {
+        runtimeMessageText = "Redirecting to secure bKash authorization node...";
+      }
 
-    const sub   = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const tax   = Math.round(sub * 0.05);
-    const total = sub + tax;
+      triggerToastAlert(runtimeMessageText);
 
-    document.getElementById('summary-subtotal').textContent = `৳${sub.toLocaleString()}`;
-    document.getElementById('summary-tax').textContent      = `৳${tax.toLocaleString()}`;
-    document.getElementById('summary-total').textContent    = `৳${total.toLocaleString()}`;
-  }
+      // Reset cart indicator icon badge upon success
+      setTimeout(() => {
+        document.getElementById('cartCounter').innerText = "0";
+      }, 1000);
+    }
 
-  function executeOrder(event) {
-    event.preventDefault();
-
-    const cart   = getCart();
-    const orders = getOrders();
-
-    const sub   = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const tax   = Math.round(sub * 0.05);
-    const total = sub + tax;
-
-    const orderPayload = {
-      id:             'BZR-' + Math.floor(100000 + Math.random() * 900000),
-      timestamp:      new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-      status:         'Awaiting Dispatch Approval',
-      items:          cart,
-      aggregateValue: total
-    };
-
-    orders.unshift(orderPayload);
-    localStorage.setItem('bazaarOrders', JSON.stringify(orders));
-    localStorage.removeItem('bazaarCart');
-
-    window.location.href = 'orders.html';
-  }
-
-  renderCheckoutSummary();
-</script>
+    function triggerToastAlert(msg) {
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
