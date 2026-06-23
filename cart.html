@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cart — Bazaar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - Bazaar</title>
   
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght=400;600;700;800&display=swap');
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Sora:wght=600;700;800&display=swap" rel="stylesheet">
 
+  <style>
     :root {
       /* Integrated "Rustic Charm" Color Palette Matrix */
       --clr-canvas: #FFFCF2;       /* Warm Cream Workspace Background */
@@ -19,482 +20,610 @@
       --clr-brand: #EB5E28;        /* Vibrant Rust Signature Brand Accent */
       --clr-brand-hover: #D44D1B;
       
+      --clr-success: #10B981;
+      --clr-success-bg: #E6F4EA;
+      --clr-warning: #D97706;
+      --clr-warning-bg: #FEF3C7;
+
       --font-display: 'Sora', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
       
       --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    *, *::before, *::after { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
+    /* Reset & Base System */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    body { 
-      background-color: var(--clr-canvas); 
-      color: var(--clr-ink-main); 
-      font-family: var(--font-body);
-      -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
-    }
-
-    /* CRITICAL ARCHITECTURAL LAYOUT WRAPPER */
-    .global-center-wrapper {
-      max-width: 1280px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      width: 100% !important;
-    }
-
-    /* NAVIGATION BAR */
-    .nav-corporate {
-      background-color: rgba(255, 252, 242, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--clr-border);
-    }
-    .nav-link { 
-      color: var(--clr-ink-muted); 
-      font-size: 0.875rem; 
-      font-weight: 600; 
-      transition: color 0.2s var(--ease-smooth);
-    }
-    .nav-link:hover { color: var(--clr-brand); }
-
-    /* CORE GRID LAYOUT STRUCT */
-    .cart-layout {
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 2.5rem;
-      align-items: start;
-    }
-    @media (max-width: 992px) {
-      .cart-layout { grid-template-columns: 1fr; }
-    }
-
-    /* PREMIUM REFINED CART ITEM CARD */
-    .cart-item {
-      display: grid;
-      grid-template-columns: 90px 1fr auto;
-      gap: 1.5rem;
-      align-items: center;
-      padding: 1.25rem;
-      background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 12px;
-      transition: transform 0.25s var(--ease-smooth), box-shadow 0.25s var(--ease-smooth), border-color 0.25s var(--ease-smooth);
-    }
-    .cart-item:hover {
-      border-color: var(--clr-brand);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px -8px rgba(37, 36, 34, 0.08);
-    }
-    .cart-item-img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 16px;
-    }
-
-    /* INTERACTIVE QUANTITY CONTROL */
-    .qty-control {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid var(--clr-border);
-      border-radius: 6px;
+    body {
       background-color: var(--clr-canvas);
-      overflow: hidden;
-    }
-    .qty-btn {
-      background: none; 
-      border: none;
-      width: 2.2rem; 
-      height: 2rem;
-      font-size: 0.95rem; 
-      font-weight: 600;
-      cursor: pointer; 
       color: var(--clr-ink-main);
-      transition: background-color 0.15s var(--ease-smooth), color 0.15s var(--ease-smooth);
-    }
-    .qty-btn:hover { 
-      background-color: var(--clr-brand); 
-      color: #FFFFFF;
-    }
-    .qty-display {
-      min-width: 2.2rem; 
-      text-align: center;
-      font-size: 0.85rem; 
-      font-weight: 700;
-      color: var(--clr-ink-main);
-      border-left: 1px solid var(--clr-border);
-      border-right: 1px solid var(--clr-border);
-      padding: 0 0.5rem;
-      line-height: 2rem;
-      background-color: var(--clr-surface);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* REMOVE ACTION TRIGGER */
-    .btn-remove {
-      background: none; 
-      border: 1px solid var(--clr-border);
-      color: var(--clr-ink-muted); 
-      cursor: pointer;
-      font-size: 0.9rem; 
-      padding: 0.5rem;
-      border-radius: 6px;
-      transition: all 0.2s var(--ease-smooth);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-remove:hover { 
-      color: #EF4444; 
-      background-color: #FEF2F2; 
-      border-color: #FCA5A5;
+    h1, h2, h3, .logo {
+      font-family: var(--font-display);
+      color: var(--clr-ink-main);
     }
 
-    /* REFINED STICKY SUMMARY CARD */
-    .summary-card {
+    /* Top Utility Header */
+    .site-header {
       background-color: var(--clr-surface);
-      border-radius: 24px;
-      padding: 1.75rem;
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
       position: sticky;
-      top: 100px;
-      box-shadow: 0 4px 24px rgba(37,36,34,0.04);
+      top: 0;
+      z-index: 100;
     }
-    .summary-row {
+
+    .nav-container {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.875rem;
-      color: var(--clr-ink-muted);
-      font-weight: 500;
     }
-    .summary-row.total {
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--clr-brand);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--clr-ink-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: background-color 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth);
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      background-color: rgba(235, 94, 40, 0.08);
+      color: var(--clr-brand);
+    }
+
+    .cart-badge-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background-color: var(--clr-brand);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Cart Specific Layout */
+    .cart-page-header {
+      max-width: 1680px;
+      margin: 3.5rem auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .cart-page-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .cart-container {
+      max-width: 1680px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+    }
+
+    .cart-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Cart Item Card styling consistent with index.html */
+    .cart-item-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .cart-item-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(204, 197, 185, 0.6);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .cart-item-image-container {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      background-color: #F4F2EE;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cart-item-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-tag-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--clr-brand);
+      margin-bottom: 0.4rem;
+      display: inline-block;
+    }
+
+    .cart-item-title {
       font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.2px;
+      color: var(--clr-ink-main);
+      text-decoration: none;
+    }
+
+    .cart-item-price-unit {
+      font-size: 0.9rem;
+      color: var(--clr-ink-muted);
+      margin-bottom: 1rem;
+    }
+
+    .cart-item-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background-color: var(--clr-canvas);
+      padding: 0.35rem 0.5rem;
+      border-radius: 50px;
+      border: 1px solid var(--clr-border);
+    }
+
+    .qty-btn {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--clr-ink-main);
+      transition: all 0.2s var(--ease-smooth);
+    }
+
+    .qty-btn:hover {
+      border-color: var(--clr-brand);
+      color: var(--clr-brand);
+      background-color: rgba(235, 94, 40, 0.05);
+    }
+
+    .qty-value {
+      font-weight: 700;
+      font-size: 0.95rem;
+      width: 24px;
+      text-align: center;
+      font-family: var(--font-body);
+    }
+
+    .cart-item-total {
+      font-size: 1.2rem;
       font-weight: 700;
       font-family: var(--font-display);
       color: var(--clr-ink-main);
-      border-top: 1px solid var(--clr-border);
-      padding-top: 1.25rem;
-      margin-top: 1.25rem;
     }
 
-    /* COMPONENT BUTTON ARCHITECTURE */
-    .btn-primary {
-      background-color: var(--clr-brand);
-      color: #FFFFFF;
+    .remove-btn {
+      background: none;
       border: none;
-      border-radius: 999px;
-      padding: 0.75rem 1.5rem;
-      font-size: 0.875rem;
-      font-weight: 600;
+      color: #ef4444;
       cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: background-color 0.2s var(--ease-smooth);
+    }
+
+    .remove-btn:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Order Summary Panel */
+    .order-summary-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      position: sticky;
+      top: 6.5rem;
+    }
+
+    .summary-title {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
+      font-family: var(--font-display);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      color: var(--clr-ink-muted);
+      font-size: 0.95rem;
+    }
+
+    .summary-row.discount {
+      color: var(--clr-success);
+    }
+
+    .summary-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed rgba(204, 197, 185, 0.6);
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--clr-ink-main);
+      font-family: var(--font-display);
+    }
+
+    .checkout-btn {
       width: 100%;
-      transition: background-color 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
-      display: inline-flex;
+      background-color: var(--clr-brand);
+      color: var(--clr-surface);
+      border: none;
+      padding: 1rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      margin-top: 1.75rem;
+      transition: background-color 0.2s var(--ease-smooth), transform 0.2s var(--ease-smooth);
     }
-    .btn-primary:hover { 
+
+    .checkout-btn:hover {
       background-color: var(--clr-brand-hover);
+      transform: translateY(-2px);
     }
-    .btn-primary:active { transform: scale(0.99); }
 
-    .btn-ghost {
-      background: transparent;
-      color: var(--clr-ink-main);
-      border: 1px solid var(--clr-border);
-      border-radius: 999px;
-      padding: 0.75rem 1.5rem;
-      font-size: 0.875rem;
+    .continue-shopping {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--clr-ink-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
       font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.2s var(--ease-smooth);
-      display: inline-flex;
+      transition: color 0.2s var(--ease-smooth);
+    }
+
+    .continue-shopping:hover {
+      color: var(--clr-brand);
+    }
+
+    /* Footer Design */
+    .site-footer {
+      background-color: var(--clr-ink-main);
+      color: #F4F2EE;
+      padding: 5rem 2rem 2rem;
+      margin-top: 6rem;
+      border-top: 4px solid var(--clr-brand);
+    }
+
+    .footer-grid-wrapper {
+      max-width: 1680px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 4rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-brand-column p {
+      color: #CCC5B9;
+      margin-top: 1rem;
+      max-width: 320px;
+      font-size: 0.9rem;
+    }
+
+    .footer-column-headline {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--clr-surface);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+    }
+
+    .footer-links-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links-list a {
+      color: #CCC5B9;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--clr-brand);
+    }
+
+    .footer-bottom-bar {
+      max-width: 1680px;
+      margin: 2rem auto 0;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-    }
-    .btn-ghost:hover { 
-      background-color: var(--clr-canvas);
-      border-color: var(--clr-ink-muted);
+      font-size: 0.8rem;
     }
 
-    /* INPUT ARCHITECTURE */
-    .coupon-input {
-      background-color: var(--clr-canvas);
-      border: 1px solid var(--clr-border);
-      border-radius: 8px;
-      padding: 0.6rem 1rem;
-      font-size: 0.85rem;
-      color: var(--clr-ink-main);
-      outline: none;
-      transition: all 0.2s var(--ease-smooth);
-      width: 100%;
-    }
-    .coupon-input:focus {
-      border-color: var(--clr-brand);
-      background-color: var(--clr-surface);
-      box-shadow: 0 0 0 3px rgba(235, 94, 40, 0.11);
+    .footer-bottom-bar p {
+      color: #CCC5B9;
     }
 
-    /* EMPTY DIRECTORY STATE */
-    #empty-cart { display: none; }
+    /* Responsiveness Breakpoints */
+    @media (max-width: 1100px) {
+      .cart-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .order-summary-card { position: static; }
+      .footer-grid-wrapper { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .cart-item-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .cart-item-image-container { width: 100%; height: 200px; }
+      .cart-item-actions { width: 100%; }
+      .footer-grid-wrapper { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .nav-container, .cart-container, .cart-page-header { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
 
-<nav class="nav-corporate sticky top-0 z-50">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
-        Bazaar<span style="color: var(--clr-brand);">.</span>
-      </span>
-    </a>
-    
-    <div class="flex items-center gap-6">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="orders.html" class="nav-link">My Orders</a>
-      <a href="profile.html" class="nav-link">Profile</a>
-    </div>
-
-    <div class="flex items-center gap-4">
-      <a href="cart.html" class="nav-link text-[#EB5E28]">Cart</a>
-      
-      <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
-        Admin
-      </a>
-      
-      <a href="auth.html" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.825rem; width: auto;">
-        Sign In
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 3.5rem; padding-bottom: 1.5rem;">
-  <span class="inline-flex items-center gap-1 text-xs font-bold text-[#EB5E28] bg-[#EB5E28]/10 px-2.5 py-1 rounded mb-3 tracking-wide uppercase">
-    Your Shopping Cart
-  </span>
-  <h1 style="font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; color: var(--clr-ink-main); letter-spacing: -0.02em;">
-    Your Cart
-  </h1>
-  <p id="item-count-label" style="color: var(--clr-ink-muted); font-size: 0.875rem; font-weight: 500; margin-top: 0.35rem;"></p>
-</div>
-
-<main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-bottom: 6rem;">
-
-  <div id="empty-cart" class="text-center py-16 border border-dashed border-[#CCC5B9] bg-white rounded-[24px] max-w-md mx-auto">
-    <div class="mb-4 flex justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CCC5B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-    </div>
-    <p style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);">Your Cart is Empty</p>
-    <p class="text-xs text-stone-400 mt-1 mb-5">Looks like you haven't added any products to your cart yet.</p>
-    <a href="index.html" class="btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.825rem; width: auto; display: inline-flex;">
-      ← Continue Shopping
-    </a>
-  </div>
-
-  <div id="cart-content" class="cart-layout">
-
-    <div>
-      <div id="cart-items-list" style="display: flex; flex-direction: column; gap: 1rem;">
-        </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; border-top: 1px dashed var(--clr-border); padding-top: 1.5rem;">
-        <a href="index.html" style="color: var(--clr-ink-muted); font-size: 0.875rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--clr-brand)'" onmouseout="this.style.color='var(--clr-ink-muted)'">
-          ← Continue Shopping
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="#" class="logo">Bazaar<span>.</span></a>
+      <div class="nav-actions">
+        <a href="orders.html" class="nav-icon-btn" title="Order History" aria-label="Order History" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </a>
-        <button onclick="clearCart()" style="background: none; border: none; cursor: pointer; color: var(--clr-ink-muted); font-size: 0.875rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; transition: color 0.2s;" onmouseover="this.style.color='#EF4444'" onmouseout="this.style.color='var(--clr-ink-muted)'">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-          Clear Cart
+        
+        <a href="cart.html" class="nav-icon-btn" title="Shopping Cart" aria-label="Shopping Cart" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <span class="cart-badge-count" id="cartCounter">2</span>
+        </a>
+        
+        <a href="profile.html" class="nav-icon-btn" title="User Profile" aria-label="User Profile" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="cart-page-header">
+    <h1 class="cart-page-title">
+      Your Shopping Cart
+    </h1>
+  </div>
+
+  <main class="cart-container">
+    <div class="cart-grid">
+      
+      <!-- Cart Items Section -->
+      <div class="cart-items-list">
+        
+        <!-- Cart Item 1: Rajshahi Fazli Mangoes -->
+        <article class="cart-item-card">
+          <div class="cart-item-image-container">
+            <img src="images/Rajshahi Premium Fazli Mangoes.jpeg" alt="Rajshahi Fazli Mangoes" class="cart-item-image">
+          </div>
+          <div class="cart-item-details">
+            <span class="product-tag-category">fruits</span>
+            <a href="product-detail.html" class="cart-item-title">Rajshahi Fazli Mangoes</a>
+            <div class="cart-item-price-unit">৳180 / kg</div>
+            
+            <div class="cart-item-actions">
+              <div class="quantity-controls">
+                <button class="qty-btn" aria-label="Decrease quantity">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <span class="qty-value">2</span>
+                <button class="qty-btn" aria-label="Increase quantity">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+              </div>
+              <div style="display: flex; align-items: center;">
+                <span class="cart-item-total">৳360</span>
+                <button class="remove-btn" title="Remove item" aria-label="Remove item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Cart Item 2: Narsingdi Sagar Bananas -->
+        <article class="cart-item-card">
+          <div class="cart-item-image-container">
+            <img src="images/Narsingdi Sagar Bananas.jpg" alt="Narsingdi Sagar Bananas" class="cart-item-image">
+          </div>
+          <div class="cart-item-details">
+            <span class="product-tag-category">fruits</span>
+            <a href="product-detail.html" class="cart-item-title">Narsingdi Sagar Bananas</a>
+            <div class="cart-item-price-unit">৳90 / kg</div>
+            
+            <div class="cart-item-actions">
+              <div class="quantity-controls">
+                <button class="qty-btn" aria-label="Decrease quantity">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <span class="qty-value">1</span>
+                <button class="qty-btn" aria-label="Increase quantity">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+              </div>
+              <div style="display: flex; align-items: center;">
+                <span class="cart-item-total">৳90</span>
+                <button class="remove-btn" title="Remove item" aria-label="Remove item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Order Summary Section -->
+      <aside class="order-summary-card">
+        <h2 class="summary-title">Order Summary</h2>
+        
+        <div class="summary-row">
+          <span>Subtotal (3 items)</span>
+          <span>৳450</span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery</span>
+          <span>৳50</span>
+        </div>
+        <div class="summary-row discount">
+          <span>Promotional Discount</span>
+          <span>- ৳0</span>
+        </div>
+
+        <div class="summary-total-row">
+          <span>Total</span>
+          <span>৳500</span>
+        </div>
+
+        <button class="checkout-btn">
+          Proceed to Checkout
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
+
+        <a href="index.html" class="continue-shopping">Continue Shopping</a>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid-wrapper">
+      <div class="footer-brand-column">
+        <a href="index.html" class="logo" style="color: #FFFFFF;">Bazaar<span style="color: var(--clr-brand);">.</span></a>
+        <p>Premium university engineering initiative developing highly structural e-commerce solutions natively from the ground up.</p>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Product Catalog</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Track Orders</a></li>
+          <li><a href="#">Privacy Framework</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Categories</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Seasonal Fruits</a></li>
+          <li><a href="#">Native Vegetables</a></li>
+          <li><a href="#">Fresh Field Greens</a></li>
+          <li><a href="#">Organic Specialties</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Contact Hub</h4>
+        <ul class="footer-links-list">
+          <li><a href="#" style="pointer-events: none;">Sylhet, Bangladesh</a></li>
+          <li><a href="mailto:support@bazaar.com">support@bazaar.com</a></li>
+          <li><a href="tel:+8801700000000">+880 1700-000000</a></li>
+        </ul>
       </div>
     </div>
-
-    <aside>
-      <div class="summary-card">
-        <h2 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--clr-ink-main); display: flex; align-items: center; gap: 0.5rem;">
-          <span class="w-2 h-2 rounded-full bg-[#EB5E28]"></span> Order Summary
-        </h2>
-
-        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span id="summary-subtotal" style="color: var(--clr-ink-main); font-weight: 600;">৳0</span>
-          </div>
-          <div class="summary-row">
-            <span>Shipping</span>
-            <span style="color: #166534; font-weight: 700; background-color: #F0FDF4; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.75rem; border: 1px solid #DCFCE7;">FREE</span>
-          </div>
-          <div class="summary-row">
-            <span>Taxes (5%)</span>
-            <span id="summary-tax" style="color: var(--clr-ink-main); font-weight: 600;">৳0</span>
-          </div>
-          <div class="summary-row total">
-            <span>Total</span>
-            <span id="summary-total" style="color: var(--clr-brand);">৳0</span>
-          </div>
-        </div>
-
-        <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--clr-border);">
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="text" placeholder="Enter promo code" class="coupon-input" />
-            <button class="btn-ghost" style="width: auto; padding: 0 1rem; font-size: 0.8rem; background-color: var(--clr-ink-main); color: #FFFFFF;">
-              Apply
-            </button>
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <a href="checkout.html" style="display: block;">
-            <button class="btn-primary">Proceed to Checkout →</button>
-          </a>
-          <a href="index.html" style="display: block;">
-            <button class="btn-ghost">Continue Shopping</button>
-          </a>
-        </div>
-
-        <p style="font-size: 0.72rem; color: var(--clr-ink-muted); font-weight: 500; text-align: center; margin-top: 1.25rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          Secure Checkout
-        </p>
-      </div>
-    </aside>
-  </div>
-</main>
-
-<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
-    
-    <div class="md:col-span-5 space-y-3">
-      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
-      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
-        Your trusted local market for fresh, organic, and ethically sourced produce.
-      </p>
+    <div class="footer-bottom-bar">
+      <p>&copy; 2026 Bazaar Project. Built with clean software standards. All rights reserved.</p>
     </div>
+  </footer>
 
-    <div class="md:col-span-3 col-start-7 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Shop</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Home</a>
-        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors text-[#EB5E28]">Cart</a>
-        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">My Orders</a>
-      </div>
-    </div>
-
-    <div class="md:col-span-3 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Admin</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="admin-dashboard.html" class="hover:text-[#EB5E28] transition-colors">Dashboard</a>
-        <a href="admin-products.html" class="hover:text-[#EB5E28] transition-colors">Products</a>
-        <a href="admin-orders.html" class="hover:text-[#EB5E28] transition-colors">Orders</a>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
-    &copy; 2026 Bazaar &mdash; Metropolitan University, Sylhet
-  </div>
-</footer>
-
-<script>
-  function getCart() { return JSON.parse(localStorage.getItem('bazaarCart') || '[]'); }
-  function saveCart(c) { localStorage.setItem('bazaarCart', JSON.stringify(c)); render(); }
-
-  function updateNavBadge(cart) {
-    const total = cart.reduce((s, i) => s + i.qty, 0);
-    const badge = document.getElementById('nav-cart-count');
-    if (!badge) return;
-    badge.textContent = total;
-    badge.style.display = total > 0 ? 'flex' : 'none';
-  }
-
-  function updateQty(id, delta) {
-    const cart = getCart();
-    const item = cart.find(i => i.id === id);
-    if (!item) return;
-    item.qty = Math.max(1, item.qty + delta);
-    saveCart(cart);
-  }
-
-  function removeItem(id) {
-    const cart = getCart().filter(i => i.id !== id);
-    saveCart(cart);
-  }
-
-  function clearCart() {
-    if (!confirm('Are you sure you want to clear your cart?')) return;
-    saveCart([]);
-  }
-
-  function calcTotals(cart) {
-    const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const tax  = Math.round(sub * 0.05);
-    const total = sub + tax;
-    return { sub, tax, total };
-  }
-
-  function render() {
-    const cart = getCart();
-    updateNavBadge(cart);
-
-    const isEmpty = cart.length === 0;
-    document.getElementById('empty-cart').style.display   = isEmpty ? 'block' : 'none';
-    document.getElementById('cart-content').style.display = isEmpty ? 'none'  : 'grid';
-
-    if (isEmpty) return;
-
-    // Item processing status counter
-    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-    document.getElementById('item-count-label').textContent =
-      `${totalQty} item${totalQty !== 1 ? 's' : ''} in your cart`;
-
-    // Dynamic line item template generation
-    document.getElementById('cart-items-list').innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <img class="cart-item-img"
-             src="${item.image}"
-             alt="${item.name}"
-             onerror="this.src='https://images.unsplash.com/photo-1610348725531-843dff14a9da?w=600&auto=format&fit=crop&q=80';" />
-
-        <div>
-          <p style="font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: var(--clr-ink-main); margin-bottom: 0.25rem;">
-            ${item.name}
-          </p>
-          <p style="font-size: 0.825rem; font-weight: 600; color: var(--clr-brand); margin-bottom: 0.75rem;">
-            ৳${item.price.toLocaleString()} each
-          </p>
-          <div class="qty-control">
-            <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
-            <span class="qty-display">${item.qty}</span>
-            <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
-          </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem;">
-          <span style="font-size: 1.1rem; font-family: var(--font-display); font-weight: 700; color: var(--clr-ink-main);">
-            ৳${(item.price * item.qty).toLocaleString()}
-          </span>
-          <button class="btn-remove" onclick="removeItem(${item.id})" title="Remove from cart">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-          </button>
-        </div>
-      </div>
-    `).join('');
-
-    // Dynamic aggregation updating
-    const { sub, tax, total } = calcTotals(cart);
-    document.getElementById('summary-subtotal').textContent = `৳${sub.toLocaleString()}`;
-    document.getElementById('summary-tax').textContent      = `৳${tax.toLocaleString()}`;
-    document.getElementById('summary-total').textContent    = `৳${total.toLocaleString()}`;
-  }
-
-  // Runtime Initializing
-  render();
-</script>
 </body>
 </html>
