@@ -156,7 +156,7 @@
       gap: 1.25rem;
     }
 
-    /* Cart Item Card styling consistent with index.html */
+    /* Cart Item Card styling strictly consistent with index.html product card design */
     .cart-item-card {
       background: #ffffff;
       border-radius: 12px;
@@ -165,14 +165,15 @@
       align-items: center;
       gap: 1.5rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
-      border: 2px solid transparent;
+      border: 2px solid transparent; /* Prevents layout shifting */
       transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
+    /* Vibrant Orange Accent on Hover to match index.html exactly */
     .cart-item-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(204, 197, 185, 0.6);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+      border-color: #ff7a00; 
+      box-shadow: 0 8px 20px rgba(255, 122, 0, 0.12);
     }
 
     .cart-item-image-container {
@@ -188,6 +189,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.5s var(--ease-smooth);
+    }
+
+    .cart-item-card:hover .cart-item-image {
+      transform: scale(1.05);
     }
 
     .cart-item-details {
@@ -462,13 +468,13 @@
 
   <header class="site-header">
     <nav class="nav-container">
-      <a href="#" class="logo">Bazaar<span>.</span></a>
+      <a href="index.html" class="logo">Bazaar<span>.</span></a>
       <div class="nav-actions">
         <a href="orders.html" class="nav-icon-btn" title="Order History" aria-label="Order History" style="text-decoration: none;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </a>
         
-        <a href="cart.html" class="nav-icon-btn" title="Shopping Cart" aria-label="Shopping Cart" style="text-decoration: none;">
+        <a href="cart.html" class="nav-icon-btn" title="Shopping Cart" aria-label="Shopping Cart" style="text-decoration: none; color: var(--clr-brand); background-color: rgba(235, 94, 40, 0.08);">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
           <span class="cart-badge-count" id="cartCounter">2</span>
         </a>

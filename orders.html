@@ -1,314 +1,638 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Orders — Bazaar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History - Bazaar</title>
   
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght=400;600;700;800&display=swap');
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Sora:wght=600;700;800&display=swap" rel="stylesheet">
 
+  <style>
     :root {
-      --clr-canvas: #FFFCF2;
-      --clr-surface: #FFFFFF;
-      --clr-border: #CCC5B9;
-      --clr-ink-muted: #403D39;
-      --clr-ink-main: #252422;
-      --clr-brand: #EB5E28;
+      /* Integrated "Rustic Charm" Color Palette Matrix */
+      --clr-canvas: #FFFCF2;       /* Warm Cream Workspace Background */
+      --clr-surface: #FFFFFF;      /* Clean White Card Sheets */
+      --clr-border: #CCC5B9;       /* Stone Grey Border Lines */
+      --clr-ink-muted: #403D39;    /* Dark Charcoal Secondary Typography */
+      --clr-ink-main: #252422;     /* Near Black Primary Typography */
+      --clr-brand: #EB5E28;        /* Vibrant Rust Signature Brand Accent */
       --clr-brand-hover: #D44D1B;
+      
+      --clr-success: #10B981;
+      --clr-success-bg: #E6F4EA;
+      --clr-warning: #D97706;
+      --clr-warning-bg: #FEF3C7;
+      --clr-info: #3B82F6;
+      --clr-info-bg: #DBEAFE;
+
       --font-display: 'Sora', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
+      
       --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Reset & Base System */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background-color: var(--clr-canvas);
       color: var(--clr-ink-main);
       font-family: var(--font-body);
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
     }
 
-    .global-center-wrapper {
-      max-width: 1280px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      width: 100% !important;
+    h1, h2, h3, h4, .logo {
+      font-family: var(--font-display);
+      color: var(--clr-ink-main);
     }
 
-    .nav-corporate {
-      background-color: rgba(255, 252, 242, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--clr-border);
-    }
-    .nav-link {
-      color: var(--clr-ink-muted);
-      font-size: 0.875rem;
-      font-weight: 600;
-      transition: color 0.2s var(--ease-smooth);
-    }
-    .nav-link:hover { color: var(--clr-brand); }
-    .nav-link.active { color: var(--clr-brand); }
-
-    .order-card {
+    /* Top Utility Header */
+    .site-header {
       background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: box-shadow 0.2s var(--ease-smooth);
-    }
-    .order-card:hover {
-      box-shadow: 0 4px 20px -4px rgba(37, 36, 34, 0.08);
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .btn-primary {
-      background-color: var(--clr-brand);
-      color: #FFFFFF;
+    .nav-container {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--clr-brand);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-icon-btn {
+      background: none;
       border: none;
-      border-radius: 8px;
-      padding: 0.75rem 1.5rem;
-      font-size: 0.875rem;
-      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s var(--ease-smooth);
-      display: inline-flex;
+      color: var(--clr-ink-main);
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-    }
-    .btn-primary:hover { background-color: var(--clr-brand-hover); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--clr-ink-main);
-      border: 1px solid var(--clr-border);
-      border-radius: 8px;
-      padding: 0.6rem 1.25rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s var(--ease-smooth);
-    }
-    .btn-ghost:hover {
-      background-color: var(--clr-canvas);
-      border-color: var(--clr-ink-muted);
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: background-color 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth);
+      position: relative;
     }
 
-    /* ── STATUS BADGE BASE ── */
-    .status-badge {
-      display: inline-flex;
+    .nav-icon-btn:hover {
+      background-color: rgba(235, 94, 40, 0.08);
+      color: var(--clr-brand);
+    }
+
+    .cart-badge-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background-color: var(--clr-brand);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
       align-items: center;
-      gap: 0.35rem;
+      justify-content: center;
+    }
+
+    /* Orders Specific Layout */
+    .orders-page-header {
+      max-width: 1680px;
+      margin: 3.5rem auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .orders-page-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .orders-container {
+      max-width: 1680px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Order Main Card Card styling consistent with index.html & cart.html */
+    .order-card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent; /* Pre-defined to prevent layout shifting */
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    /* Vibrant Orange Accent on Hover to match the design language */
+    .order-card:hover {
+      transform: translateY(-4px);
+      border-color: #ff7a00; 
+      box-shadow: 0 8px 20px rgba(255, 122, 0, 0.12);
+    }
+
+    /* Order Header Row */
+    .order-header {
+      background-color: #ff7a00;
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.8); /* <-- Changed to clean, readable semi-transparent white */
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #FFFFFF; /* <-- Changed to solid white */
+    }
+
+    .meta-value.order-id {
+      font-family: monospace;
+      color: #FFFFFF; /* <-- Changed to solid white so it doesn't clash with the orange background */
+    }
+    .order-meta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    /* Status Badges */
+    .status-pill {
       font-size: 0.75rem;
       font-weight: 700;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.5px;
     }
 
-    /* Awaiting / Packing — amber */
-    .status-packing {
-      background-color: #FEF3C7;
-      color: #D97706;
-      border: 1px solid #FCD34D;
+    .status-pill.delivered {
+      background-color: var(--clr-success-bg);
+      color: var(--clr-success);
     }
 
-    /* Out for Delivery — blue */
-    .status-transit {
-      background-color: #EFF6FF;
-      color: #2563EB;
-      border: 1px solid #BFDBFE;
+    .status-pill.processing {
+      background-color: var(--clr-info-bg);
+      color: var(--clr-info);
     }
 
-    /* Delivered — green */
-    .status-delivered {
-      background-color: #F0FDF4;
-      color: #16A34A;
-      border: 1px solid #BBF7D0;
+    /* Order Items Details Area */
+    .order-body {
+      padding: 1.75rem;
+    }
+
+    .order-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .order-item-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px dashed rgba(204, 197, 185, 0.4);
+    }
+
+    .order-item-row:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .item-thumbnail {
+      width: 70px;
+      height: 70px;
+      border-radius: 8px;
+      background-color: #F4F2EE;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .item-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .item-info-extended {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .item-title-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--clr-ink-main);
+      text-decoration: none;
+      margin-bottom: 0.2rem;
+    }
+
+    .item-name:hover {
+      color: var(--clr-brand);
+    }
+
+    .item-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--clr-brand);
+    }
+
+    .item-quantity-pricing {
+      font-size: 0.9rem;
+      color: var(--clr-ink-muted);
+    }
+
+    .item-quantity-pricing span {
+      font-weight: 600;
+      color: var(--clr-ink-main);
+    }
+
+    .order-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(204, 197, 185, 0.3);
+    }
+
+    .action-btn {
+      background-color: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      color: var(--clr-ink-main);
+      padding: 0.55rem 1.25rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s var(--ease-smooth);
+    }
+
+    .action-btn:hover {
+      border-color: var(--clr-brand);
+      color: var(--clr-brand);
+      background-color: rgba(235, 94, 40, 0.02);
+    }
+
+    .action-btn.primary-action {
+      background-color: var(--clr-brand);
+      border-color: var(--clr-brand);
+      color: var(--clr-surface);
+    }
+
+    .action-btn.primary-action:hover {
+      background-color: var(--clr-brand-hover);
+      border-color: var(--clr-brand-hover);
+      color: var(--clr-surface);
+    }
+
+    /* Footer Design */
+    .site-footer {
+      background-color: var(--clr-ink-main);
+      color: #F4F2EE;
+      padding: 5rem 2rem 2rem;
+      margin-top: 6rem;
+      border-top: 4px solid var(--clr-brand);
+    }
+
+    .footer-grid-wrapper {
+      max-width: 1680px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 4rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-brand-column p {
+      color: #CCC5B9;
+      margin-top: 1rem;
+      max-width: 320px;
+      font-size: 0.9rem;
+    }
+
+    .footer-column-headline {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--clr-surface);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+    }
+
+    .footer-links-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links-list a {
+      color: #CCC5B9;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--clr-brand);
+    }
+
+    .footer-bottom-bar {
+      max-width: 1680px;
+      margin: 2rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom-bar p {
+      color: #CCC5B9;
+    }
+
+    /* Responsiveness Breakpoints */
+    @media (max-width: 1100px) {
+      .footer-grid-wrapper { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .order-header { flex-direction: column; align-items: flex-start; }
+      .order-meta-group { gap: 1.25rem; justify-content: space-between; width: 100%; }
+      .item-info-extended { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .order-card-actions { justify-content: flex-start; flex-wrap: wrap; }
+      .footer-grid-wrapper { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .nav-container, .orders-container, .orders-page-header { padding: 1rem; }
     }
   </style>
 </head>
 <body>
 
-<nav class="nav-corporate sticky top-0 z-50">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
-        Bazaar<span style="color: var(--clr-brand);">.</span>
-      </span>
-    </a>
-
-    <div class="flex items-center gap-6">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="orders.html" class="nav-link active">My Orders</a>
-      <a href="profile.html" class="nav-link">Profile</a>
-    </div>
-
-    <div class="flex items-center gap-4">
-      <a href="cart.html" class="relative inline-flex p-2 bg-[#CCC5B9]/20 rounded-lg transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:1.25rem; height:1.25rem; color: var(--clr-brand);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-        <span id="nav-cart-count"
-              style="background-color: var(--clr-brand); color:#fff; font-size:0.65rem; font-weight:700; width:1.1rem; height:1.1rem; border-radius:50%; display:none; position:absolute; top:0px; right:0px; align-items:center; justify-content:center;">
-          0
-        </span>
-      </a>
-      <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
-        Admin Console
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 3.5rem; padding-bottom: 2rem;">
-  <span class="inline-flex items-center gap-1 text-xs font-bold text-[#EB5E28] bg-[#EB5E28]/10 px-2.5 py-1 rounded mb-3 tracking-wide uppercase">
-    Purchase History
-  </span>
-  <h1 style="font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; color: var(--clr-ink-main); letter-spacing: -0.02em;">
-    Track Your Orders
-  </h1>
-  <p style="color: var(--clr-ink-muted); font-size: 0.875rem; margin-top: 0.35rem;">
-    View status updates and details for your fresh farm selections.
-  </p>
-</div>
-
-<main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-bottom: 6rem;">
-
-  <!-- FIX 7: empty state copy is now directional, not marketing -->
-  <div id="empty-orders" class="hidden text-center py-16 border border-dashed border-[#CCC5B9] bg-white rounded-xl max-w-md mx-auto">
-    <p class="text-4xl text-stone-300 mb-2">🛒</p>
-    <p style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);">No orders yet</p>
-    <p class="text-xs text-stone-400 mt-1 mb-5">Place an order from the shop and it will appear here.</p>
-    <a href="index.html" class="btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.825rem;">
-      Go to shop
-    </a>
-  </div>
-
-  <div id="orders-list" class="space-y-6 max-w-4xl"></div>
-
-</main>
-
-<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
-    <div class="md:col-span-5 space-y-3">
-      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
-      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
-        Fresh organic fruits and vegetables sourced directly from local gardens to your dining table.
-      </p>
-    </div>
-    <div class="md:col-span-3 col-start-7 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Quick Links</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Shop Directory</a>
-        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">My Basket</a>
-        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors text-[#EB5E28]">Order Tracking</a>
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="logo">Bazaar<span>.</span></a>
+      <div class="nav-actions">
+        <a href="orders.html" class="nav-icon-btn" title="Order History" aria-label="Order History" style="text-decoration: none; color: var(--clr-brand); background-color: rgba(235, 94, 40, 0.08);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </a>
+        
+        <a href="cart.html" class="nav-icon-btn" title="Shopping Cart" aria-label="Shopping Cart" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <span class="cart-badge-count" id="cartCounter">2</span>
+        </a>
+        
+        <a href="profile.html" class="nav-icon-btn" title="User Profile" aria-label="User Profile" style="text-decoration: none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </a>
       </div>
-    </div>
+    </nav>
+  </header>
+
+  <div class="orders-page-header">
+    <h1 class="orders-page-title">Your Orders</h1>
   </div>
-  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
-    &copy; 2026 BAZAAR ARCHITECTURE &mdash; METROPOLITAN UNIVERSITY, SYLHET
-  </div>
-</footer>
 
-<script>
-  function getCart()   { return JSON.parse(localStorage.getItem('bazaarCart')   || '[]'); }
-  function getOrders() { return JSON.parse(localStorage.getItem('bazaarOrders') || '[]'); }
-
-  function updateNavBadge() {
-    const total = getCart().reduce((s, i) => s + i.qty, 0);
-    const badge = document.getElementById('nav-cart-count');
-    if (!badge) return;
-    badge.textContent = total;
-    badge.style.display = total > 0 ? 'flex' : 'none';
-  }
-
-  /* ── FIX 1: resolve badge class + dot color from status string ── */
-  function getBadgeConfig(status) {
-    switch (status) {
-      case 'Out for Delivery':
-        return { cls: 'status-transit',    dot: '#2563EB', label: 'Out for Delivery' };
-      case 'Delivered Safely':
-        return { cls: 'status-delivered',  dot: '#16A34A', label: 'Delivered'         };
-      default:
-        /* covers 'Awaiting Dispatch Approval' and 'Packing Fresh Items' */
-        return { cls: 'status-packing',    dot: '#D97706', label: 'Packing Items'     };
-    }
-  }
-
-  function renderOrders() {
-    updateNavBadge();
-    const orders   = getOrders();
-    const emptyView = document.getElementById('empty-orders');
-    const listView  = document.getElementById('orders-list');
-
-    if (orders.length === 0) {
-      emptyView.classList.remove('hidden');
-      listView.classList.add('hidden');
-      return;
-    }
-
-    emptyView.classList.add('hidden');
-    listView.classList.remove('hidden');
-
-    listView.innerHTML = orders.map(order => {
-      const badge = getBadgeConfig(order.status);
-      const isPulse = badge.cls === 'status-packing' || badge.cls === 'status-transit';
-
-      return `
-        <div class="order-card">
-          <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-100 pb-4 mb-4">
-            <div class="space-y-1">
-              <p class="text-xs text-stone-400 font-medium">Order Number</p>
-              <p class="font-bold text-sm text-[#252422]">${order.id}</p>
-            </div>
-            <div class="space-y-1">
-              <p class="text-xs text-stone-400 font-medium">Date Placed</p>
-              <p class="text-sm font-semibold text-[#403D39]">${order.timestamp}</p>
-            </div>
-            <div class="space-y-1">
-              <p class="text-xs text-stone-400 font-medium">Total Price</p>
-              <p class="text-sm font-bold text-[#EB5E28]">৳${order.aggregateValue.toLocaleString()}</p>
-            </div>
-            <div>
-              <span class="status-badge ${badge.cls}">
-                <span style="width:0.375rem; height:0.375rem; border-radius:50%; background-color:${badge.dot}; display:inline-block; ${isPulse ? 'animation: pulse 1.5s cubic-bezier(0.4,0,0.6,1) infinite;' : ''}"></span>
-                ${badge.label}
-              </span>
-            </div>
+  <main class="orders-container">
+    
+    <!-- Order 1: Processing -->
+    <section class="order-card">
+      <div class="order-header">
+        <div class="order-meta-group">
+          <div class="meta-item">
+            <span class="meta-label">Order Placed</span>
+            <span class="meta-value">June 23, 2026</span>
           </div>
-
-          <div class="divide-y divide-stone-50">
-            ${order.items.map(item => `
-              <div class="flex items-center justify-between py-3 text-sm">
-                <div class="flex items-center gap-4">
-                  <img src="${item.image}" alt="" class="w-12 h-12 object-cover rounded-lg border border-stone-200 bg-stone-50"
-                       onerror="this.src='https://images.unsplash.com/photo-1610348725531-843dff14a9da?w=600&auto=format&fit=crop&q=80';" />
-                  <div>
-                    <p class="font-bold text-[#252422]">${item.name}</p>
-                    <p class="text-xs text-stone-400">Qty: ${item.qty} &times; ৳${item.price}</p>
-                  </div>
-                </div>
-                <span class="font-bold text-[#252422]">৳${(item.price * item.qty).toLocaleString()}</span>
-              </div>
-            `).join('')}
+          <div class="meta-item">
+            <span class="meta-label">Total Amount</span>
+            <span class="meta-value">৳500</span>
           </div>
-
-          <div class="flex justify-end pt-4 mt-2 border-t border-stone-100">
-            <button class="btn-ghost" onclick="alert('Our delivery team has been notified. Estimated arrival is within 24 hours.')">
-              Contact Courier
-            </button>
+          <div class="meta-item">
+            <span class="meta-label">Order ID</span>
+            <span class="meta-value order-id">#BZ-98421</span>
           </div>
         </div>
-      `;
-    }).join('');
-  }
+        <span class="status-pill processing">In Progress</span>
+      </div>
+      
+      <div class="order-body">
+        <div class="order-items-list">
+          <div class="order-item-row">
+            <div class="item-thumbnail">
+              <img src="images/Rajshahi Premium Fazli Mangoes.jpeg" alt="Rajshahi Fazli Mangoes">
+            </div>
+            <div class="item-info-extended">
+              <div class="item-title-block">
+                <a href="product-detail.html" class="item-name">Rajshahi Fazli Mangoes</a>
+                <span class="item-category">fruits</span>
+              </div>
+              <div class="item-quantity-pricing">
+                Quantity: <span>2 kg</span> &nbsp;&middot;&nbsp; Price: <span>৳180 / kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-item-row">
+            <div class="item-thumbnail">
+              <img src="images/Narsingdi Sagar Bananas.jpg" alt="Narsingdi Sagar Bananas">
+            </div>
+            <div class="item-info-extended">
+              <div class="item-title-block">
+                <a href="product-detail.html" class="item-name">Narsingdi Sagar Bananas</a>
+                <span class="item-category">fruits</span>
+              </div>
+              <div class="item-quantity-pricing">
+                Quantity: <span>1 kg</span> &nbsp;&middot;&nbsp; Price: <span>৳90 / kg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="order-card-actions">
+          <button class="action-btn">Track Order</button>
+          <button class="action-btn">Cancel Order</button>
+        </div>
+      </div>
+    </section>
 
-  renderOrders();
-</script>
+    <!-- Order 2: Delivered -->
+    <section class="order-card">
+      <div class="order-header">
+        <div class="order-meta-group">
+          <div class="meta-item">
+            <span class="meta-label">Order Placed</span>
+            <span class="meta-value">May 12, 2026</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Total Amount</span>
+            <span class="meta-value">৳305</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Order ID</span>
+            <span class="meta-value order-id">#BZ-87104</span>
+          </div>
+        </div>
+        <span class="status-pill delivered">Delivered</span>
+      </div>
+      
+      <div class="order-body">
+        <div class="order-items-list">
+          <div class="order-item-row">
+            <div class="item-thumbnail">
+              <img src="images/Munshiganj Native Vine Tomatoes.jpg" alt="Munshiganj Native Vine Tomatoes">
+            </div>
+            <div class="item-info-extended">
+              <div class="item-title-block">
+                <a href="product-detail.html" class="item-name">Munshiganj Native Vine Tomatoes</a>
+                <span class="item-category">vegetables</span>
+              </div>
+              <div class="item-quantity-pricing">
+                Quantity: <span>1 kg</span> &nbsp;&middot;&nbsp; Price: <span>৳110 / kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-item-row">
+            <div class="item-thumbnail">
+              <img src="images/Panchagarh Crisp Broccoli Florets.jpg" alt="Panchagarh Broccoli Florets">
+            </div>
+            <div class="item-info-extended">
+              <div class="item-title-block">
+                <a href="product-detail.html" class="item-name">Panchagarh Broccoli Florets</a>
+                <span class="item-category">vegetables</span>
+              </div>
+              <div class="item-quantity-pricing">
+                Quantity: <span>1 kg</span> &nbsp;&middot;&nbsp; Price: <span>৳160 / kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-item-row">
+            <div class="item-thumbnail">
+              <img src="images/Srimangal Fresh Palong Shak.jpg" alt="Srimangal Fresh Palong Shak">
+            </div>
+            <div class="item-info-extended">
+              <div class="item-title-block">
+                <a href="product-detail.html" class="item-name">Srimangal Fresh Palong Shak</a>
+                <span class="item-category">organic greens</span>
+              </div>
+              <div class="item-quantity-pricing">
+                Quantity: <span>1 kg</span> &nbsp;&middot;&nbsp; Price: <span>৳45 / kg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="order-card-actions">
+          <button class="action-btn primary-action">Buy Again</button>
+          <button class="action-btn">Download Invoice</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid-wrapper">
+      <div class="footer-brand-column">
+        <a href="index.html" class="logo" style="color: #FFFFFF;">Bazaar<span style="color: var(--clr-brand);">.</span></a>
+        <p>Premium university engineering initiative developing highly structural e-commerce solutions natively from the ground up.</p>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Product Catalog</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Track Orders</a></li>
+          <li><a href="#">Privacy Framework</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Categories</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Seasonal Fruits</a></li>
+          <li><a href="#">Native Vegetables</a></li>
+          <li><a href="#">Fresh Field Greens</a></li>
+          <li><a href="#">Organic Specialties</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Contact Hub</h4>
+        <ul class="footer-links-list">
+          <li><a href="#" style="pointer-events: none;">Sylhet, Bangladesh</a></li>
+          <li><a href="mailto:support@bazaar.com">support@bazaar.com</a></li>
+          <li><a href="tel:+8801700000000">+880 1700-000000</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <p>&copy; 2026 Bazaar Project. Built with clean software standards. All rights reserved.</p>
+    </div>
+  </footer>
+
 </body>
 </html>
