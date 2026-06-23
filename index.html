@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bazaar — Fresh Organic Produce</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bazaar - Fresh Organic Produce Delivered Straight From The Farm</title>
   
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 
+  <style>
     :root {
       /* Integrated "Rustic Charm" Color Palette Matrix */
       --clr-canvas: #FFFCF2;       /* Warm Cream Workspace Background */
@@ -19,543 +20,838 @@
       --clr-brand: #EB5E28;        /* Vibrant Rust Signature Brand Accent */
       --clr-brand-hover: #D44D1B;
       
+      --clr-success: #10B981;
+      --clr-success-bg: #E6F4EA;
+      --clr-warning: #D97706;
+      --clr-warning-bg: #FEF3C7;
+
       --font-display: 'Sora', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
       
       --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    *, *::before, *::after { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
+    /* Reset & Base System */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    body { 
-      background-color: var(--clr-canvas); 
-      color: var(--clr-ink-main); 
-      font-family: var(--font-body);
-      -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
-    }
-
-    /* CRITICAL ARCHITECTURAL LAYOUT WRAPPER */
-    .global-center-wrapper {
-      max-width: 1280px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      width: 100% !important;
-    }
-
-    /* NAVIGATION BAR */
-    .nav-corporate {
-      background-color: rgba(255, 252, 242, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--clr-border);
-    }
-    .nav-link { 
-      color: var(--clr-ink-muted); 
-      font-size: 0.875rem; 
-      font-weight: 600; 
-      transition: color 0.2s var(--ease-smooth);
-    }
-    .nav-link:hover { color: var(--clr-brand); }
-
-    .hero-heading {
-      font-family: var(--font-display);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-    }
-
-    /* SEARCH INPUTS & FILTER INTERFACES */
-    .search-input {
-      background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 999px;
-      padding: 0.75rem 1.5rem;
-      font-size: 0.875rem;
+    body {
+      background-color: var(--clr-canvas);
       color: var(--clr-ink-main);
-      outline: none;
-      transition: all 0.2s var(--ease-smooth);
-      width: 100%;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
-    .search-input:focus {
+
+    /* Typography Utilities */
+    h1, h2, h3, .logo {
+      font-family: var(--font-display);
+      color: var(--clr-ink-main);
+    }
+
+    /* Top Utility Header */
+    .site-header {
+      background-color: var(--clr-surface);
+      border-bottom: 1px solid rgba(204, 197, 185, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1680px; /* Expanded constraint for full width utilization */
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--clr-brand);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--clr-ink-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: background-color 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth);
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      background-color: rgba(235, 94, 40, 0.08);
+      color: var(--clr-brand);
+    }
+
+    .cart-badge-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background-color: var(--clr-brand);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hero Spotlight Section */
+    .hero-banner {
+      position: relative;
+      background: linear-gradient(rgba(18, 38, 15, 0.75), rgba(12, 28, 10, 0.85)), 
+                  url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1974&auto=format&fit=crop') center/cover no-repeat;
+      padding: 6.5rem 2rem;
+      text-align: center;
+      color: var(--clr-surface);
+    }
+
+    .hero-content {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3.25rem;
+      font-weight: 700;
+      color: var(--clr-surface);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      letter-spacing: -1px;
+    }
+
+    .hero-title span {
+      color: #D1E7DD;
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 680px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* Real-time Processing & Controls Grid */
+    .filter-dashboard {
+      background-color: var(--clr-surface);
+      border-bottom: 1px solid rgba(204, 197, 185, 0.5);
+      padding: 1.25rem 2rem;
+    }
+
+    .filter-wrapper {
+      max-width: 1680px; /* Expanded constraint for full width utilization */
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .filter-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--clr-ink-muted);
+    }
+
+    .search-input-box {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .search-input-box input {
+      width: 100%;
+      padding: 0.75rem 1.25rem 0.75rem 2.7rem;
+      border: 1px solid var(--clr-border);
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
+      background-color: var(--clr-canvas);
+    }
+
+    .search-input-box input:focus {
       border-color: var(--clr-brand);
       box-shadow: 0 0 0 3px rgba(235, 94, 40, 0.15);
-    }
-    .filter-select {
       background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 999px;
-      padding: 0.75rem 2.5rem 0.75rem 1.5rem;
-      font-size: 0.875rem;
-      color: var(--clr-ink-main);
-      outline: none;
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23403D39' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-      background-size: 1rem;
-      background-position: calc(100% - 1rem) center;
-      background-repeat: no-repeat;
-      transition: border-color 0.2s var(--ease-smooth);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
-    .filter-select:focus { border-color: var(--clr-brand); }
 
-    /* RESPONSIVE INVENTORY MATRIX GRID */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 2rem;
+    .search-input-box svg {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--clr-ink-muted);
+      pointer-events: none;
     }
-    .product-card {
+
+    .category-select-wrapper {
+      position: relative;
+    }
+
+    .category-select-wrapper select {
+      appearance: none;
+      padding: 0.75rem 2.5rem 0.75rem 1.5rem;
+      border: 1px solid var(--clr-border);
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
       background-color: var(--clr-surface);
-      border-radius: 24px;
+      color: var(--clr-ink-main);
+      transition: border-color 0.2s var(--ease-smooth);
+    }
+
+    .category-select-wrapper select:focus {
+      border-color: var(--clr-brand);
+    }
+
+    .category-select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 1.1rem;
+      top: 50%;
+      transform: translateY(-30%) rotate(45deg);
+      width: 6px;
+      height: 6px;
+      border-right: 2px solid var(--clr-ink-muted);
+      border-bottom: 2px solid var(--clr-ink-muted);
+      pointer-events: none;
+    }
+
+    .items-counter-badge {
+      background-color: #FDF2E9;
+      color: var(--clr-brand);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid rgba(235, 94, 40, 0.2);
+    }
+
+    /* Core Product Marketplace Layout */
+    .market-container {
+      max-width: 1680px; /* Expanded constraint to dynamically clear wide whitespace gaps */
+      margin: 3.5rem auto;
+      padding: 0 2rem;
+    }
+
+    .products-grid-matrix {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+
+    /* Premium Product Cards Architecture */
+    .product-card-sheet {
+      background-color: var(--clr-surface);
+      border-radius: 1.25rem;
+      border: 1px solid rgba(204, 197, 185, 0.35);
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(37, 36, 34, 0.04);
-      transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
       display: flex;
       flex-direction: column;
+      transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth), border-color 0.3s var(--ease-smooth);
+      box-shadow: 0 10px 25px -5px rgba(37, 36, 34, 0.03), 
+                  0 8px 16px -6px rgba(37, 36, 34, 0.03);
     }
-    .product-card:hover {
+
+    .product-card-sheet:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 32px rgba(37, 36, 34, 0.08);
+      border-color: var(--clr-border);
+      box-shadow: 0 20px 30px -10px rgba(37, 36, 34, 0.07), 
+                  0 12px 20px -8px rgba(37, 36, 34, 0.05);
     }
-    .product-img-wrap {
+
+    .card-media-hull {
+      position: relative;
       width: 100%;
-      aspect-ratio: 1.2;
+      padding-top: 80%;
+      background-color: #F4F2EE;
       overflow: hidden;
-      background-color: #F8FAF8;
     }
-    .product-img-wrap img {
+
+    .card-media-hull img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s var(--ease-smooth);
+      transition: transform 0.5s var(--ease-smooth);
     }
-    .product-card:hover .product-img-wrap img { transform: scale(1.02); }
 
-    /* CONTROL STATUS BADGES */
-    .stock-badge {
-      display: inline-flex;
+    .product-card-sheet:hover .card-media-hull img {
+      transform: scale(1.05);
+    }
+
+    .card-content-block {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-meta-row {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      margin-bottom: 0.6rem;
     }
-    .badge-in  { background-color: #F0FDF4; color: #166534; border: 1px solid #DCFCE7; }
-    .badge-low { background-color: #FFFBEB; color: #92400E; border: 1px solid #FEF3C7; }
-    .badge-out { background-color: #FEF2F2; color: #991B1B; border: 1px solid #FEE2E2; }
 
-    /* CORE ACTION BUTTONS */
-    .btn-primary {
-      background-color: var(--clr-brand);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 999px;
-      padding: 0.7rem 1.5rem;
-      font-size: 0.875rem;
+    .product-tag-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--clr-brand);
+    }
+
+    .stock-pill-indicator {
+      font-size: 0.68rem;
       font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .stock-pill-indicator.in-stock {
+      background-color: var(--clr-success-bg);
+      color: var(--clr-success);
+    }
+
+    .stock-pill-indicator.low-stock {
+      background-color: var(--clr-warning-bg);
+      color: var(--clr-warning);
+    }
+
+    .product-title-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-brief-desc {
+      font-size: 0.85rem;
+      color: var(--clr-ink-muted);
+      margin-bottom: 1.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.45;
+    }
+
+    .card-action-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px dashed rgba(204, 197, 185, 0.4);
+    }
+
+    .price-tag-display {
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      color: var(--clr-ink-main);
+    }
+
+    .price-unit-lbl {
+      font-size: 0.75rem;
+      color: var(--clr-ink-muted);
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+
+    .add-to-cart-action {
+      background-color: var(--clr-brand);
+      color: var(--clr-surface);
+      border: none;
+      padding: 0.55rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.825rem;
+      font-weight: 600;
+      border-radius: 30px;
       cursor: pointer;
-      transition: background-color 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 0.4rem;
+      transition: background-color 0.2s var(--ease-smooth);
     }
-    .btn-primary:hover { 
+
+    .add-to-cart-action:hover {
       background-color: var(--clr-brand-hover);
     }
-    .btn-primary:active { transform: scale(0.99); }
 
-    .btn-ghost {
-      background: transparent;
-      color: var(--clr-ink-main);
-      border: 1px solid var(--clr-border);
-      border-radius: 999px;
-      padding: 0.7rem 1.5rem;
-      font-size: 0.875rem;
+    /* Zero State Dynamic Display */
+    .empty-state-notice {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 5rem 2rem;
+      background-color: var(--clr-surface);
+      border-radius: 1.25rem;
+      border: 1px dashed var(--clr-border);
+      display: none;
+    }
+
+    .empty-state-notice h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state-notice p {
+      color: var(--clr-ink-muted);
+    }
+
+    /* Professional Premium Footer Architecture */
+    .site-footer {
+      background-color: var(--clr-ink-main);
+      color: #F4F2EE;
+      padding: 5rem 2rem 2rem;
+      margin-top: 6rem;
+      border-top: 4px solid var(--clr-brand);
+    }
+
+    .footer-grid-wrapper {
+      max-width: 1680px; /* Expanded constraint for full width utilization */
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 4rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-brand-column p {
+      color: #CCC5B9;
+      margin-top: 1rem;
+      max-width: 320px;
+      font-size: 0.9rem;
+    }
+
+    .footer-column-headline {
+      font-family: var(--font-display);
+      font-size: 1rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s var(--ease-smooth);
-    }
-    .btn-ghost:hover { 
-      background-color: var(--clr-canvas);
-      border-color: var(--clr-ink-muted);
+      color: var(--clr-surface);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
     }
 
-    /* SYSTEM NOTIFICATION BANNER */
-    #toast {
+    .footer-links-list {
+      list-style: none;
+    }
+
+    .footer-links-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links-list a {
+      color: #CCC5B9;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--clr-brand);
+    }
+
+    .footer-bottom-bar {
+      max-width: 1680px; /* Expanded constraint for full width utilization */
+      margin: 2rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom-bar p {
+      color: #CCC5B9;
+    }
+
+    /* Toast Notification System */
+    .toast-notification {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
       background-color: var(--clr-ink-main);
-      color: #FFFFFF;
-      padding: 0.85rem 1.5rem;
+      color: var(--clr-surface);
+      padding: 1rem 1.5rem;
       border-radius: 8px;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       font-weight: 500;
-      box-shadow: 0 12px 32px rgba(37, 36, 34, 0.2);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: all 0.25s var(--ease-smooth);
-      pointer-events: none;
-      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-left: 4px solid var(--clr-success);
     }
-    #toast.show { opacity: 1; transform: translateY(0); }
 
-    #empty-state { display: none; }
+    .toast-notification.active {
+      transform: translateY(0);
+    }
+
+    /* High-Performance Screen Sizing Adaptability Matrix */
+    @media (max-width: 1400px) {
+      .products-grid-matrix { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 1100px) {
+      .products-grid-matrix { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .footer-grid-wrapper { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+      .hero-title { font-size: 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .products-grid-matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-wrapper { flex-direction: column; align-items: stretch; }
+      .search-input-box { max-width: none; }
+      .footer-grid-wrapper { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .products-grid-matrix { grid-template-columns: 1fr; }
+      .nav-container { padding: 1rem; }
+      .hero-title { font-size: 2rem; }
+    }
   </style>
 </head>
 <body>
 
-<nav class="nav-corporate sticky top-0 z-50">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
-        Bazaar<span style="color: var(--clr-brand);">.</span>
-      </span>
-    </a>
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="#" class="logo">Bazaar<span>.</span></a>
+      <div class="nav-actions">
+        <button class="nav-icon-btn" title="Admin Dashboard" aria-label="Admin Dashboard">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </button>
+        <button class="nav-icon-btn" title="Shopping Cart" aria-label="Shopping Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <span class="cart-badge-count" id="cartCounter">0</span>
+        </button>
+        <button class="nav-icon-btn" title="User Profile" aria-label="User Profile">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-banner">
+    <div class="hero-content">
+      <h1 class="hero-title">Fresh, organic produce, <br><span>delivered straight from the farm.</span></h1>
+      <p class="hero-subtitle">Browse our carefully curated selection of organic groceries. Enjoy fresh, local produce delivered right to your door with guaranteed quality.</p>
+    </div>
+  </section>
+
+  <section class="filter-dashboard">
+    <div class="filter-wrapper">
+      <span class="filter-label">Filter By:</span>
+      
+      <div class="search-input-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="Search for groceries...">
+      </div>
+
+      <div class="category-select-wrapper">
+        <select id="categoryFilter" aria-label="Product Category Filter">
+          <option value="all">All Categories</option>
+          <option value="fruits">Fruits</option>
+          <option value="vegetables">Vegetables</option>
+          <option value="organic greens">Organic Greens</option>
+        </select>
+      </div>
+
+      <div class="items-counter-badge" id="itemsCountBadge">10 items found</div>
+    </div>
+  </section>
+
+  <main class="market-container">
+    <div class="products-grid-matrix" id="productsGrid">
+      </div>
     
-    <div class="flex items-center gap-6">
-      <a href="index.html" class="nav-link text-[#EB5E28]">Home</a>
-      <a href="orders.html" class="nav-link">My Orders</a>
-      <a href="profile.html" class="nav-link">Profile</a>
+    <div class="empty-state-notice" id="emptyState">
+      <h3>No Products Found</h3>
+      <p>We couldn't find matches for your search. Try checking your spelling or selection criteria.</p>
     </div>
+  </main>
 
-    <div class="flex items-center gap-4">
-      <a href="cart.html" class="nav-link">Cart</a>
-      
-      <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
-        Admin
-      </a>
-      
-      <a href="auth.html" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.825rem;">
-        Sign In
-      </a>
-    </div>
-  </div>
-</nav>
-
-<section class="hero-corporate relative pt-32 pb-40 overflow-hidden" style="background-color: #0D1F14;">
-  <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1600" alt="Fresh Organic Vegetables" class="absolute inset-0 w-full h-full object-cover opacity-30">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 text-center relative z-10">
-    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#FFFFFF] bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full mb-6 tracking-wider border border-white/30">
-      100% ORGANIC & FRESH
-    </span>
-
-    <h1 class="hero-heading text-[#FFFFFF] text-5xl sm:text-6xl lg:text-7xl mb-6 drop-shadow-sm">
-      Fresh, organic produce,<br/>
-      <span class="text-[#FFDF70]">delivered straight from the farm.</span>
-    </h1>
-
-    <p class="text-[#E2E8E4] text-lg font-medium leading-relaxed drop-shadow-sm" style="max-width: 42rem !important; margin-left: auto !important; margin-right: auto !important;">
-      Browse our carefully curated selection of organic groceries. Enjoy fresh, local produce delivered right to your door with guaranteed quality.
-    </p>
-  </div>
-  <!-- Organic bottom curve -->
-  <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden" style="line-height: 0; transform: translateY(1px);">
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-[60px] sm:h-[100px] lg:h-[120px]" style="fill: var(--clr-canvas);">
-      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
-      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
-    </svg>
-  </div>
-</section>
-
-<section class="bg-white/80 backdrop-blur-md border-b border-[#CCC5B9] py-5 sticky top-[62px] z-40 shadow-sm" style="margin-bottom: 2rem;">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 flex justify-center">
-    
-    <div class="flex items-center justify-center gap-4 flex-wrap w-full max-w-3xl">
-      <span class="text-xs font-bold uppercase tracking-wider text-stone-400 flex items-center gap-1.5 shrink-0">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#EB5E28]"></span> Filter by:
-      </span>
-      
-      <input
-        type="text"
-        id="main-search"
-        placeholder="Search for groceries..."
-        class="search-input max-w-xs"
-        oninput="syncSearch(this.value)"
-      />
-      
-      <select id="category-filter" class="filter-select" onchange="filterProducts()">
-        <option value="all">All Categories</option>
-        <option value="Fruits">Fresh Fruits</option>
-        <option value="Vegetables">Fresh Vegetables</option>
-        <option value="Organic Greens">Organic Greens</option>
-      </select>
-
-      <span id="result-count" class="text-xs font-semibold text-[#EB5E28] bg-[#EB5E28]/10 border border-[#EB5E28]/20 px-2.5 py-2 rounded shrink-0"></span>
-    </div>
-
-  </div>
-</section>
-
-<main class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12">
-
-  <div id="empty-state" class="text-center py-16 border border-dashed border-[#CCC5B9] bg-white rounded-xl max-w-md mx-auto">
-    <p class="text-3xl text-stone-300">⚏</p>
-    <p class="text-sm font-bold text-stone-700 mt-2">No Products Found</p>
-    <p class="text-xs text-stone-400 mt-1 mb-4">Try adjusting your search or filter criteria.</p>
-    <button class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;" onclick="clearFilters()">Clear Filters</button>
-  </div>
-
-  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center">
-    </div>
-</main>
-
-<div id="toast">✓ Added to cart</div>
-
-<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
-  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
-    
-    <div class="md:col-span-5 space-y-3">
-      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
-      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
-        Your trusted local market for fresh, organic, and ethically sourced produce.
-      </p>
-    </div>
-
-    <div class="md:col-span-3 col-start-7 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Shop</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Home</a>
-        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">Cart</a>
-        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">My Orders</a>
+  <footer class="site-footer">
+    <div class="footer-grid-wrapper">
+      <div class="footer-brand-column">
+        <a href="#" class="logo" style="color: #FFFFFF;">Bazaar<span style="color: var(--clr-brand);">.</span></a>
+        <p>Premium university engineering initiative developing highly structural, secure, and intuitive localized e-commerce solutions natively from the ground up.</p>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Product Catalog</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Track Orders</a></li>
+          <li><a href="#">Privacy Framework</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Categories</h4>
+        <ul class="footer-links-list">
+          <li><a href="#">Seasonal Fruits</a></li>
+          <li><a href="#">Native Vegetables</a></li>
+          <li><a href="#">Fresh Field Greens</a></li>
+          <li><a href="#">Organic Specialties</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-column-headline">Contact Hub</h4>
+        <ul class="footer-links-list">
+          <li><a href="#" style="pointer-events: none;">Sylhet, Bangladesh</a></li>
+          <li><a href="mailto:support@bazaar.com">support@bazaar.com</a></li>
+          <li><a href="tel:+8801700000000">+880 1700-000000</a></li>
+        </ul>
       </div>
     </div>
-
-    <div class="md:col-span-3 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Admin</p>
-      <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="admin-dashboard.html" class="hover:text-[#EB5E28] transition-colors">Dashboard</a>
-        <a href="admin-products.html" class="hover:text-[#EB5E28] transition-colors">Products</a>
-        <a href="admin-orders.html" class="hover:text-[#EB5E28] transition-colors">Orders</a>
-      </div>
+    <div class="footer-bottom-bar">
+      <p>&copy; 2026 Bazaar Project. Built with clean software standards. All rights reserved.</p>
     </div>
+  </footer>
 
+  <div class="toast-notification" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMessage">Product added to shopping cart!</span>
   </div>
 
-  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
-    &copy; 2026 Bazaar &mdash; Metropolitan University, Sylhet 
-  </div>
-</footer>
+  <script>
+    const productCatalogDataset = [
+      {
+        id: 1,
+        name: "Rajshahi Premium Fazli Mangoes",
+        category: "fruits",
+        price: 180,
+        stock: 45,
+        isLowStock: false,
+        image: "https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600&auto=format&fit=crop",
+        desc: "Exceedingly sweet, thick-pulped, iconic mangoes sourced directly from traditional sun-drenched family orchards across Rajshahi."
+      },
+      {
+        id: 2,
+        name: "Srimangal Fresh Palong Shak",
+        category: "organic greens",
+        price: 45,
+        stock: 4,
+        isLowStock: true,
+        image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=600&auto=format&fit=crop",
+        desc: "Crisp, nutrient-dense baby spinach leaves, hand-harvested and triple-washed in cold hill springs within Srimangal."
+      },
+      {
+        id: 3,
+        name: "Narsingdi Imperial Sagar Bananas",
+        category: "fruits",
+        price: 90,
+        stock: 120,
+        isLowStock: false,
+        image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=600&auto=format&fit=crop",
+        desc: "Flawlessly cream-textured all-natural sweet local bananas rich in essential minerals, picked daily from Narsingdi plantation nodes."
+      },
+      {
+        id: 4,
+        name: "Munshiganj Native Vine Tomatoes",
+        category: "vegetables",
+        price: 110,
+        stock: 65,
+        isLowStock: false,
+        image: "https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=600&auto=format&fit=crop",
+        desc: "Deep crimson, robustly flavorful vine-ripened local tomatoes carefully collected from fertile alluvial soil zones of Munshiganj."
+      },
+      {
+        id: 5,
+        name: "Panchagarh Crisp Broccoli Florets",
+        category: "vegetables",
+        price: 160,
+        stock: 3,
+        isLowStock: true,
+        image: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=600&auto=format&fit=crop",
+        desc: "Densely packed crisp organic green crowns cultivated uniquely inside the cooler northern Himalayan micro-climate fields."
+      },
+      {
+        id: 6,
+        name: "Rangpur Elite Haribhanga Mangoes",
+        category: "fruits",
+        price: 240,
+        stock: 28,
+        isLowStock: false,
+        image: "https://images.unsplash.com/photo-1596003906949-67221c37965c?q=80&w=600&auto=format&fit=crop",
+        desc: "Famed premium round mango strain known for its fiberless architecture, unique aromatic profile, and uncompromised rich sweetness."
+      },
+      {
+        id: 7,
+        name: "Jessore Long Stem Tal Begun",
+        category: "vegetables",
+        price: 95,
+        stock: 4,
+        isLowStock: true,
+        image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=600&auto=format&fit=crop",
+        desc: "Glossy deep-purple uniform eggplants featuring delicate internal flesh, perfect for authentic local roasting preparations."
+      },
+      {
+        id: 8,
+        name: "Barisal Sweet Honey-Grapes",
+        category: "fruits",
+        price: 380,
+        stock: 19,
+        isLowStock: false,
+        image: "https://images.unsplash.com/photo-1537640538966-79f369143f8f?q=80&w=600&auto=format&fit=crop",
+        desc: "Crisp, premium table grapes grown using innovative sweet organic soil enrichment routines across south-central estates."
+      },
+      {
+        id: 9,
+        name: "Bogra Farm-Fresh Crunchy Cucumbers",
+        category: "vegetables",
+        price: 65,
+        stock: 80,
+        isLowStock: false,
+        image: "https://images.unsplash.com/photo-1604977042946-1eecc30f269e?q=80&w=600&auto=format&fit=crop",
+        desc: "Hydrating, sweet-noted native organic cucumbers featuring thin skins, pulled from the historically rich soil banks of Bogra."
+      },
+      {
+        id: 10,
+        name: "Sylhet Wild Aromatic Shatkora",
+        category: "fruits",
+        price: 150,
+        stock: 2,
+        isLowStock: true,
+        image: "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=80&w=600&auto=format&fit=crop",
+        desc: "Exclusive highly fragrant citrus crop containing thick bitter-sour rinds, traditionally valued throughout Sylheti culinary lineages."
+      }
+    ];
 
-<script>
-  const PRODUCTS = [
-    {
-      id: 1,
-      name: "Organic Honeycrisp Apples",
-      category: "Fruits",
-      price: 320,
-      stock: 45,
-      description: "Crisp, sweet, and exceptionally juicy. Hand-picked from high-altitude organic orchards. Perfect for snacking, baking, or fresh pairing salad bowls.",
-      image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 2,
-      name: "Fresh Organic Spinach",
-      category: "Organic Greens",
-      price: 80,
-      stock: 4,
-      description: "Tender, nutrient-dense baby spinach leaves. Triple-washed and chilled for maximum crisp structural retention. High content of iron and raw fiber minerals.",
-      image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 3,
-      name: "Premium Cavendish Bananas",
-      category: "Fruits",
-      price: 120,
-      stock: 60,
-      description: "Perfectly ripened all-natural sweet bananas. Balanced source of natural potassium and energy. Monitored strictly along our local cold-chain lines.",
-      image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 4,
-      name: "Local Vine-Ripened Roma Tomatoes",
-      category: "Vegetables",
-      price: 110,
-      stock: 28,
-      description: "Deep red, firm, and fully flavorful. Grown locally in temperature-vetted greenhouses. Excellent base asset for culinary cooking, sauces, and fresh salsas.",
-      image: "https://images.unsplash.com/photo-1595855759920-86582396756a?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 5,
-      name: "Fresh Hass Avocados",
-      category: "Fruits",
-      price: 450,
-      stock: 0,
-      description: "Rich, creamy texture with high healthy monounsaturated fat profiles. Smooth skin with flawless interior validation. Perfect grading metrics for premium procurement.",
-      image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 6,
-      name: "Crisp Organic Orange Carrots",
-      category: "Vegetables",
-      price: 95,
-      stock: 19,
-      description: "Sweet, crunchy root carrots cultivated without chemical additives. High beta-carotene value. Delivered with trimmed stems to preserve interior moisture indices.",
-      image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 7,
-      name: "Fresh Premium Blueberries",
-      category: "Fruits",
-      price: 650,
-      stock: 12,
-      description: "Plump, antioxidant-heavy berries loaded with deep profile complex flavors. Hand-sorted and packed in protective breathing cells to prevent bruising layout degradation.",
-      image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=600&auto=format&fit=crop&q=80"
-    },
-    {
-      id: 8,
-      name: "Fresh Crown Broccoli Florets",
-      category: "Vegetables",
-      price: 150,
-      stock: 3,
-      description: "Thick, tightly-packed green heads with minimal stalk weight parameters. Sourced early morning to prevent structural yellowing or dehydration under daylight cycles.",
-      image: "https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=600&auto=format&fit=crop&q=80"
-    }
-  ];
+    let shoppingCartItemsCount = 0;
 
-  localStorage.setItem('bazaarProducts', JSON.stringify(PRODUCTS));
-
-  function getCart() {
-    return JSON.parse(localStorage.getItem('bazaarCart') || '[]');
-  }
-  function saveCart(cart) {
-    localStorage.setItem('bazaarCart', JSON.stringify(cart));
-    updateNavBadge(cart);
-  }
-  function updateNavBadge(cart) {
-    const total = cart.reduce((s, i) => s + i.qty, 0);
-    const badge = document.getElementById('nav-cart-count');
-    if (!badge) return;
-    badge.textContent = total;
-    badge.style.display = total > 0 ? 'flex' : 'none';
-  }
-  function addToCart(productId) {
-    const product = PRODUCTS.find(p => p.id === productId);
-    if (!product || product.stock === 0) return;
-    const cart = getCart();
-    const existing = cart.find(i => i.id === productId);
-    if (existing) {
-      existing.qty = Math.min(existing.qty + 1, product.stock);
-    } else {
-      cart.push({ id: product.id, name: product.name, price: product.price, qty: 1, image: product.image });
-    }
-    saveCart(cart);
-    showToast(`"${product.name}" added to your cart`);
-  }
-
-  function showToast(msg) {
+    const productsGrid = document.getElementById('productsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const itemsCountBadge = document.getElementById('itemsCountBadge');
+    const emptyState = document.getElementById('emptyState');
+    const cartCounter = document.getElementById('cartCounter');
     const toast = document.getElementById('toast');
-    toast.textContent = '✓ ' + msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2800);
-  }
 
-  function stockBadge(stock) {
-    if (stock === 0) return `<span class="stock-badge badge-out">Out of Stock</span>`;
-    if (stock <= 5) return `<span class="stock-badge badge-low">Low Stock (${stock})</span>`;
-    return `<span class="stock-badge badge-in">In Stock</span>`;
-  }
+    function paintCatalogGrid(items) {
+      productsGrid.innerHTML = '';
+      
+      if (items.length === 0) {
+        emptyState.style.display = 'block';
+        itemsCountBadge.innerText = `0 items found`;
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      itemsCountBadge.innerText = `${items.length} item${items.length > 1 ? 's' : ''} found`;
 
-  function renderCards(list) {
-    const grid = document.getElementById('product-grid');
-    const empty = document.getElementById('empty-state');
-    const counter = document.getElementById('result-count');
+      items.forEach(product => {
+        const productCard = document.createElement('article');
+        productCard.className = 'product-card-sheet';
+        
+        const stockBadgeMarkup = product.isLowStock 
+          ? `<span class="stock-pill-indicator low-stock">Low Stock (${product.stock})</span>`
+          : `<span class="stock-pill-indicator in-stock">In Stock</span>`;
 
-    if (list.length === 0) {
-      grid.innerHTML = '';
-      empty.style.display = 'block';
-      counter.textContent = '0 items';
-      return;
-    }
-
-    empty.style.display = 'none';
-    counter.textContent = `${list.length} item${list.length !== 1 ? 's' : ''} found`;
-
-    grid.innerHTML = list.map(p => `
-      <div class="product-card">
-        <a href="product-detail.html?id=${p.id}">
-          <div class="product-img-wrap">
-            <img
-              src="${p.image}"
-              alt="${p.name}"
-              loading="lazy"
-              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1610348725531-843dff14a9da?w=600&auto=format&fit=crop&q=80';"
-            />
+        productCard.innerHTML = `
+          <div class="card-media-hull">
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
           </div>
-        </a>
-        <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; color: var(--clr-brand);">
-              ${p.category}
-            </span>
-            <div class="pt-1">
-              ${stockBadge(p.stock)}
+          <div class="card-content-block">
+            <div class="card-meta-row">
+              <span class="product-tag-category">${product.category}</span>
+              ${stockBadgeMarkup}
+            </div>
+            <h3 class="product-title-text">${product.name}</h3>
+            <p class="product-brief-desc">${product.desc}</p>
+            <div class="card-action-footer">
+              <div class="price-tag-display">
+                ৳${product.price}<span class="price-unit-lbl">/kg</span>
+              </div>
+              <button class="add-to-cart-action" onclick="pushToCartSession('${product.name}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add to Cart
+              </button>
             </div>
           </div>
-          <a href="product-detail.html?id=${p.id}">
-            <h3 style="font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--clr-ink-main); line-height: 1.3; margin:0;">
-              ${p.name}
-            </h3>
-          </a>
-          <p style="font-size:0.825rem; color: var(--clr-ink-muted); line-height:1.45; flex:1;">
-            ${p.description.substring(0, 80)}...
-          </p>
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.5rem; border-top: 1px dashed var(--clr-border); padding-top:0.75rem;">
-            <span style="font-size:1.15rem; font-weight:700; font-family: var(--font-display); color: var(--clr-ink-main);">
-              ৳${p.price.toLocaleString()}
-            </span>
-            ${p.stock !== 0
-              ? `<button class="btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.8rem; border-radius: 999px;" onclick="addToCart(${p.id})">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Add to Cart
-                 </button>`
-              : `<button class="btn-ghost" style="padding: 0.6rem 1.25rem; font-size: 0.8rem; border-radius: 999px; opacity: 0.5; cursor: not-allowed;" disabled>Out of Stock</button>`
-            }
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
+        `;
+        productsGrid.appendChild(productCard);
+      });
+    }
 
-  let currentSearch = '';
-  let currentCategory = 'all';
+    function computeMarketFilters() {
+      const queryStr = searchInput.value.toLowerCase().trim();
+      const chosenCat = categoryFilter.value;
 
-  function syncSearch(val) {
-    currentSearch = val.toLowerCase().trim();
-    filterProducts();
-  }
+      const structuredOutput = productCatalogDataset.filter(item => {
+        const matchesSearch = item.name.toLowerCase().includes(queryStr) || 
+                              item.desc.toLowerCase().includes(queryStr);
+        const matchesCategory = chosenCat === 'all' || item.category === chosenCat;
+        return matchesSearch && matchesCategory;
+      });
 
-  // Centered wrapper syncs search criteria seamlessly
-  function filterProducts() {
-    currentCategory = document.getElementById('category-filter').value;
-    const filtered = PRODUCTS.filter(p => {
-      const matchSearch = p.name.toLowerCase().includes(currentSearch) ||
-                          p.description.toLowerCase().includes(currentSearch) ||
-                          p.category.toLowerCase().includes(currentSearch);
-      const matchCat = currentCategory === 'all' || p.category === currentCategory;
-      return matchSearch && matchCat;
+      paintCatalogGrid(structuredOutput);
+    }
+
+    function pushToCartSession(productTitle) {
+      shoppingCartItemsCount++;
+      cartCounter.innerText = shoppingCartItemsCount;
+      triggerToastAlert(`Added ${productTitle} to your shopping cart.`);
+    }
+
+    function triggerToastAlert(msg) {
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 2500);
+    }
+
+    searchInput.addEventListener('input', computeMarketFilters);
+    categoryFilter.addEventListener('change', computeMarketFilters);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      paintCatalogGrid(productCatalogDataset);
     });
-    renderCards(filtered);
-  }
-
-  function clearFilters() {
-    currentSearch = '';
-    currentCategory = 'all';
-    document.getElementById('main-search').value = '';
-    document.getElementById('category-filter').value = 'all';
-    renderCards(PRODUCTS);
-  }
-
-  /* REGISTRATION SYSTEM INITIALIZATION */
-  updateNavBadge(getCart());
-  renderCards(PRODUCTS);
-</script>
-
+  </script>
 </body>
 </html>
