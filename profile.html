@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — Bazaar</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght=400;600;700;800&display=swap');
+
+    :root {
+      /* Integrated "Rustic Charm" Color Palette Matrix */
+      --clr-canvas: #FFFCF2;       /* Warm Cream Workspace Background */
+      --clr-surface: #FFFFFF;      /* Clean White Card Sheets */
+      --clr-border: #CCC5B9;       /* Stone Grey Border Lines */
+      --clr-ink-muted: #403D39;    /* Dark Charcoal Secondary Typography */
+      --clr-ink-main: #252422;     /* Near Black Primary Typography */
+      --clr-brand: #EB5E28;        /* Vibrant Rust Signature Brand Accent */
+      --clr-brand-hover: #D44D1B;
+      
+      --font-display: 'Sora', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body { 
+      background-color: var(--clr-canvas); 
+      color: var(--clr-ink-main); 
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+
+    /* CRITICAL ARCHITECTURAL LAYOUT WRAPPER */
+    .global-center-wrapper {
+      max-width: 1280px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      width: 100% !important;
+    }
+
+    /* NAVIGATION BAR */
+    .nav-corporate {
+      background-color: rgba(255, 252, 242, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--clr-border);
+    }
+    .nav-link { 
+      color: var(--clr-ink-muted); 
+      font-size: 0.875rem; 
+      font-weight: 600; 
+      transition: color 0.2s var(--ease-smooth);
+    }
+    .nav-link:hover { color: var(--clr-brand); }
+    .nav-link.active { color: var(--clr-brand); }
+
+    /* CARD CONTAINER FORM STRUCTURE */
+    .profile-card {
+      background-color: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+
+    /* INPUT FIELDS */
+    .form-input {
+      width: 100%;
+      background-color: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: 8px;
+      padding: 0.65rem 0.875rem;
+      font-size: 0.875rem;
+      color: var(--clr-ink-main);
+      font-family: var(--font-body);
+      transition: all 0.2s var(--ease-smooth);
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--clr-brand);
+      box-shadow: 0 0 0 3px rgba(235, 94, 40, 0.1);
+    }
+
+    /* COMPONENT BUTTONS */
+    .btn-primary {
+      background-color: var(--clr-brand);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.75rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s var(--ease-smooth);
+    }
+    .btn-primary:hover { 
+      background-color: var(--clr-brand-hover);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav-corporate sticky top-0 z-50">
+  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
+        Bazaar<span style="color: var(--clr-brand);">.</span>
+      </span>
+    </a>
+    
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="orders.html" class="nav-link">My Orders</a>
+      <a href="profile.html" class="nav-link active">Profile</a>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a href="cart.html" class="relative inline-flex p-2 bg-[#CCC5B9]/20 rounded-lg transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:1.25rem; height:1.25rem; color: var(--clr-brand);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <span id="nav-cart-count"
+              style="background-color: var(--clr-brand); color:#fff; font-size:0.65rem; font-weight:700; width:1.1rem; height:1.1rem; border-radius:50%; display:none; position:absolute; top:0px; right:0px; align-items:center; justify-content:center;">
+          0
+        </span>
+      </a>
+      <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
+        Admin Console
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 3.5rem; padding-bottom: 2rem;">
+  <span class="inline-flex items-center gap-1 text-xs font-bold text-[#EB5E28] bg-[#EB5E28]/10 px-2.5 py-1 rounded mb-3 tracking-wide uppercase">
+    Account settings
+  </span>
+  <h1 style="font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; color: var(--clr-ink-main); letter-spacing: -0.02em;">
+    Personal Details
+  </h1>
+  <p style="color: var(--clr-ink-muted); font-size: 0.875rem; margin-top: 0.35rem;">
+    Manage your contact information and default home delivery addresses.
+  </p>
+</div>
+
+<main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-bottom: 6rem;">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Account Overview Side Panel -->
+    <div class="lg:col-span-4 space-y-6">
+      <div class="profile-card text-center">
+        <div class="w-20 h-20 bg-[#EB5E28]/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#EB5E28]/20">
+          <span id="avatar-initials" class="text-2xl font-bold text-[#EB5E28]" style="font-family: var(--font-display);">U</span>
+        </div>
+        <h3 id="panel-name" style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;" class="text-[#252422]">Valued Customer</h3>
+        <p id="panel-email" class="text-xs text-stone-400 mb-4">customer@bazaar.club</p>
+        
+        <div class="border-t border-stone-100 pt-4 mt-2 text-left space-y-3">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-stone-400 font-medium">Bazaar Rewards Tier</span>
+            <span class="font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Gold Member</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-stone-400 font-medium">Saved Addresses</span>
+            <span class="font-bold text-[#252422]">1 Primary Route</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Profile Form Fields -->
+    <div class="lg:col-span-8">
+      <form id="profile-form" class="profile-card space-y-6" onsubmit="saveProfile(event)">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-[#403D39] uppercase tracking-wider">Full Name</label>
+            <input type="text" id="prof-name" required class="form-input" placeholder="Your full name" />
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-[#403D39] uppercase tracking-wider">Mobile Number</label>
+            <input type="tel" id="prof-phone" required class="form-input" placeholder="e.g., 017XXXXXXXX" />
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-[#403D39] uppercase tracking-wider">Email Address</label>
+          <input type="email" id="prof-email" required class="form-input" placeholder="name@domain.com" />
+        </div>
+
+        <div class="border-t border-stone-100 my-6 pt-6">
+          <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1rem;" class="text-[#252422] mb-3">
+            Primary Delivery Location
+          </h3>
+          <div class="space-y-4">
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-[#403D39] uppercase tracking-wider">Street Address</label>
+              <input type="text" id="prof-address" required class="form-input" placeholder="House number, road number, area name" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-[#403D39] uppercase tracking-wider">City</label>
+                <input type="text" id="prof-city" required class="form-input" placeholder="e.g., Sylhet" />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-[#403D39] uppercase tracking-wider">Postal Code</label>
+                <input type="text" id="prof-zip" required class="form-input" placeholder="e.g., 3100" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Toast Alert Inside Card -->
+        <div id="save-toast" class="hidden items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-lg text-xs font-medium">
+          <span>✓</span> Your personal contact details and grocery delivery paths were successfully synchronized!
+        </div>
+
+        <div class="flex justify-end">
+          <button type="submit" class="btn-primary">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
+  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
+    <div class="md:col-span-5 space-y-3">
+      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
+      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
+        Fresh organic fruits and vegetables sourced directly from local gardens to your dining table.
+      </p>
+    </div>
+    <div class="md:col-span-3 col-start-7 space-y-2.5">
+      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Quick Links</p>
+      <div class="flex flex-col gap-1.5 text-xs font-medium">
+        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Shop Directory</a>
+        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">My Basket</a>
+        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">Order Tracking</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
+    &copy; 2026 BAZAAR ARCHITECTURE &mdash; METROPOLITAN UNIVERSITY, SYLHET
+  </div>
+</footer>
+
+<script>
+  function getCart() { return JSON.parse(localStorage.getItem('bazaarCart') || '[]'); }
+  
+  function updateNavBadge() {
+    const cart = getCart();
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    const badge = document.getElementById('nav-cart-count');
+    if (!badge) return;
+    badge.textContent = total;
+    badge.style.display = total > 0 ? 'flex' : 'none';
+  }
+
+  // Handle loading profile info
+  function loadProfile() {
+    updateNavBadge();
+    const defaultProfile = {
+      name: 'Ashraful Islam',
+      phone: '01712345678',
+      email: 'ashraful@metropolitan.edu',
+      address: 'Mianship Road, Shibgonj',
+      city: 'Sylhet',
+      zip: '3100'
+    };
+    
+    const profile = JSON.parse(localStorage.getItem('bazaarProfile')) || defaultProfile;
+    
+    // Set form fields
+    document.getElementById('prof-name').value = profile.name;
+    document.getElementById('prof-phone').value = profile.phone;
+    document.getElementById('prof-email').value = profile.email;
+    document.getElementById('prof-address').value = profile.address;
+    document.getElementById('prof-city').value = profile.city;
+    document.getElementById('prof-zip').value = profile.zip;
+
+    // Set side panel previews
+    document.getElementById('panel-name').textContent = profile.name;
+    document.getElementById('panel-email').textContent = profile.email;
+    
+    // Generate simple dynamic avatar initials
+    if (profile.name) {
+      const parts = profile.name.trim().split(' ');
+      const initials = parts.map(p => p[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('avatar-initials').textContent = initials;
+    }
+  }
+
+  // Handle saving form parameters
+  function saveProfile(event) {
+    event.preventDefault();
+    
+    const updatedProfile = {
+      name: document.getElementById('prof-name').value,
+      phone: document.getElementById('prof-phone').value,
+      email: document.getElementById('prof-email').value,
+      address: document.getElementById('prof-address').value,
+      city: document.getElementById('prof-city').value,
+      zip: document.getElementById('prof-zip').value
+    };
+
+    localStorage.setItem('bazaarProfile', JSON.stringify(updatedProfile));
+    
+    // Re-trigger side-panel visual update
+    document.getElementById('panel-name').textContent = updatedProfile.name;
+    document.getElementById('panel-email').textContent = updatedProfile.email;
+    
+    const parts = updatedProfile.name.trim().split(' ');
+    document.getElementById('avatar-initials').textContent = parts.map(p => p[0]).join('').substring(0, 2).toUpperCase();
+
+    // Flash clean success feedback
+    const toast = document.getElementById('save-toast');
+    toast.classList.remove('hidden');
+    toast.classList.add('flex');
+    
+    setTimeout(() => {
+      toast.classList.remove('flex');
+      toast.classList.add('hidden');
+    }, 4000);
+  }
+
+  // Init
+  loadProfile();
+</script>
+</body>
+</html>

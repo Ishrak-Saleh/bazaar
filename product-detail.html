@@ -75,10 +75,10 @@
     /* IMAGE SURFACE STYLING */
     .img-main {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 24px;
       overflow: hidden;
       background-color: #FFFFFF;
-      border: 1px solid var(--clr-border);
+      box-shadow: 0 4px 24px rgba(37,36,34,0.04);
       aspect-ratio: 1 / 1;
       position: relative;
     }
@@ -134,7 +134,7 @@
       background-color: var(--clr-brand);
       color: #FFFFFF;
       border: none;
-      border-radius: 8px;
+      border-radius: 999px;
       padding: 0.85rem 2rem;
       font-size: 0.875rem;
       font-weight: 600;
@@ -161,7 +161,7 @@
       background: transparent;
       color: var(--clr-ink-main);
       border: 1px solid var(--clr-border);
-      border-radius: 8px;
+      border-radius: 999px;
       padding: 0.85rem 2rem;
       font-size: 0.875rem;
       font-weight: 600;
@@ -187,7 +187,7 @@
     .badge-low { background: #FFFBEB; color: #92400E; border-color: #FEF3C7; }
     .badge-out { background: #FEF2F2; color: #991B1B; border-color: #FEE2E2; }
 
-    .divider { border: none; border-top: 1px solid var(--clr-border); margin: 1.5rem 0; }
+    .divider { border: none; border-top: 1px solid var(--clr-border); margin: 1rem 0; }
 
     .feature-pill {
       display: inline-flex;
@@ -195,8 +195,8 @@
       gap: 0.35rem;
       background-color: #FFFFFF;
       border: 1px solid var(--clr-border);
-      border-radius: 6px;
-      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      padding: 0.5rem 1rem;
       font-size: 0.75rem;
       font-weight: 600;
       color: var(--clr-ink-muted);
@@ -234,17 +234,16 @@
     /* CATALOG PREVIEW ARCHITECTURE */
     .related-card {
       background-color: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 12px;
+      border-radius: 24px;
       overflow: hidden;
-      transition: all 0.25s var(--ease-smooth);
+      box-shadow: 0 4px 20px rgba(37,36,34,0.04);
+      transition: all 0.3s var(--ease-smooth);
     }
     .related-card:hover { 
-      border-color: var(--clr-brand);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 20px -8px rgba(37,36,34,0.08); 
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(37,36,34,0.08); 
     }
-    .related-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-bottom: 1px solid var(--clr-border); }
+    .related-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background-color: #F8FAF8; }
   </style>
 </head>
 <body>
@@ -264,18 +263,10 @@
     </div>
 
     <div class="flex items-center gap-4">
-      <a href="cart.html" class="relative inline-flex p-2 bg-[#CCC5B9]/20 rounded-lg transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:1.25rem; height:1.25rem; color: var(--clr-brand);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-        <span id="nav-cart-count"
-              style="background-color: var(--clr-brand); color:#fff; font-size:0.65rem; font-weight:700; width:1.1rem; height:1.1rem; border-radius:50%; display:none; position:absolute; top:0px; right:0px; align-items:center; justify-content:center;">
-          0
-        </span>
-      </a>
+      <a href="cart.html" class="nav-link">Cart</a>
       
       <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
-        Admin Console
+        Admin
       </a>
       
       <a href="auth.html" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.825rem; width: auto;">
@@ -287,22 +278,24 @@
 
 <div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 1.5rem;">
   <div class="breadcrumb flex items-center gap-1">
-    <a href="index.html">System Directory</a>
+    <a href="index.html">Home</a>
     <span>/</span>
     <a href="index.html" id="bc-category">Category</a>
     <span>/</span>
-    <span id="bc-name" style="color: var(--clr-ink-main); font-weight: 600;">Product Module</span>
+    <span id="bc-name" style="color: var(--clr-ink-main); font-weight: 600;">Product</span>
   </div>
 </div>
 
 <main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 2rem; padding-bottom: 6rem;">
 
-  <div id="not-found" class="text-center py-20 border border-dashed border-[#CCC5B9] bg-white rounded-xl max-w-md mx-auto" style="display: none;">
-    <p class="text-4xl mb-2">🔒</p>
-    <p style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);">Asset Node Not Located</p>
-    <p class="text-xs text-stone-400 mt-1 mb-5">The requested registry listing does not appear in storage blocks.</p>
+  <div id="not-found" class="text-center py-20 border border-dashed border-[#CCC5B9] bg-white rounded-[24px] max-w-md mx-auto" style="display: none;">
+    <div class="mb-4 flex justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CCC5B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    </div>
+    <p style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);">Product Not Found</p>
+    <p class="text-xs text-stone-400 mt-1 mb-5">The product you're looking for is no longer available or the link is incorrect.</p>
     <a href="index.html" class="btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.825rem; width: auto;">
-      ← Return to Main Deck
+      ← Return to Shop
     </a>
   </div>
 
@@ -314,14 +307,26 @@
       </div>
 
       <div class="flex flex-wrap gap-2 pt-2">
-        <span class="feature-pill">✓ Verified Provenance</span>
-        <span class="feature-pill">🚚 Cold-Chain Freight</span>
-        <span class="feature-pill">🔄 48hr Dispatch Reversal</span>
-        <span class="feature-pill">🔒 Encrypted Ledger Trade</span>
+        <span class="feature-pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          Fresh Quality Guaranteed
+        </span>
+        <span class="feature-pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          Same Day Delivery
+        </span>
+        <span class="feature-pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+          Easy Returns
+        </span>
+        <span class="feature-pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Secure Checkout
+        </span>
       </div>
     </div>
 
-    <div class="bg-white border border-[#CCC5B9] rounded-xl p-6 sm:p-8 space-y-5">
+    <div class="bg-white border-none shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] p-6 sm:p-8 space-y-5">
       
       <div>
         <span id="product-category" style="display: inline-block; background-color: rgba(235,94,40,0.08); color: var(--clr-brand); border: 1px solid rgba(235,94,40,0.2); border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;"></span>
@@ -329,18 +334,18 @@
         <p id="product-price" style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--clr-brand); margin-top: 0.5rem;"></p>
       </div>
 
-      <hr class="divider" style="margin: 0;" />
+      <hr class="divider" />
 
       <div class="space-y-1.5">
-        <p class="text-[11px] uppercase font-bold tracking-wider text-stone-400">Yield Configuration Description</p>
+        <p class="text-[11px] uppercase font-bold tracking-wider text-stone-400">Product Description</p>
         <p id="product-description" style="font-size: 0.925rem; color: var(--clr-ink-muted); line-height: 1.7; font-weight: 400;"></p>
       </div>
 
-      <hr class="divider" style="margin: 0;" />
+      <hr class="divider" />
 
       <div class="space-y-1.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-stone-500 uppercase tracking-wider">Storage Ledger Balance</span>
+          <span class="text-xs font-bold text-stone-500 uppercase tracking-wider">Stock Status</span>
           <span id="stock-badge"></span>
         </div>
         <div class="stock-bar-track">
@@ -349,7 +354,7 @@
         <p id="stock-text" class="text-xs font-medium text-stone-400" style="margin-top: 0.4rem;"></p>
       </div>
 
-      <hr class="divider" style="margin: 0;" />
+      <hr class="divider" />
 
       <div class="space-y-3 pt-1">
         <div class="flex items-center gap-3 flex-wrap">
@@ -361,10 +366,10 @@
           
           <button id="add-to-cart-btn" class="btn-primary flex-1 sm:flex-initial" onclick="handleAddToCart()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-            Commit to Allocation
+            Add to Cart
           </button>
           
-          <a href="cart.html" class="btn-ghost text-center">View Pipeline</a>
+          <a href="cart.html" class="btn-ghost text-center">View Cart</a>
         </div>
 
         <p id="subtotal-hint" class="text-xs font-mono font-bold text-stone-400 text-right sm:text-left"></p>
@@ -377,7 +382,7 @@
     <div class="flex items-center gap-2 mb-6">
       <span class="w-3 h-3 rounded-full bg-[#EB5E28]"></span>
       <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--clr-ink-main); letter-spacing: -0.01em;">
-        Correlated Category Outputs
+        You May Also Like
       </h2>
     </div>
     <div id="related-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
@@ -393,32 +398,32 @@
     <div class="md:col-span-5 space-y-3">
       <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
       <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
-        Standardized agricultural commerce architecture compiled for academic validation and production design reference.
+        Your trusted local market for fresh, organic, and ethically sourced produce.
       </p>
     </div>
 
     <div class="md:col-span-3 col-start-7 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">System Routes</p>
+      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Shop</p>
       <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Directory Dashboard</a>
-        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">Client Allocation</a>
-        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">Tracking Register</a>
+        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Home</a>
+        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">Cart</a>
+        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">My Orders</a>
       </div>
     </div>
 
     <div class="md:col-span-3 space-y-2.5">
-      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Administrative Controls</p>
+      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Admin</p>
       <div class="flex flex-col gap-1.5 text-xs font-medium">
-        <a href="admin-dashboard.html" class="hover:text-[#EB5E28] transition-colors">Core Console</a>
-        <a href="admin-products.html" class="hover:text-[#EB5E28] transition-colors">Inventory Framework</a>
-        <a href="admin-orders.html" class="hover:text-[#EB5E28] transition-colors">Dispatch Ledger</a>
+        <a href="admin-dashboard.html" class="hover:text-[#EB5E28] transition-colors">Dashboard</a>
+        <a href="admin-products.html" class="hover:text-[#EB5E28] transition-colors">Products</a>
+        <a href="admin-orders.html" class="hover:text-[#EB5E28] transition-colors">Orders</a>
       </div>
     </div>
 
   </div>
 
   <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
-    &copy; 2026 BAZAAR ARCHITECTURE &mdash; BAZAAR AGRO &mdash; METROPOLITAN UNIVERSITY, SYLHET
+    &copy; 2026 Bazaar &mdash; Metropolitan University, Sylhet
   </div>
 </footer>
 
@@ -458,7 +463,7 @@
     if (!currentProduct) return;
     const qty = parseInt(document.getElementById('qty').value);
     document.getElementById('subtotal-hint').textContent =
-      `Total Subelement Value: ৳${(currentProduct.price * qty).toLocaleString()}`;
+      `Subtotal: ৳${(currentProduct.price * qty).toLocaleString()}`;
   }
 
   function handleAddToCart() {
@@ -473,7 +478,7 @@
                   price: currentProduct.price, qty, image: currentProduct.image });
     }
     saveCart(cart);
-    showToast(`${qty}× units of "${currentProduct.name}" allocated to pipeline.`);
+    showToast(`${qty}× "${currentProduct.name}" added to your cart.`);
   }
 
   function renderRelated(category, excludeId) {
@@ -524,26 +529,26 @@
     const qtyInput   = document.getElementById('qty');
 
     if (product.stock === 0) {
-      stockBadge.innerHTML = `<span class="badge badge-out">Depleted Frame</span>`;
+      stockBadge.innerHTML = `<span class="badge badge-out">Out of Stock</span>`;
       stockFill.style.width = '0%';
       stockFill.style.backgroundColor = '#EF4444';
-      stockText.textContent = 'Operational inventory balance exhausted.';
+      stockText.textContent = 'This item is currently out of stock.';
       addBtn.disabled = true;
-      addBtn.textContent = 'Allocation Blocked';
+      addBtn.textContent = 'Out of Stock';
       qtyInput.value = 0;
     } else if (product.stock <= 5) {
-      stockBadge.innerHTML = `<span class="badge badge-low">Critical Surcharge Level (${product.stock})</span>`;
+      stockBadge.innerHTML = `<span class="badge badge-low">Low Stock (${product.stock})</span>`;
       const pct = Math.round((product.stock / MAX_STOCK) * 100);
       stockFill.style.width = pct + '%';
       stockFill.style.backgroundColor = '#F59E0B';
-      stockText.textContent = `Immediate extraction advised—only ${product.stock} terminal blocks remaining.`;
+      stockText.textContent = `Hurry! Only ${product.stock} left in stock.`;
       qtyInput.max = product.stock;
     } else {
-      stockBadge.innerHTML = `<span class="badge badge-in">Verified Nominal Supply</span>`;
+      stockBadge.innerHTML = `<span class="badge badge-in">In Stock</span>`;
       const pct = Math.min(Math.round((product.stock / MAX_STOCK) * 100), 100);
       stockFill.style.width = pct + '%';
       stockFill.style.backgroundColor = '#10B981';
-      stockText.textContent = `${product.stock} stable catalog elements available.`;
+      stockText.textContent = `${product.stock} items available.`;
       qtyInput.max = product.stock;
     }
 

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Bazaar</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Sora:wght=400;600;700;800&display=swap');
+
+    :root {
+      --clr-canvas: #FFFCF2;
+      --clr-surface: #FFFFFF;
+      --clr-border: #CCC5B9;
+      --clr-ink-muted: #403D39;
+      --clr-ink-main: #252422;
+      --clr-brand: #EB5E28;
+      --clr-brand-hover: #D44D1B;
+      --font-display: 'Sora', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--clr-canvas);
+      color: var(--clr-ink-main);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+
+    .global-center-wrapper {
+      max-width: 1280px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      width: 100% !important;
+    }
+
+    .nav-corporate {
+      background-color: rgba(255, 252, 242, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--clr-border);
+    }
+    .nav-link {
+      color: var(--clr-ink-muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: color 0.2s var(--ease-smooth);
+    }
+    .nav-link:hover { color: var(--clr-brand); }
+
+    /* FORM INPUT NODES */
+    .form-input {
+      background-color: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: 999px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      color: var(--clr-ink-main);
+      outline: none;
+      transition: all 0.2s var(--ease-smooth);
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .form-input:focus {
+      border-color: var(--clr-brand);
+      box-shadow: 0 0 0 3px rgba(235, 94, 40, 0.11);
+    }
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--clr-ink-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* PAYMENT METHOD CARD RADIO SELECTORS */
+    .payment-option {
+      border: 1px solid var(--clr-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      background-color: var(--clr-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      transition: all 0.2s var(--ease-smooth);
+    }
+    .payment-option:hover {
+      border-color: var(--clr-brand);
+      box-shadow: 0 4px 12px rgba(37,36,34,0.04);
+    }
+
+    .btn-primary {
+      background-color: var(--clr-brand);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 999px;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s var(--ease-smooth);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn-primary:hover { background-color: var(--clr-brand-hover); }
+  </style>
+</head>
+<body>
+
+<!-- FIX 2: Cart icon with nav-cart-count badge — was missing from this page -->
+<nav class="nav-corporate sticky top-0 z-50">
+  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <span style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.35rem; letter-spacing: -0.02em;">
+        Bazaar<span style="color: var(--clr-brand);">.</span>
+      </span>
+    </a>
+
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="orders.html" class="nav-link">My Orders</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <!-- Cart icon with badge — now present on checkout page -->
+      <a href="cart.html" class="relative inline-flex p-2 bg-[#CCC5B9]/20 rounded-lg transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:1.25rem; height:1.25rem; color: var(--clr-brand);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <span id="nav-cart-count"
+              style="background-color: var(--clr-brand); color:#fff; font-size:0.65rem; font-weight:700; width:1.1rem; height:1.1rem; border-radius:50%; display:none; position:absolute; top:0px; right:0px; align-items:center; justify-content:center;">
+          0
+        </span>
+      </a>
+      <a href="admin-dashboard.html" class="text-xs font-semibold text-[#403D39] hover:text-[#252422] border border-stone-300 px-3 py-1.5 rounded-lg transition-colors">
+        Admin Console
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-top: 3.5rem; padding-bottom: 2rem;">
+  <span class="inline-flex items-center gap-1 text-xs font-bold text-[#EB5E28] bg-[#EB5E28]/10 px-2.5 py-1 rounded mb-3 tracking-wide uppercase">
+    Secure Checkout
+  </span>
+  <h1 style="font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; color: var(--clr-ink-main); letter-spacing: -0.02em;">
+    Checkout
+  </h1>
+</div>
+
+<main class="global-center-wrapper px-4 sm:px-6 lg:px-8" style="padding-bottom: 6rem;">
+  <form id="checkout-form" onsubmit="executeOrder(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+    <div class="lg:col-span-7 space-y-8">
+
+      <!-- FIX 4: Section headers are plain labels — numbered markers removed -->
+      <div class="p-6 bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] space-y-4">
+        <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);" class="border-b border-stone-100 pb-3">
+          Contact Information
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="form-label">Full Name</label>
+            <input type="text" required class="form-input" placeholder="e.g. Tanvir Ahmed" />
+          </div>
+          <div>
+            <label class="form-label">Email Address</label>
+            <input type="email" required class="form-input" placeholder="name@domain.com" />
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] space-y-4">
+        <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);" class="border-b border-stone-100 pb-3">
+          Delivery Address
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="form-label">Street Address</label>
+            <input type="text" required class="form-input" placeholder="House, Road, Block / Sector" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="form-label">City</label>
+              <input type="text" required class="form-input" placeholder="Sylhet" />
+            </div>
+            <div>
+              <label class="form-label">Postal Code</label>
+              <input type="text" required class="form-input" placeholder="3100" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] space-y-4">
+        <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--clr-ink-main);" class="border-b border-stone-100 pb-3">
+          Payment Method
+        </h2>
+        <div class="grid grid-cols-1 gap-3">
+          <label class="payment-option">
+            <input type="radio" name="payment-method" checked class="mt-1 accent-[#EB5E28]" />
+            <div class="text-sm">
+              <p class="font-bold text-[#252422]">Cash on Delivery</p>
+              <p class="text-xs text-stone-500 mt-0.5">Pay with cash when your order arrives.</p>
+            </div>
+          </label>
+          <label class="payment-option opacity-60 pointer-events-none">
+            <input type="radio" name="payment-method" disabled class="mt-1" />
+            <div class="text-sm">
+              <p class="font-bold text-stone-400">Card Payment — temporarily unavailable</p>
+              <p class="text-xs text-stone-400 mt-0.5">Online card payments will be back soon.</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <aside class="lg:col-span-5">
+      <div class="bg-white shadow-[0_4px_24px_rgba(37,36,34,0.04)] rounded-[24px] p-6 sticky top-[100px]">
+        <h2 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--clr-ink-main); display: flex; align-items: center; gap: 0.5rem;">
+          <span class="w-2 h-2 rounded-full bg-[#EB5E28]"></span> Order Summary
+        </h2>
+
+        <div id="checkout-items-preview" class="divide-y divide-stone-100 max-h-[220px] overflow-y-auto mb-5 pr-2 space-y-3"></div>
+
+        <div class="space-y-3 border-t border-[#CCC5B9] pt-4 text-sm font-medium">
+          <div class="flex justify-between text-stone-600">
+            <span>Subtotal</span>
+            <span id="summary-subtotal" class="text-[#252422] font-semibold">৳0</span>
+          </div>
+          <div class="flex justify-between text-stone-600">
+            <span>Tax (5%)</span>
+            <span id="summary-tax" class="text-[#252422] font-semibold">৳0</span>
+          </div>
+          <div class="flex justify-between items-center text-stone-600">
+            <span>Shipping</span>
+            <span class="text-[#166534] font-bold text-xs bg-[#F0FDF4] px-2 py-0.5 rounded border border-[#DCFCE7]">FREE</span>
+          </div>
+          <div class="flex justify-between items-center pt-3 border-t border-[#CCC5B9] text-base font-bold" style="font-family: var(--font-display);">
+            <span class="text-[#252422]">Total</span>
+            <span id="summary-total" class="text-[#EB5E28]">৳0</span>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button type="submit" class="btn-primary">
+            Place Order &rarr;
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </form>
+</main>
+
+<!-- FIX 6: Footer dead links (admin-products.html, admin-orders.html) → admin-dashboard.html -->
+<footer class="bg-white border-t border-[#CCC5B9] text-[#403D39]">
+  <div class="global-center-wrapper px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
+    <div class="md:col-span-5 space-y-3">
+      <p style="font-family: var(--font-display); font-weight: 800; color: var(--clr-ink-main); font-size: 1.25rem;">Bazaar<span style="color:var(--clr-brand);">.</span></p>
+      <p class="text-xs text-stone-500 max-w-xs leading-relaxed">
+        Fresh organic fruits and vegetables sourced directly from local gardens to your dining table.
+      </p>
+    </div>
+    <div class="md:col-span-3 col-start-7 space-y-2.5">
+      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Shop</p>
+      <div class="flex flex-col gap-1.5 text-xs font-medium">
+        <a href="index.html" class="hover:text-[#EB5E28] transition-colors">Home</a>
+        <a href="cart.html" class="hover:text-[#EB5E28] transition-colors">Cart</a>
+        <a href="orders.html" class="hover:text-[#EB5E28] transition-colors">My Orders</a>
+      </div>
+    </div>
+    <div class="md:col-span-3 space-y-2.5">
+      <p class="text-[#252422] text-xs font-bold tracking-wider uppercase">Admin</p>
+      <div class="flex flex-col gap-1.5 text-xs font-medium">
+        <a href="admin-dashboard.html" class="hover:text-[#EB5E28] transition-colors">Dashboard</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-stone-100 py-6 text-center text-[11px] text-stone-400 font-mono">
+    &copy; 2026 BAZAAR ARCHITECTURE &mdash; METROPOLITAN UNIVERSITY, SYLHET
+  </div>
+</footer>
+
+<script>
+  function getCart()   { return JSON.parse(localStorage.getItem('bazaarCart')   || '[]'); }
+  function getOrders() { return JSON.parse(localStorage.getItem('bazaarOrders') || '[]'); }
+
+  function updateNavBadge(cart) {
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    const badge = document.getElementById('nav-cart-count');
+    if (!badge) return;
+    badge.textContent = total;
+    badge.style.display = total > 0 ? 'flex' : 'none';
+  }
+
+  function renderCheckoutSummary() {
+    const cart = getCart();
+    updateNavBadge(cart);
+
+    if (cart.length === 0) {
+      alert('Your cart is empty. Returning to the shop.');
+      window.location.href = 'index.html';
+      return;
+    }
+
+    const container = document.getElementById('checkout-items-preview');
+    container.innerHTML = cart.map(item => `
+      <div class="flex items-center justify-between gap-4 py-2 text-xs">
+        <div class="flex items-center gap-3">
+          <img src="${item.image}" alt="" class="w-10 h-10 object-cover rounded border border-stone-200 bg-stone-50"
+               onerror="this.src='https://images.unsplash.com/photo-1610348725531-843dff14a9da?w=600&auto=format&fit=crop&q=80';" />
+          <div>
+            <p class="font-bold text-[#252422] max-w-[180px] truncate">${item.name}</p>
+            <p class="text-stone-400">Qty: ${item.qty}</p>
+          </div>
+        </div>
+        <span class="font-bold text-[#252422]">৳${(item.price * item.qty).toLocaleString()}</span>
+      </div>
+    `).join('');
+
+    const sub   = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const tax   = Math.round(sub * 0.05);
+    const total = sub + tax;
+
+    document.getElementById('summary-subtotal').textContent = `৳${sub.toLocaleString()}`;
+    document.getElementById('summary-tax').textContent      = `৳${tax.toLocaleString()}`;
+    document.getElementById('summary-total').textContent    = `৳${total.toLocaleString()}`;
+  }
+
+  function executeOrder(event) {
+    event.preventDefault();
+
+    const cart   = getCart();
+    const orders = getOrders();
+
+    const sub   = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const tax   = Math.round(sub * 0.05);
+    const total = sub + tax;
+
+    const orderPayload = {
+      id:             'BZR-' + Math.floor(100000 + Math.random() * 900000),
+      timestamp:      new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+      status:         'Awaiting Dispatch Approval',
+      items:          cart,
+      aggregateValue: total
+    };
+
+    orders.unshift(orderPayload);
+    localStorage.setItem('bazaarOrders', JSON.stringify(orders));
+    localStorage.removeItem('bazaarCart');
+
+    window.location.href = 'orders.html';
+  }
+
+  renderCheckoutSummary();
+</script>
+</body>
+</html>
