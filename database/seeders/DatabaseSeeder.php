@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 180,
                 'stock' => 45,
                 'slug' => 'rajshahi-fazli-mangoes',
-                'image' => 'rajshahi-fazli-mangoes.jpeg',
+                'image' => 'products/rajshahi-fazli-mangoes.jpeg',
             ],
             [
                 'vendor_id' => $vendor1->id,
@@ -87,7 +87,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 45,
                 'stock' => 24,
                 'slug' => 'srimangal-fresh-palong-shak',
-                'image' => 'srimangal-palong-shak.jpg',
+                'image' => 'products/srimangal-palong-shak.jpg',
             ],
             [
                 'vendor_id' => $vendor2->id,
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 90,
                 'stock' => 60,
                 'slug' => 'narsingdi-sagar-bananas',
-                'image' => 'narsingdi-sagar-bananas.jpg',
+                'image' => 'products/narsingdi-sagar-bananas.jpg',
             ],
             [
                 'vendor_id' => $vendor2->id,
@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 110,
                 'stock' => 50,
                 'slug' => 'munshiganj-native-vine-tomatoes',
-                'image' => 'munshiganj-vine-tomatoes.jpg',
+                'image' => 'products/munshiganj-vine-tomatoes.jpg',
             ],
             [
                 'vendor_id' => $vendor1->id,
@@ -117,17 +117,17 @@ class DatabaseSeeder extends Seeder
                 'price' => 160,
                 'stock' => 18,
                 'slug' => 'panchagarh-broccoli-florets',
-                'image' => 'panchagarh-broccoli.jpg',
+                'image' => 'products/panchagarh-broccoli.jpg',
             ],
             [
                 'vendor_id' => $vendor2->id,
-                'category_id' => $categoryMap['Fruits']->id,
+                'category_id' => $categoryMap['Vegetables']->id,
                 'name' => 'Jessore Long Stem Baigun',
                 'description' => 'Glossy deep-purple eggplants with soft flesh.',
                 'price' => 95,
                 'stock' => 35,
                 'slug' => 'jessore-long-stem-baigun',
-                'image' => 'long-stem-baigun.jpg',
+                'image' => 'products/long-stem-baigun.jpg',
             ],
         ];
 

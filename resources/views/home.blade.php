@@ -32,7 +32,13 @@
             @forelse($products as $product)
                 <article class="product-card">
                     <a href="{{ route('products.show', $product) }}" class="product-image-wrap">
-                        <img src="{{ $product->image_path ? asset('images/'.$product->image_path) : asset('images/placeholder-product.svg') }}" alt="{{ $product->name }}">
+                        @php
+                            $image = $product->image_path
+                                ? asset('storage/' . $product->image_path)
+                                : asset('images/placeholder-product.svg');
+                        @endphp
+
+                        <img src="{{ $image }}" alt="{{ $product->name }}">
                     </a>
                     <div class="product-card-body">
                         <div class="meta-row">

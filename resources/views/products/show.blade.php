@@ -14,7 +14,7 @@
 
     <div class="detail-grid">
         <div class="detail-image-card">
-            <img src="{{ $product->image_path ? asset('images/'.$product->image_path) : asset('images/placeholder-product.svg') }}" alt="{{ $product->name }}">
+            <img src="{{ $product->image_path ? asset('storage/'.$product->image_path) : asset('images/placeholder-product.svg') }}" alt="{{ $product->name }}">
 
         <div class="detail-info-card">
             <div class="meta-row">
