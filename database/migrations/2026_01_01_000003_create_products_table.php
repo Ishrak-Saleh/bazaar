@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('stock')->default(0);
             $table->string('image_path')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->date('arrival_date');
+            $table->unsignedTinyInteger('shelf_life_days')->default(7);
             $table->timestamps();
 
             $table->index(['vendor_id', 'category_id']);

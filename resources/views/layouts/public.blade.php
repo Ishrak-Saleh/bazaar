@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="footer-bottom-bar">
-            <p>&copy; 2026 Bazaar Project. Built with clean software standards. All rights reserved.</p>
+            <p>&copy; 2026 Bazaar Project. Built with clean software standards. Mockup.</p>
         </div>
     </footer>
 
