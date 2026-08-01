@@ -14,9 +14,7 @@
     <header class="site-header">
         <div class="nav-container">
             <a href="{{ route('home') }}" class="logo">Bazaar<span>.</span></a>
-            <form action="{{ route('home') }}" method="GET" class="search-mini">
-                <input type="search" name="q" placeholder="Search for groceries..." value="{{ request('q') }}">
-            </form>
+            
             <nav class="top-actions">
                 <a href="{{ route('home') }}">Home</a>
                 @auth
