@@ -19,6 +19,8 @@ class Product extends Model
         'stock',
         'image_path',
         'is_active',
+        'arrival_date',
+        'shelf_life_days',
     ];
 
     protected $casts = [

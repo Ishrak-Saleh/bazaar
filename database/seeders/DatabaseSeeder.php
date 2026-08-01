@@ -142,6 +142,8 @@ class DatabaseSeeder extends Seeder
                 'stock' => $product['stock'],
                 'image_path' => $product['image'],
                 'is_active' => true,
+                'arrival_date' => now()->subDays(rand(0,3))->toDateString(),
+                'shelf_life_days' => rand(5,12),
             ]);
         }
     }
