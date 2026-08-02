@@ -49,6 +49,8 @@ class ProductController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'stock' => $validated['stock'],
+            'arrival_date' => $request->arrival_date,
+            'shelf_life_days' => $request->shelf_life_days,
             'image_path' => $path,
             'is_active' => $request->boolean('is_active'),
         ]);
@@ -91,6 +93,8 @@ class ProductController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'stock' => $validated['stock'],
+            'arrival_date' => $request->arrival_date,
+            'shelf_life_days' => $request->shelf_life_days,
             'image_path' => $path,
             'is_active' => $request->boolean('is_active'),
         ]);
@@ -119,6 +123,8 @@ class ProductController extends Controller
             'description' => ['required', 'string', 'max:5000'],
             'price' => ['required', 'numeric', 'min:1'],
             'stock' => ['required', 'integer', 'min:0'],
+            'arrival_date'     => 'required|date',
+            'shelf_life_days'  => 'required|integer|min:1|max:365',
             'image' => ['nullable', 'image', 'max:4096'],
             'is_active' => ['nullable'],
         ]);
