@@ -58,15 +58,20 @@ class AuthController extends Controller
 
     public function register(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'first_name' => ['required', 'string', 'max:100'],
-            'last_name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'phone' => ['nullable', 'string', 'max:30'],
-            'password' => ['required', 'confirmed', 'min:8'],
-            'role' => ['required', 'in:customer,vendor'],
-            'store_name' => ['nullable', 'string', 'max:150'],
-        ]);
+        $validated = $request->validate(
+            [
+                'first_name' => ['required', 'string', 'max:100'],
+                'last_name'  => ['required', 'string', 'max:100'],
+                'email'      => ['required', 'email', 'unique:users,email'],
+                'phone'      => ['nullable', 'string', 'max:30'],
+                'password'   => ['required', 'confirmed', 'min:8'],
+                'role'       => ['required', 'in:customer,vendor'],
+                'store_name' => ['nullable', 'string', 'max:150'],
+            ],
+            [
+                'email.unique' => 'An account with this email already exists. Please log in or use change your password.',
+            ]
+        );
 
         $role = $validated['role'];
         $vendorStatus = $role === 'vendor' ? 'pending' : null;
