@@ -200,3 +200,33 @@ label input,label select,label textarea{margin-top:.4rem}
 @media (max-width:540px){
   .product-grid,.stats-grid,.footer-grid-wrapper{grid-template-columns:1fr}
 }
+
+.freshness-section{
+    margin:14px 0;
+}
+.freshness-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:.85rem;
+    font-weight:600;
+    margin-bottom:6px;
+}
+.freshness-bar{
+    width:100%;
+    height:8px;
+    background:#ececec;
+    border-radius:999px;
+    overflow:hidden;
+}
+.freshness-fill{
+    height:100%;
+    border-radius:999px;
+    transition:.3s ease;
+}
+.freshness-label{
+    display:block;
+    margin-top:6px;
+    color:#666;
+    font-size:.78rem;
+}

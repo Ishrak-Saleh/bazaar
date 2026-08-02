@@ -51,14 +51,26 @@ class Product extends Model
             return 0;
         }
 
-        $daysSinceArrival = $this->arrival_date->startOfDay()->diffInDays(now()->startOfDay());
+        //Negative if arrival date is in the future
+        $daysSinceArrival = $this->arrival_date
+            ->startOfDay()
+            ->diffInDays(now()->startOfDay(), false);
+
+        //Product hasn't arrived yet
+        if ($daysSinceArrival < 0) {
+            return 100;
+        }
+
         $remaining = max(
             0,
             $this->shelf_life_days - $daysSinceArrival
         );
 
-        return (int) round(
-            ($remaining / $this->shelf_life_days) * 100
+        return min(
+            100,
+            (int) round(
+                ($remaining / $this->shelf_life_days) * 100
+            )
         );
     }
 }

@@ -42,8 +42,54 @@
                     </a>
                     <div class="product-card-body">
                         <div class="meta-row">
-                            <span class="category-chip">{{ $product->category->name }}</span>
-                            <span class="stock-chip {{ $product->stock > 0 ? 'in' : 'out' }}">{{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}</span>
+                            <span class="category-chip">
+                                {{ $product->category->name }}
+                            </span>
+
+                            <span class="stock-chip {{ $product->stock > 0 ? 'in' : 'out' }}">
+                                {{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}
+                            </span>
+                        </div>
+
+                        <div class="freshness-section">
+
+                            @php
+                                $score = $product->freshness_score;
+
+                                if ($score >= 80) {
+                                    $label = 'Excellent';
+                                    $color = '#22c55e';
+                                } elseif ($score >= 60) {
+                                    $label = 'Fresh';
+                                    $color = '#84cc16';
+                                } elseif ($score >= 40) {
+                                    $label = 'Average';
+                                    $color = '#f59e0b';
+                                } else {
+                                    $label = 'Use Soon';
+                                    $color = '#ef4444';
+                                }
+                            @endphp
+
+                            <div class="freshness-header">
+                                <span>Freshness</span>
+                                <strong>{{ $score }}%</strong>
+                            </div>
+
+                            <div class="freshness-bar">
+                                <div
+                                    class="freshness-fill"
+                                    style="
+                                        width: {{ $score }}%;
+                                        background: {{ $color }};
+                                    ">
+                                </div>
+                            </div>
+
+                            <small class="freshness-label">
+                                {{ $label }}
+                            </small>
+
                         </div>
                         <h3><a href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h3>
                         <p class="product-snippet">{{ $product->description }}</p>
