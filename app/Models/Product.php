@@ -51,7 +51,7 @@ class Product extends Model
             return 0;
         }
 
-        $daysSinceArrival = $this->arrival_date->diffInDays(now());
+        $daysSinceArrival = $this->arrival_date->startOfDay()->diffInDays(now()->startOfDay());
         $remaining = max(
             0,
             $this->shelf_life_days - $daysSinceArrival
