@@ -28,6 +28,47 @@
             </div>
             <p class="detail-copy">{{ $product->description }}</p>
 
+            @php
+                $score = $product->freshness_score;
+                $days = $product->arrival_date
+                ->startOfDay()
+                ->diffInDays(now()->startOfDay(), false);
+
+                if ($days < 0) {
+                    $status = 'Arriving in ' . abs($days) . ' day' . (abs($days) > 1 ? 's' : '');
+                    $color = '#2563eb';
+                } elseif ($days == 0) {
+                    $status = 'Harvested Today';
+                    $color = '#22c55e';
+                } elseif ($days == 1) {
+                    $status = 'Harvested Yesterday';
+                    $color = '#84cc16';
+                } else {
+                    $status = 'Harvested ' . $days . ' days ago';
+                    $color = '#f59e0b';
+                }
+            @endphp
+
+            <div class="freshness-panel">
+
+                <div class="freshness-header">
+                    <strong>Freshness Score</strong>
+                    <strong>{{ $score }}%</strong>
+                </div>
+
+                <div class="freshness-bar">
+                    <div
+                        class="freshness-fill"
+                        style="width: {{ $score }}%; background: {{ $color }};">
+                    </div>
+                </div>
+
+                <div class="freshness-status">
+                    {{ $status }}
+                </div>
+
+            </div>
+
             <div class="vendor-panel">
                 <div class="vendor-label">Vendor</div>
                 <div class="vendor-name">{{ $product->vendor->store_name ?? $product->vendor->fullName() }}</div>
