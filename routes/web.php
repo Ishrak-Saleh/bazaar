@@ -16,6 +16,7 @@ use App\Http\Controllers\Vendor\DashboardController as VendorDashboardController
 use App\Http\Controllers\Vendor\OrderController as VendorOrderController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
@@ -88,4 +89,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
             Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
         });
+
+    Route::get('/test-email', function () {
+        Mail::raw('If you received this email, Bazaar mail is working!', function ($message) {
+            $message->to('bazaar.bd.project@gmail.com')
+                    ->subject('Bazaar Email Test');
+        });
+
+        return 'Email sent!';
+    });
 });
