@@ -15,8 +15,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Vendor\DashboardController as VendorDashboardController;
 use App\Http\Controllers\Vendor\OrderController as VendorOrderController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
@@ -90,12 +91,29 @@ Route::middleware('auth')->group(function () {
             Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
         });
 
-    Route::get('/test-email', function () {
-        Mail::raw('If you received this email, Bazaar mail is working!', function ($message) {
-            $message->to('bazaar.bd.project@gmail.com')
-                    ->subject('Bazaar Email Test');
-        });
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->middleware('auth')->name('verification.notice');
 
-        return 'Email sent!';
-    });
+    Route::get('/email/verify/{id}/{hash}', function (
+        EmailVerificationRequest $request
+    ) {
+        $request->fulfill();
+
+        return redirect('/')->with(
+            'success',
+            'Your email has been verified successfully.'
+        );
+    })->middleware(['auth', 'signed'])->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (
+        Request $request
+    ) {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with(
+            'success',
+            'Verification email sent.'
+        );
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,16 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+            if (!$user->hasVerifiedEmail()) {
+                Auth::logout();
+
+                return redirect()
+                    ->route('verification.notice')
+                    ->with(
+                        'warning',
+                        'Please verify your email before logging in.'
+                    );
+            }
 
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
@@ -87,6 +98,7 @@ class AuthController extends Controller
             'vendor_status' => $vendorStatus,
             'store_name' => $validated['store_name'] ?? null,
         ]);
+        event(new Registered($user));
 
         Auth::login($user);
 
@@ -95,7 +107,12 @@ class AuthController extends Controller
             return redirect()->route('vendor.pending')->with('success', 'Your vendor application was created. Wait for approval.');
         }
 
-        return redirect()->route('home')->with('success', 'Welcome to Bazaar.');
+        return redirect()
+        ->route('verification.notice')
+        ->with(
+            'success',
+            'Your account has been created! Please verify your email before continuing.'
+        );
     }
 
     public function logout(Request $request): RedirectResponse
