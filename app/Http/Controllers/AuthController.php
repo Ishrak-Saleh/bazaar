@@ -30,16 +30,6 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            if (!$user->hasVerifiedEmail()) {
-                Auth::logout();
-
-                return redirect()
-                    ->route('verification.notice')
-                    ->with(
-                        'warning',
-                        'Please verify your email before logging in.'
-                    );
-            }
 
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
@@ -103,8 +93,12 @@ class AuthController extends Controller
         Auth::login($user);
 
         if ($role === 'vendor') {
-            Auth::logout();
-            return redirect()->route('vendor.pending')->with('success', 'Your vendor application was created. Wait for approval.');
+            return redirect()
+                ->route('verification.notice')
+                ->with(
+                    'success',
+                    'Your vendor account has been created! Please verify your email before it can be reviewed by an administrator.'
+                );
         }
 
         return redirect()

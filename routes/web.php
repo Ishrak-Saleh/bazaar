@@ -39,10 +39,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
     Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
-    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::middleware('verified')->group(function () {
+        Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+        Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -53,7 +55,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/pending', fn () => view('vendor.pending'))->name('pending');
 
-            Route::middleware('vendor.approved')->group(function () {
+            Route::middleware(['verified', 'vendor.approved'])->group(function () {
                 Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
 
                 Route::get('/products', [VendorProductController::class, 'index'])->name('products.index');
@@ -100,7 +102,7 @@ Route::middleware('auth')->group(function () {
     ) {
         $request->fulfill();
 
-        return redirect('/')->with(
+        return redirect()->route('home')->with(
             'success',
             'Your email has been verified successfully.'
         );
