@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@bazaar.test',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'email_verified_at' => now(),
         ]);
 
         $vendor1 = User::create([
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'vendor',
             'vendor_status' => 'approved',
             'store_name' => 'Ahsan Fresh Mart',
+            'email_verified_at' => now(),
         ]);
 
         $vendor2 = User::create([
@@ -42,6 +44,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'vendor',
             'vendor_status' => 'approved',
             'store_name' => 'Tasnim Harvest House',
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -51,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'customer@bazaar.test',
             'password' => Hash::make('password'),
             'role' => 'customer',
+            'email_verified_at' => now(),
         ]);
 
         $categories = collect([
