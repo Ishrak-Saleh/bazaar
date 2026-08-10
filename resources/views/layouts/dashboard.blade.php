@@ -21,6 +21,12 @@
                     <a href="{{ route('admin.vendors.index') }}" class="{{ request()->routeIs('admin.vendors.*') ? 'active' : '' }}">Vendors</a>
                     <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a>
                     <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">Products</a>
+
+                    <a href="{{ route('admin.freshness-requests.index') }}"
+                    class="{{ request()->routeIs('admin.freshness-requests.*') ? 'active' : '' }}">
+                        Freshness Requests
+                    </a>
+
                     <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Orders</a>
                     <a href="{{ route('home') }}">Public Catalog View</a>
                 @else

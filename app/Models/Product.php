@@ -19,6 +19,7 @@ class Product extends Model
         'stock',
         'arrival_date',
         'shelf_life_days',
+        'freshness_locked_at',
         'image_path',
         'is_active',
     ];
@@ -27,6 +28,7 @@ class Product extends Model
         'price' => 'decimal:2',
         'arrival_date' => 'date',
         'shelf_life_days' => 'integer',
+        'freshness_locked_at' => 'datetime',
         'is_active' => 'boolean',
     ];
 
@@ -72,5 +74,15 @@ class Product extends Model
                 ($remaining / $this->shelf_life_days) * 100
             )
         );
+    }
+
+    public function freshnessLogs()
+    {
+        return $this->hasMany(ProductFreshnessLog::class);
+    }
+
+    public function freshnessChangeRequests()
+    {
+        return $this->hasMany(ProductFreshnessChangeRequest::class);
     }
 }

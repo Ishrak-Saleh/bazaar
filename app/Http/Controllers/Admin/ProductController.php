@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\ProductFreshnessChangeRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -96,5 +97,18 @@ class ProductController extends Controller
             'image' => ['nullable', 'image', 'max:4096'],
             'is_active' => ['nullable'],
         ]);
+    }
+
+    public function freshnessRequests(): View
+    {
+        $requests = ProductFreshnessChangeRequest::with([
+            'product',
+            'vendor',
+            'reviewer',
+        ])
+            ->latest()
+            ->get();
+
+        return view('admin.freshness-requests.index', compact('requests'));
     }
 }

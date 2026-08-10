@@ -68,4 +68,20 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? ''));
     }
+
+    public function productFreshnessLogs()
+    {
+        return $this->hasMany(ProductFreshnessLog::class);
+    }
+
+    public function freshnessChangeRequests()
+    {
+        return $this->hasMany(ProductFreshnessChangeRequest::class, 'vendor_id');
+    }
+
+    public function reviewedFreshnessChangeRequests()
+    {
+        return $this->hasMany(ProductFreshnessChangeRequest::class, 'reviewed_by');
+    }
+
 }
