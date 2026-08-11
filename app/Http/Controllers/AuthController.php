@@ -9,12 +9,77 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
     public function showLogin(): View
     {
         return view('auth.login');
+    }
+    public function showForgotPassword(): View
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $status = Password::sendResetLink($validated);
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with(
+                'success',
+                'Password reset link sent. Please check your email.'
+            );
+        }
+
+        return back()->withErrors([
+            'email' => __($status),
+        ]);
+    }
+
+    public function showResetPassword(
+        string $token,
+        Request $request
+    ): View {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email,
+        ]);
+    }
+
+    public function resetPassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        $status = Password::reset(
+            $validated,
+            function (User $user, string $password) {
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()
+                ->route('login')
+                ->with(
+                    'success',
+                    'Your password has been reset successfully. You can now log in.'
+                );
+        }
+
+        return back()->withErrors([
+            'email' => __($status),
+        ]);
     }
 
     public function login(Request $request): RedirectResponse

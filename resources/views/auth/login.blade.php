@@ -10,10 +10,40 @@
 
         <form method="POST" action="{{ route('login.store') }}" class="auth-form">
             @csrf
-            <label>Email<input type="email" name="email" required value="{{ old('email') }}"></label>
-            <label>Password<input type="password" name="password" required></label>
-            <label class="checkbox-row"><input type="checkbox" name="remember"> Remember me</label>
-            <button type="submit" class="primary-button full">Login</button>
+
+            <label>
+                Email
+                <input
+                    type="email"
+                    name="email"
+                    required
+                    value="{{ old('email') }}"
+                >
+            </label>
+
+            <label>
+                Password
+                <input
+                    type="password"
+                    name="password"
+                    required
+                >
+            </label>
+
+            <div class="auth-links">
+                <a href="{{ route('password.request') }}">
+                    Forgot your password?
+                </a>
+            </div>
+
+            <label class="checkbox-row">
+                <input type="checkbox" name="remember">
+                Remember me
+            </label>
+
+            <button type="submit" class="primary-button full">
+                Login
+            </button>
         </form>
 
         <div class="auth-links">
