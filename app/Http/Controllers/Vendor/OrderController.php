@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Vendor;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
+use App\Mail\OrderStatusUpdateMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -52,9 +54,9 @@ class OrderController extends Controller
         }
 
         $allowedTransitions = [
-            'processing' => ['processing', 'ready', 'cancelled'],
-            'ready' => ['ready', 'shipped', 'cancelled'],
-            'shipped' => ['shipped'],
+            'processing' => ['ready', 'cancelled'],
+            'ready' => ['shipped', 'cancelled'],
+            'shipped' => [],
             'cancelled' => [],
         ];
 
@@ -100,6 +102,14 @@ class OrderController extends Controller
         $order->update([
             'status' => $orderStatus,
         ]);
+
+        Mail::to($order->email)->send(
+            new OrderStatusUpdateMail(
+                $order,
+                $item,
+                $newStatus
+            )
+        );
 
         return back()->with(
             'success',
