@@ -101,7 +101,7 @@ class CheckoutController extends Controller
                 'delivery_fee' => $deliveryFee,
                 'discount' => $discount,
                 'total' => $total,
-                'status' => 'pending',
+                'status' => 'processing',
                 'notes' => $validated['notes'] ?? null,
             ]);
 
@@ -121,7 +121,7 @@ class CheckoutController extends Controller
                     'unit_price' => $product->price,
                     'quantity' => $qty,
                     'subtotal' => $lineTotal,
-                    'vendor_status' => 'pending',
+                    'vendor_status' => 'processing',
                 ]);
             }
 

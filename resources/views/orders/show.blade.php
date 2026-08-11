@@ -12,13 +12,23 @@
 
         <hr class="separator">
 
-        @foreach($order->items as $item)
+       @foreach($order->items as $item)
             <div class="order-item-row">
                 <div>
                     <strong>{{ $item->product_name }}</strong>
-                    <div class="muted-label">Vendor: {{ $item->vendor->store_name ?? $item->vendor->name }}</div>
+
+                    <div class="muted-label">
+                        Vendor: {{ $item->vendor->store_name ?? $item->vendor->name }}
+                    </div>
+
+                    <div class="muted-label">
+                        Status: {{ ucfirst($item->vendor_status) }}
+                    </div>
                 </div>
-                <div>Qty {{ $item->quantity }} · ৳{{ number_format($item->subtotal, 0) }}</div>
+
+                <div>
+                    Qty {{ $item->quantity }} · ৳{{ number_format($item->subtotal, 0) }}
+                </div>
             </div>
         @endforeach
     </div>

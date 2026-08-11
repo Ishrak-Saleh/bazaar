@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('unit_price', 10, 2);
             $table->unsignedInteger('quantity');
             $table->decimal('subtotal', 10, 2);
-            $table->enum('vendor_status', ['pending', 'processing', 'ready', 'shipped'])->default('pending');
+            $table->enum('vendor_status', ['processing', 'ready', 'shipped', 'cancelled'])->default('processing');
             $table->timestamps();
 
             $table->index(['vendor_id', 'order_id']);

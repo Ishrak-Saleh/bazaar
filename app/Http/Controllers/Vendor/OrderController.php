@@ -20,16 +20,90 @@ class OrderController extends Controller
         return view('vendor.orders.index', compact('items'));
     }
 
-    public function updateItemStatus(Request $request, OrderItem $item): RedirectResponse
-    {
+    public function updateItemStatus(
+        Request $request,
+        OrderItem $item
+    ): RedirectResponse {
         abort_unless($item->vendor_id === auth()->id(), 403);
 
         $validated = $request->validate([
-            'vendor_status' => ['required', 'in:pending,processing,ready,shipped'],
+            'vendor_status' => [
+                'required',
+                'in:processing,ready,shipped,cancelled',
+            ],
         ]);
 
-        $item->update($validated);
+        $newStatus = $validated['vendor_status'];
+        $currentStatus = $item->vendor_status;
 
-        return back()->with('success', 'Vendor item status updated.');
+
+        if ($currentStatus === 'cancelled') {
+            return back()->with(
+                'error',
+                'A cancelled order item cannot be updated.'
+            );
+        }
+
+        if ($currentStatus === 'shipped') {
+            return back()->with(
+                'error',
+                'A shipped order item cannot be updated.'
+            );
+        }
+
+        $allowedTransitions = [
+            'processing' => ['processing', 'ready', 'cancelled'],
+            'ready' => ['ready', 'shipped', 'cancelled'],
+            'shipped' => ['shipped'],
+            'cancelled' => [],
+        ];
+
+        if (
+            !in_array(
+                $newStatus,
+                $allowedTransitions[$currentStatus] ?? [],
+                true
+            )
+        ) {
+            return back()->with(
+                'error',
+                'Invalid order status change.'
+            );
+        }
+
+        $item->update([
+            'vendor_status' => $newStatus,
+        ]);
+
+        $order = $item->order;
+
+        $statuses = $order->items()->pluck('vendor_status');
+
+        if ($statuses->contains('cancelled')) {
+            $orderStatus = 'cancelled';
+        } elseif ($statuses->every(
+            fn ($status) => $status === 'shipped'
+        )) {
+            $orderStatus = 'shipped';
+        } elseif ($statuses->every(
+            fn ($status) => in_array(
+                $status,
+                ['ready', 'shipped'],
+                true
+            )
+        )) {
+            $orderStatus = 'ready';
+        } else {
+            $orderStatus = 'processing';
+        }
+
+        $order->update([
+            'status' => $orderStatus,
+        ]);
+
+        return back()->with(
+            'success',
+            'Order status updated successfully.'
+        );
     }
 }

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('delivery_fee', 10, 2)->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('total', 10, 2);
-            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'processing', 'ready', 'shipped', 'delivered', 'cancelled'])->default('pending');
             $table->text('notes')->nullable();
             $table->timestamps();
 
