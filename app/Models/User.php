@@ -83,5 +83,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ProductFreshnessChangeRequest::class, 'reviewed_by');
     }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\VerifyEmail);
+    }
 
 }
