@@ -58,7 +58,13 @@ class CheckoutController extends Controller
 
         return view(
             'checkout.index',
-            compact('items', 'subtotal', 'deliveryFee', 'discount', 'total')
+            compact(
+                'items',
+                'subtotal',
+                'deliveryFee',
+                'discount',
+                'total'
+            )
         );
     }
 
@@ -72,7 +78,7 @@ class CheckoutController extends Controller
             'street_address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100'],
             'postal_code' => ['required', 'string', 'max:20'],
-            'payment_method' => ['required', 'in:cod,bkash'],
+            'payment_method' => ['required', 'in:cod'],
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
@@ -122,12 +128,12 @@ class CheckoutController extends Controller
                 'street_address' => $validated['street_address'],
                 'city' => $validated['city'],
                 'postal_code' => $validated['postal_code'],
-                'payment_method' => $validated['payment_method'],
+                'payment_method' => 'cod',
                 'subtotal' => $subtotal,
                 'delivery_fee' => $deliveryFee,
                 'discount' => $discount,
                 'total' => $total,
-                'status' => 'processing',
+                'status' => 'pending',
                 'notes' => $validated['notes'] ?? null,
             ]);
 
@@ -178,7 +184,8 @@ class CheckoutController extends Controller
                 );
             } catch (\Throwable $e) {
                 report($e);
-                //Do not break the customer's order if vendor email fails
+
+                // Do not break the customer's order if vendor email fails.
                 continue;
             }
         }
@@ -193,7 +200,8 @@ class CheckoutController extends Controller
         $order->load(['items.product', 'items.vendor']);
 
         abort_if(
-            $order->customer_id !== auth()->id() && ! auth()->user()->isAdmin(),
+            $order->customer_id !== auth()->id()
+                && ! auth()->user()->isAdmin(),
             403
         );
 
