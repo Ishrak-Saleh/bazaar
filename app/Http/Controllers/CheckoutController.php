@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewOrderVendorMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -21,9 +24,14 @@ class CheckoutController extends Controller
     public function show(): View
     {
         $cart = $this->cart();
+
         abort_if(empty($cart), 404, 'Cart is empty.');
 
-        $products = Product::query()->with(['vendor', 'category'])->whereIn('id', array_keys($cart))->get()->keyBy('id');
+        $products = Product::query()
+            ->with(['vendor', 'category'])
+            ->whereIn('id', array_keys($cart))
+            ->get()
+            ->keyBy('id');
 
         $items = [];
         $subtotal = 0;
@@ -48,7 +56,10 @@ class CheckoutController extends Controller
         $discount = 0;
         $total = $subtotal + $deliveryFee - $discount;
 
-        return view('checkout.index', compact('items', 'subtotal', 'deliveryFee', 'discount', 'total'));
+        return view(
+            'checkout.index',
+            compact('items', 'subtotal', 'deliveryFee', 'discount', 'total')
+        );
     }
 
     public function store(Request $request): RedirectResponse
@@ -66,10 +77,15 @@ class CheckoutController extends Controller
         ]);
 
         $cart = $this->cart();
+
         abort_if(empty($cart), 404, 'Cart is empty.');
 
         $productIds = array_keys($cart);
-        $products = Product::query()->whereIn('id', $productIds)->get()->keyBy('id');
+
+        $products = Product::query()
+            ->whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
 
         $subtotal = 0;
         $deliveryFee = 50;
@@ -79,13 +95,23 @@ class CheckoutController extends Controller
             if (! isset($products[$productId])) {
                 continue;
             }
+
             $subtotal += $products[$productId]->price * $qty;
         }
 
         $total = $subtotal + $deliveryFee - $discount;
         $orderNumber = 'BZ-' . strtoupper(Str::random(6));
 
-        $order = DB::transaction(function () use ($validated, $cart, $products, $subtotal, $deliveryFee, $discount, $total, $orderNumber) {
+        $order = DB::transaction(function () use (
+            $validated,
+            $cart,
+            $products,
+            $subtotal,
+            $deliveryFee,
+            $discount,
+            $total,
+            $orderNumber
+        ) {
             $order = Order::create([
                 'order_number' => $orderNumber,
                 'customer_id' => auth()->id(),
@@ -130,14 +156,46 @@ class CheckoutController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('orders.show', $order)->with('success', 'Order placed successfully.');
+        $vendorItems = $order->items()
+            ->with('vendor')
+            ->get()
+            ->groupBy('vendor_id');
+
+        foreach ($vendorItems as $vendorId => $items) {
+            $vendor = User::find($vendorId);
+
+            if (! $vendor || empty($vendor->email)) {
+                continue;
+            }
+
+            try {
+                Mail::to($vendor->email)->send(
+                    new NewOrderVendorMail(
+                        $order,
+                        $vendor,
+                        $items
+                    )
+                );
+            } catch (\Throwable $e) {
+                report($e);
+                //Do not break the customer's order if vendor email fails
+                continue;
+            }
+        }
+
+        return redirect()
+            ->route('orders.show', $order)
+            ->with('success', 'Order placed successfully.');
     }
 
     public function confirmation(Order $order): View
     {
         $order->load(['items.product', 'items.vendor']);
 
-        abort_if($order->customer_id !== auth()->id() && ! auth()->user()->isAdmin(), 403);
+        abort_if(
+            $order->customer_id !== auth()->id() && ! auth()->user()->isAdmin(),
+            403
+        );
 
         return view('checkout.confirmation', compact('order'));
     }

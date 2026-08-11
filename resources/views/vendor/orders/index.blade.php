@@ -12,76 +12,102 @@
 </div>
 
 <div class="orders-stack">
-    @foreach($items as $item)
+
+    @foreach($items->groupBy('order_id') as $orderItems)
+
+        @php
+            $order = $orderItems->first()->order;
+        @endphp
+
         <article class="order-card">
+
             <div class="order-head">
+
                 <div>
                     <div class="muted-label">Order</div>
-                    <strong>{{ $item->order->order_number }}</strong>
+                    <strong>{{ $order->order_number }}</strong>
                 </div>
 
                 <div>
                     <div class="muted-label">Customer</div>
                     <strong>
-                        {{ $item->order->first_name }}
-                        {{ $item->order->last_name }}
+                        {{ $order->first_name }}
+                        {{ $order->last_name }}
                     </strong>
-                </div>
-
-                <div>
-                    <div class="muted-label">Item</div>
-                    <strong>{{ $item->product_name }}</strong>
-                </div>
-
-                <div class="status-pill">
-                    {{ ucfirst($item->vendor_status) }}
                 </div>
 
             </div>
 
-            <form
-                method="POST"
-                action="{{ route('vendor.orders.update-item-status', $item) }}"
-                class="action-row">
-                @csrf
-                @method('PATCH')
+            <div class="order-items">
 
-                <select name="vendor_status" required>
+                @foreach($orderItems as $item)
 
-                    <option
-                        value="processing"
-                        @selected($item->vendor_status === 'processing')
-                    >
-                        Processing
-                    </option>
+                    <div class="order-item-row">
 
-                    <option
-                        value="ready"
-                        @selected($item->vendor_status === 'ready')
-                    >
-                        Ready
-                    </option>
+                        <div>
+                            <div class="muted-label">Item</div>
+                            <strong>{{ $item->product_name }}</strong>
 
-                    <option
-                        value="shipped"
-                        @selected($item->vendor_status === 'shipped')
-                    >
-                        Shipped
-                    </option>
-                    <option
-                        value="cancelled"
-                        @selected($item->vendor_status === 'cancelled')
-                    >
-                        Cancelled
-                    </option>
+                            <div class="muted-label">
+                                Quantity: {{ $item->quantity }}
+                            </div>
+                        </div>
 
-                </select>
+                        <div class="status-pill">
+                            {{ ucfirst($item->vendor_status) }}
+                        </div>
 
-                <button type="submit" class="secondary-button">
-                    Update
-                </button>
+                    </div>
 
-            </form>
+                    <form
+                        method="POST"
+                        action="{{ route('vendor.orders.update-item-status', $item) }}"
+                        class="action-row">
+
+                        @csrf
+                        @method('PATCH')
+
+                        <select name="vendor_status" required>
+
+                            <option
+                                value="processing"
+                                @selected($item->vendor_status === 'processing')
+                            >
+                                Processing
+                            </option>
+
+                            <option
+                                value="ready"
+                                @selected($item->vendor_status === 'ready')
+                            >
+                                Ready
+                            </option>
+
+                            <option
+                                value="shipped"
+                                @selected($item->vendor_status === 'shipped')
+                            >
+                                Shipped
+                            </option>
+
+                            <option
+                                value="cancelled"
+                                @selected($item->vendor_status === 'cancelled')
+                            >
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                        <button type="submit" class="secondary-button">
+                            Update
+                        </button>
+
+                    </form>
+
+                @endforeach
+
+            </div>
 
         </article>
 
