@@ -25,10 +25,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+
 
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])
     ->name('products.show');
+
+
+Route::post(
+    '/products/{product}/reviews',
+    [ProductController::class, 'storeReview']
+)
+    ->middleware(['auth', 'verified'])
+    ->name('products.reviews.store');
+
 
 Route::middleware('guest')->group(function () {
 
@@ -57,12 +68,13 @@ Route::middleware('guest')->group(function () {
         ->name('register.store');
 });
 
+
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-Route::middleware('auth')->group(function () {
 
+Route::middleware('auth')->group(function () {
 
     Route::get('/cart', [CartController::class, 'index'])
         ->name('cart.index');
@@ -78,6 +90,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/cart/clear', [CartController::class, 'clear'])
         ->name('cart.clear');
+
 
     Route::middleware('verified')->group(function () {
 
@@ -95,21 +108,21 @@ Route::middleware('auth')->group(function () {
     });
 
 
-
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
     Route::put('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
 
+
     Route::prefix('vendor')
         ->name('vendor.')
         ->middleware(['role:vendor'])
         ->group(function () {
 
-
             Route::get('/pending', fn () => view('vendor.pending'))
                 ->name('pending');
+
 
             Route::middleware(['verified', 'vendor.approved'])->group(function () {
 
@@ -136,7 +149,6 @@ Route::middleware('auth')->group(function () {
                     ->name('products.destroy');
 
 
-
                 Route::post(
                     '/products/{product}/freshness-request',
                     [VendorProductFreshnessChangeRequestController::class, 'store']
@@ -159,7 +171,6 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:admin')
         ->group(function () {
 
-
             Route::get('/dashboard', [AdminDashboardController::class, 'index'])
                 ->name('dashboard');
 
@@ -172,7 +183,6 @@ Route::middleware('auth')->group(function () {
 
             Route::patch('/vendors/{vendor}/reject', [AdminVendorController::class, 'reject'])
                 ->name('vendors.reject');
-
 
 
             Route::get('/categories', [AdminCategoryController::class, 'index'])
@@ -188,8 +198,6 @@ Route::middleware('auth')->group(function () {
                 ->name('categories.destroy');
 
 
-    
-
             Route::get('/products', [AdminProductController::class, 'index'])
                 ->name('products.index');
 
@@ -203,7 +211,6 @@ Route::middleware('auth')->group(function () {
                 ->name('products.destroy');
 
 
-
             Route::get('/orders', [AdminOrderController::class, 'index'])
                 ->name('orders.index');
 
@@ -211,7 +218,6 @@ Route::middleware('auth')->group(function () {
                 ->name('orders.update');
 
 
-        
             Route::get(
                 '/freshness-requests',
                 [AdminProductFreshnessChangeRequestController::class, 'index']
@@ -227,7 +233,6 @@ Route::middleware('auth')->group(function () {
                 [AdminProductFreshnessChangeRequestController::class, 'deny']
             )->name('freshness-requests.deny');
         });
-
 
 
     Route::get('/email/verify', function () {

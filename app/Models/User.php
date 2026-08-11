@@ -94,5 +94,10 @@ class User extends Authenticatable implements MustVerifyEmail
             new \App\Notifications\ResetPassword($token)
         );
     }
+    
+    public function productReviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 
 }

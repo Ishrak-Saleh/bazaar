@@ -37,6 +37,11 @@ class Product extends Model
         return $this->belongsTo(User::class, 'vendor_id');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
