@@ -131,12 +131,6 @@ Route::middleware('auth')->group(function () {
                     [VendorProductFreshnessChangeRequestController::class, 'store']
                 )->name('products.freshness-request.store');
 
-                Route::patch(
-                    '/freshness-requests/{freshnessRequest}/apply',
-                    [VendorProductFreshnessChangeRequestController::class, 'apply']
-                )->name('freshness-requests.apply');
-
-
 
                 Route::get('/orders', [VendorOrderController::class, 'index'])
                     ->name('orders.index');

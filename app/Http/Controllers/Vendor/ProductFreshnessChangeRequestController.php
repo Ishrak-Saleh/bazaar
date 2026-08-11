@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductFreshnessChangeRequest;
-use App\Models\ProductFreshnessLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProductFreshnessChangeRequestController extends Controller
 {
@@ -92,58 +90,4 @@ class ProductFreshnessChangeRequestController extends Controller
         );
     }
 
-    public function apply(
-        ProductFreshnessChangeRequest $freshnessRequest
-    ): RedirectResponse {
-        if ($freshnessRequest->vendor_id !== auth()->id()) {
-            abort(403);
-        }
-
-
-        if ($freshnessRequest->status !== 'approved') {
-            return back()->with(
-                'error',
-                'This freshness change request has not been approved.'
-            );
-        }
-
-        $product = $freshnessRequest->product;
-
-        if (!$product) {
-            return back()->with(
-                'error',
-                'The associated product could not be found.'
-            );
-        }
-
-        DB::transaction(function () use ($freshnessRequest, $product) {
-            $oldArrivalDate = $product->arrival_date;
-            $oldShelfLifeDays = $product->shelf_life_days;
-
-            $product->update([
-                'arrival_date' => $freshnessRequest->requested_arrival_date,
-                'shelf_life_days' => $freshnessRequest->requested_shelf_life_days,
-                'freshness_locked_at' => now(),
-            ]);
-
-            ProductFreshnessLog::create([
-                'product_id' => $product->id,
-                'user_id' => auth()->id(),
-                'old_arrival_date' => $oldArrivalDate,
-                'new_arrival_date' => $product->arrival_date,
-                'old_shelf_life_days' => $oldShelfLifeDays,
-                'new_shelf_life_days' => $product->shelf_life_days,
-                'changed_at' => now(),
-            ]);
-
-            $freshnessRequest->update([
-                'status' => 'applied',
-            ]);
-        });
-
-        return back()->with(
-            'success',
-            'The approved freshness change has been applied successfully.'
-        );
-    }
 }
