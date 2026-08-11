@@ -1036,6 +1036,324 @@ label textarea{
 
 
 /* =========================================================
+   VENDOR ORDER DETAILS
+========================================================= */
+
+.vendor-order-card{
+    background:var(--clr-surface);
+    border:1px solid rgba(204,197,185,.55);
+    border-radius:18px;
+    box-shadow:var(--shadow-card);
+    overflow:hidden;
+}
+
+
+.vendor-order-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:1.5rem;
+
+    padding:1.5rem;
+
+    background:#faf9f6;
+
+    border-bottom:1px solid rgba(204,197,185,.5);
+}
+
+
+.vendor-order-number{
+    margin:.2rem 0 0;
+
+    font-family:var(--font-display);
+    font-size:1.4rem;
+}
+
+
+.vendor-order-meta{
+    display:flex;
+    gap:2rem;
+    align-items:flex-start;
+    text-align:right;
+}
+
+
+.vendor-order-meta > div{
+    display:flex;
+    flex-direction:column;
+    gap:.25rem;
+}
+
+
+/* Customer + delivery */
+
+.vendor-order-info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1rem;
+
+    padding:1.25rem;
+}
+
+
+.vendor-order-info-card{
+    border:1px solid rgba(204,197,185,.5);
+    border-radius:14px;
+    padding:1.1rem;
+
+    background:#fff;
+}
+
+
+.vendor-order-info-card h3{
+    margin:0 0 1rem;
+
+    font-size:1rem;
+}
+
+
+.vendor-order-info-list{
+    display:grid;
+    gap:.9rem;
+}
+
+
+.vendor-order-info-list > div{
+    display:flex;
+    flex-direction:column;
+    gap:.15rem;
+}
+
+
+.vendor-order-info-list strong{
+    word-break:break-word;
+}
+
+
+/* Payment */
+
+.vendor-order-payment{
+    margin:0 1.25rem 1.25rem;
+
+    padding:1rem;
+
+    border:1px solid rgba(204,197,185,.5);
+    border-radius:14px;
+
+    background:#fff;
+}
+
+
+/* Products */
+
+.vendor-order-products{
+    margin:0 1.25rem 1.25rem;
+
+    border:1px solid rgba(204,197,185,.55);
+    border-radius:16px;
+
+    overflow:hidden;
+}
+
+
+.vendor-order-section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:1rem;
+
+    padding:1.1rem 1.25rem;
+
+    background:#faf9f6;
+
+    border-bottom:1px solid rgba(204,197,185,.5);
+}
+
+
+.vendor-order-section-heading h3{
+    margin:.2rem 0 0;
+    font-size:1.05rem;
+}
+
+
+.vendor-order-items{
+    display:flex;
+    flex-direction:column;
+}
+
+
+.vendor-order-item{
+    display:grid;
+    grid-template-columns:minmax(220px,2fr) .8fr .9fr .9fr 1.5fr;
+
+    gap:1rem;
+
+    align-items:center;
+
+    padding:1.1rem 1.25rem;
+
+    border-bottom:1px solid rgba(204,197,185,.4);
+}
+
+
+.vendor-order-product{
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+
+    min-width:0;
+}
+
+
+.vendor-order-product-image,
+.vendor-order-product-placeholder{
+    width:52px;
+    height:52px;
+
+    flex:0 0 52px;
+
+    border-radius:10px;
+
+    object-fit:cover;
+}
+
+
+.vendor-order-product-placeholder{
+    display:grid;
+    place-items:center;
+
+    background:rgba(235,94,40,.1);
+    color:var(--clr-brand);
+
+    font-family:var(--font-display);
+    font-weight:800;
+}
+
+
+.vendor-order-product-name{
+    display:block;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+.vendor-order-product-meta{
+    display:block;
+
+    margin-top:.2rem;
+
+    color:var(--clr-ink-muted);
+    font-size:.8rem;
+}
+
+
+.vendor-order-item-detail{
+    display:flex;
+    flex-direction:column;
+    gap:.15rem;
+}
+
+
+.vendor-order-item-status{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:.6rem;
+}
+
+
+.vendor-status-form{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+}
+
+
+.vendor-status-form select{
+    width:auto;
+    min-width:130px;
+
+    padding:.55rem .7rem;
+}
+
+
+.vendor-status-form .secondary-button{
+    padding:.55rem .85rem;
+}
+
+
+/* Vendor subtotal */
+
+.vendor-order-total{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:1.5rem;
+
+    padding:1.1rem 1.25rem;
+
+    background:#faf9f6;
+
+    font-family:var(--font-display);
+}
+
+
+.vendor-order-total strong{
+    font-size:1.15rem;
+}
+
+
+/* Notes */
+
+.vendor-order-notes{
+    margin:0 1.25rem 1.25rem;
+
+    padding:1rem 1.1rem;
+
+    background:#fffaf0;
+
+    border:1px solid rgba(245,158,11,.25);
+    border-radius:14px;
+}
+
+
+.vendor-order-notes p{
+    margin:.3rem 0 0;
+
+    color:var(--clr-ink-main);
+}
+
+
+/* Grand total */
+
+.vendor-order-grand-total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:1.25rem 1.5rem;
+
+    background:#252422;
+    color:#fff;
+}
+
+
+.vendor-order-grand-total span{
+    color:#ccc5b9;
+    font-weight:600;
+}
+
+
+.vendor-order-grand-total strong{
+    font-family:var(--font-display);
+    font-size:1.5rem;
+}
+
+
+/* =========================================================
    PROFILE
 ========================================================= */
 
@@ -1698,6 +2016,24 @@ DASHBOARD MAIN
         position:static;
     }
 
+
+    .vendor-order-item{
+        grid-template-columns:2fr 1fr 1fr;
+    }
+
+    .vendor-order-item-status{
+        grid-column:1 / -1;
+        align-items:flex-start;
+    }
+
+    .vendor-status-form{
+        width:100%;
+    }
+
+    .vendor-status-form select{
+        flex:1;
+    }
+
 }
 
 
@@ -1739,6 +2075,42 @@ DASHBOARD MAIN
         font-size:1.3rem;
     }
 
+
+    .vendor-order-header{
+        flex-direction:column;
+    }
+
+    .vendor-order-meta{
+        width:100%;
+        justify-content:space-between;
+        text-align:left;
+    }
+
+    .vendor-order-info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .vendor-order-item{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .vendor-order-product{
+        grid-column:1 / -1;
+    }
+
+    .vendor-order-item-status{
+        grid-column:1 / -1;
+    }
+
+    .vendor-status-form{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .vendor-status-form select,
+    .vendor-status-form .secondary-button{
+        width:100%;
+    }
 
     /* Mobile menu button */
 
