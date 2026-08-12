@@ -1262,6 +1262,231 @@ label textarea{
 
 
 /* =========================================================
+   AUTH LANDING / LOGIN
+========================================================= */
+
+.auth-page{
+    min-height:calc(100vh - 140px);
+
+    display:flex;
+    align-items:center;
+
+    padding:3rem 2rem;
+}
+
+
+.auth-page-content{
+    width:min(1080px,100%);
+    margin:0 auto;
+
+    display:grid;
+    grid-template-columns:1fr 480px;
+
+    gap:4rem;
+    align-items:center;
+}
+
+
+.auth-page-intro{
+    max-width:560px;
+}
+
+
+.auth-brand{
+    display:inline-block;
+
+    margin-bottom:2rem;
+
+    font-family:var(--font-display);
+    font-size:1.8rem;
+    font-weight:800;
+
+    text-decoration:none;
+}
+
+
+.auth-brand span{
+    color:var(--clr-brand);
+}
+
+
+.auth-eyebrow{
+    display:block;
+
+    margin-bottom:.75rem;
+
+    color:var(--clr-brand);
+
+    font-size:.75rem;
+    font-weight:800;
+
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+
+.auth-page-intro h1{
+    margin:0 0 1rem;
+
+    font-size:clamp(2.5rem,5vw,4.2rem);
+
+    line-height:1.05;
+    letter-spacing:-1px;
+}
+
+
+.auth-page-intro p{
+    max-width:500px;
+
+    margin:0;
+
+    color:var(--clr-ink-muted);
+
+    font-size:1rem;
+    line-height:1.7;
+}
+
+
+.auth-home-button{
+    margin-top:1.5rem;
+}
+
+
+.auth-login-card{
+    width:100%;
+
+    padding:2rem;
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow-card);
+}
+
+
+.auth-card-header{
+    margin-bottom:1.5rem;
+}
+
+
+.auth-card-header h2{
+    margin:.2rem 0 .4rem;
+
+    font-size:1.8rem;
+}
+
+
+.auth-card-header p{
+    margin:0;
+
+    color:var(--clr-ink-muted);
+}
+
+
+.auth-form-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:1rem;
+}
+
+
+.auth-inline-link{
+    color:var(--clr-brand);
+
+    font-size:.82rem;
+    font-weight:700;
+
+    text-decoration:none;
+}
+
+
+.auth-inline-link:hover{
+    text-decoration:underline;
+}
+
+
+.auth-divider{
+    display:flex;
+    align-items:center;
+
+    gap:.75rem;
+
+    margin:1.4rem 0;
+
+    color:var(--clr-ink-muted);
+
+    font-size:.78rem;
+}
+
+
+.auth-divider::before,
+.auth-divider::after{
+    content:'';
+
+    flex:1;
+
+    height:1px;
+
+    background:rgba(204,197,185,.65);
+}
+
+
+@media (max-width:900px){
+
+    .auth-page-content{
+        grid-template-columns:1fr;
+        gap:2rem;
+    }
+
+    .auth-page-intro{
+        max-width:650px;
+    }
+
+}
+
+
+@media (max-width:540px){
+
+    .auth-page{
+        padding:2rem 1rem;
+    }
+
+    .auth-login-card{
+        padding:1.25rem;
+    }
+
+    .auth-page-intro h1{
+        font-size:2.4rem;
+    }
+
+    .auth-form-row{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .auth-home-button{
+        width:100%;
+    }
+
+}
+
+
+.checkbox-row{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    white-space:nowrap;
+}
+
+.checkbox-row input{
+    width:auto;
+    flex:0 0 auto;
+    margin:0;
+}
+
+
+/* =========================================================
    PRODUCT ACTIVE CARD
 ========================================================= */
 
