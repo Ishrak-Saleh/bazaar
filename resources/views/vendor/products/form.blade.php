@@ -74,6 +74,14 @@
                 {{ $freshnessLocked ? 'disabled' : '' }}
                 required>
 
+            <small>
+                @if($product->arrival_date)
+                    Current: {{ $product->arrival_date->format('d/m/Y') }}
+                @else
+                    Enter the product arrival date.
+                @endif
+            </small>
+
             @if($freshnessLocked)
                 <small>
                     Freshness information is locked.
@@ -120,8 +128,49 @@
 
 
         <label class="full">
-            Image
-            <input type="file" name="image">
+            Product Image
+
+            @if($mode === 'edit' && $product->image_path)
+
+                <div class="current-product-image">
+
+                    <img
+                        src="{{ asset('storage/' . $product->image_path) }}"
+                        alt="{{ $product->name }}"
+                        class="current-product-image-preview"
+                    >
+
+                    <div class="current-product-image-info">
+
+                        <strong>
+                            Current Product Image
+                        </strong>
+
+                        <small>
+                            Select a new image below to replace it.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            @endif
+
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+                id="productImageInput"
+            >
+
+            <small>
+                @if($mode === 'edit' && $product->image_path)
+                    Leave this empty to keep the current image.
+                @else
+                    Upload a product image.
+                @endif
+            </small>
+
         </label>
 
 

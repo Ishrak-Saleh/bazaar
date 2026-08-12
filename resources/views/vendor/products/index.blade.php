@@ -13,13 +13,22 @@
 <div class="table-wrap">
     <table class="data-table">
         <thead>
-            <tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>State</th><th>Actions</th></tr>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Arrival Date</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>State</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
             @foreach($products as $product)
                 <tr>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->category->name }}</td>
+                    <td>{{ optional($product->arrival_date)->format('d/m/Y') }}</td>
                     <td>৳{{ number_format($product->price, 0) }}</td>
                     <td>{{ $product->stock }}</td>
                     <td>{{ $product->is_active ? 'Active' : 'Hidden' }}</td>
