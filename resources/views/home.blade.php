@@ -227,21 +227,48 @@
 
 
                     {{-- Add to cart --}}
-                    <form
-                        method="POST"
-                        action="{{ route('cart.add', $product) }}"
-                        class="product-cart-form"
-                    >
-                        @csrf
+                        @auth
 
-                        <button
-                            type="submit"
-                            class="primary-button full"
-                            {{ $product->stock <= 0 ? 'disabled' : '' }}
-                        >
-                            Add to Cart
-                        </button>
-                    </form>
+                            @if(auth()->user()->isCustomer())
+
+                                <form
+                                    method="POST"
+                                    action="{{ route('cart.add', $product) }}"
+                                    class="product-cart-form"
+                                >
+                                    @csrf
+
+                                    <button
+                                        type="submit"
+                                        class="primary-button full"
+                                        {{ $product->stock <= 0 ? 'disabled' : '' }}
+                                    >
+                                        Add to Cart
+                                    </button>
+                                </form>
+
+                            @else
+
+                                <button
+                                    type="button"
+                                    class="secondary-button full"
+                                    disabled
+                                >
+                                    Customers Only
+                                </button>
+
+                            @endif
+
+                        @else
+
+                            <a
+                                href="{{ route('login') }}"
+                                class="secondary-button full"
+                            >
+                                Log In to Order
+                            </a>
+
+                        @endauth
 
                 </div>
 

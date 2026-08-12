@@ -192,22 +192,57 @@
 
 
             {{-- Add to Cart --}}
-            <form
-                method="POST"
-                action="{{ route('cart.add', $product) }}"
-                class="detail-action-card"
-            >
-                @csrf
+                @auth
 
-                <button
-                    type="submit"
-                    class="primary-button full"
-                    {{ $product->stock <= 0 ? 'disabled' : '' }}
-                >
-                    {{ $product->stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
-                </button>
+                    @if(auth()->user()->isCustomer())
 
-            </form>
+                        <form
+                            method="POST"
+                            action="{{ route('cart.add', $product) }}"
+                            class="detail-action-card"
+                        >
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="primary-button full"
+                                {{ $product->stock <= 0 ? 'disabled' : '' }}
+                            >
+                                {{ $product->stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+                            </button>
+
+                        </form>
+
+                    @else
+
+                        <div class="detail-action-card">
+
+                            <button
+                                type="button"
+                                class="secondary-button full"
+                                disabled
+                            >
+                                Customers Only
+                            </button>
+
+                        </div>
+
+                    @endif
+
+                @else
+
+                    <div class="detail-action-card">
+
+                        <a
+                            href="{{ route('login') }}"
+                            class="secondary-button full"
+                        >
+                            Log In to Order
+                        </a>
+
+                    </div>
+
+                @endauth
 
         </div>
 
