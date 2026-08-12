@@ -829,6 +829,10 @@ textarea{
 }
 
 
+.admin-actions-card{
+    margin-top:1rem;
+}
+
 /* =========================================================
    CART
 ========================================================= */
@@ -1643,7 +1647,7 @@ DASHBOARD SIDEBAR
 }
 
 
-.dashboard-logo span{
+.dashboard-logo > span:not(.dashboard-logo-brand){
     color:var(--clr-brand);
 }
 
@@ -1871,7 +1875,7 @@ DASHBOARD MAIN
     color:var(--clr-brand);
 }
 
-.dashboard-logo-brand{
+.dashboard-logo .dashboard-logo-brand{
     color:var(--clr-canvas);
 }
 
