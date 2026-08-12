@@ -1262,6 +1262,85 @@ label textarea{
 
 
 /* =========================================================
+   PRODUCT ACTIVE CARD
+========================================================= */
+
+.product-active-card{
+    padding:1rem 1.15rem;
+
+    background:#faf9f6;
+
+    border:1px solid rgba(204,197,185,.55);
+    border-radius:14px;
+}
+
+
+.product-active-content{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:1rem;
+}
+
+
+.product-active-content strong{
+    display:block;
+    margin-top:.15rem;
+}
+
+
+.product-active-content p{
+    margin:.25rem 0 0;
+    color:var(--clr-ink-muted);
+    font-size:.82rem;
+}
+
+
+.product-active-toggle{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+
+    flex-shrink:0;
+
+    padding:.65rem .9rem;
+
+    border:1px solid rgba(204,197,185,.7);
+    border-radius:10px;
+
+    background:#fff;
+
+    cursor:pointer;
+}
+
+
+.product-active-toggle input{
+    width:auto;
+    margin:0;
+}
+
+
+.product-active-toggle span{
+    font-weight:700;
+}
+
+
+@media (max-width:768px){
+
+    .product-active-content{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .product-active-toggle{
+        width:100%;
+        justify-content:flex-start;
+    }
+
+}
+
+/* =========================================================
    ADMIN ORDER DETAILS
 ========================================================= */
 

@@ -174,15 +174,42 @@
         </label>
 
 
-        <label class="full checkbox-row">
-            <input
-                type="checkbox"
-                name="is_active"
-                value="1"
-                {{ old('is_active', $product->is_active ?? true) ? 'checked' : '' }}>
+        <div class="full product-active-card">
 
-            Active
-        </label>
+    <div class="product-active-content">
+
+            <div>
+                <span class="muted-label">
+                    Storefront Visibility
+                </span>
+
+                <strong>
+                    Product Visibility
+                </strong>
+
+                <p>
+                    Keep this product visible on the public Bazaar storefront.
+                </p>
+            </div>
+
+            <label class="product-active-toggle">
+
+                <input
+                    type="checkbox"
+                    name="is_active"
+                    value="1"
+                    {{ old('is_active', $product->is_active ?? true) ? 'checked' : '' }}
+                >
+
+                <span>
+                    Active
+                </span>
+
+            </label>
+
+        </div>
+
+    </div>
 
     </div>
 
