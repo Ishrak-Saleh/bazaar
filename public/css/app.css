@@ -1000,6 +1000,71 @@ textarea{
 }
 
 /* =========================================================
+   VENDOR DASHBOARD CARDS
+========================================================= */
+.vendor-dashboard-actions{
+    display:flex;
+    flex-direction:column;
+    gap:.75rem;
+    margin-top:1.25rem;
+}
+
+.vendor-dashboard-actions .primary-button,
+.vendor-dashboard-actions .secondary-button{
+    width:100%;
+    padding:.85rem 1.25rem;
+}
+
+
+
+.vendor-dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:1rem;
+}
+
+
+.vendor-dashboard-card{
+    background:#faf9f6;
+    border:1px solid rgba(204,197,185,.55);
+    border-radius:18px;
+    box-shadow:var(--shadow-card);
+    padding:1.35rem;
+}
+
+
+.vendor-dashboard-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:1rem;
+    margin-bottom:1rem;
+}
+
+
+.vendor-dashboard-card-header h2{
+    margin:.15rem 0 0;
+    font-size:1.1rem;
+}
+
+
+.vendor-dashboard-card p{
+    margin:0 0 1.1rem;
+    color:var(--clr-ink-muted);
+    line-height:1.65;
+}
+
+
+.product-management-card{
+    margin-top:1rem;
+}
+
+
+.product-management-card .table-wrap{
+    margin-top:1rem;
+}
+
+/* =========================================================
    FORMS
 ========================================================= */
 
@@ -1806,6 +1871,15 @@ DASHBOARD MAIN
     color:var(--clr-brand);
 }
 
+.dashboard-logo-brand{
+    color:var(--clr-canvas);
+}
+
+.dashboard-logo-short{
+    color:var(--clr-canvas);
+}
+
+
 .sidebar-links{
     display:grid;
     gap:.55rem;
@@ -2043,6 +2117,11 @@ DASHBOARD MAIN
 
 @media (max-width:1200px){
 
+    .vendor-dashboard-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+
     .product-grid{
         grid-template-columns:repeat(3,minmax(0,1fr));
     }
@@ -2085,6 +2164,19 @@ DASHBOARD MAIN
 
 
 @media (max-width:768px){
+
+
+    .vendor-dashboard-grid{
+    grid-template-columns:1fr;
+    }
+
+    .vendor-dashboard-card{
+        padding:1rem;
+    }
+
+    .product-management-card{
+        padding:1rem;
+    }
 
         .current-product-image {
         align-items: flex-start;

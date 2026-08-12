@@ -21,7 +21,7 @@
                 href="{{ route(auth()->user()->role === 'admin' ? 'admin.dashboard' : 'vendor.dashboard') }}"
                 class="dashboard-logo"
             >
-                Bazaar<span>.</span>
+                <span class="dashboard-logo-brand">Bazaar.</span>
             </a>
 
             <button
@@ -47,7 +47,7 @@
                     class="dashboard-logo"
                 >
                     <span class="dashboard-logo-full">
-                        Bazaar<span>.</span>{{ strtoupper(auth()->user()->role) }}
+                        <span class="dashboard-logo-brand">Bazaar.</span>{{ strtoupper(auth()->user()->role) }}
                     </span>
 
                     <span class="dashboard-logo-short">
